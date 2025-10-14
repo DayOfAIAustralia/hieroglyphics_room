@@ -8,7 +8,7 @@ import { useWindowHeight, useWindowWidth } from '@react-hook/window-size'
 
 export default function DictionaryUI({ dictionary, ref, disabled, rules }) {
     const characterElements = dictionary.items.map(char => {
-        if (!rules.active.find(rule => rule.answer.split('').includes(char.character))) return null
+        if (!rules.active.find(rule => Array.from(rule.answer).includes(char.character))) return null;
         return <SortableDraggable key={char.id} id={char.id} className='draggable' type='character'>{char.character}</SortableDraggable>        
     })
 

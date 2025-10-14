@@ -32,7 +32,7 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
             playSwoosh()
             const newOrder = {
                 id: 0,
-                text: "你好吗",
+                text: "𓊽𓉐𓉐",
                 type: 'orders'
             }
             setOrderAnswer(prev => {

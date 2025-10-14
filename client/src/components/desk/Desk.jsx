@@ -36,7 +36,7 @@ const orderAnswerContainer = {
 }   
 
 // Used to toggle api
-const useAPI = true;
+const useAPI = false;
 
 let fetchedOnce = import.meta.hot?.data?.fetchedOnce ?? false;
 if (import.meta.hot) {
@@ -71,9 +71,10 @@ export default function Desk({orderAnswerArr}) {
     const [characters, setCharacters] = React.useState([{
         id: "dictionary",
         items: [
-            {"id":"1","character":"恨"},
-            {"id":"2","character":"我"},
-            {"id":"3","character":"好"},
+            {"id":"1","character":"𓃾"},
+            {"id":"2","character":"𓆓"},
+            {"id":"3","character":"𓉐"},
+            {"id":"3","character":"𓊽"}
         ]
         },
         {
@@ -81,15 +82,14 @@ export default function Desk({orderAnswerArr}) {
         items: []
     }])
 
-
     const [rules, setRules] = React.useState({
         inactive: [
         ],
         active: [
             {
                 id: 6,
-                order: "你好吗",
-                answer: "我恨好"
+                order: "𓊽𓉐𓉐",
+                answer: "𓃾𓆓"
             },
         ]
     })
