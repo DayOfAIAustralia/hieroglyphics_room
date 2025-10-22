@@ -15,7 +15,7 @@ import useSound from 'use-sound';
 import paperPlaceSound from '../../assets/sounds/paperPlace.wav'
 import staplerOpenSound from '../../assets/sounds/staplerOpen.wav'
 import stapleSound from '../../assets/sounds/stapler.wav'
-import binSound from '../../assets/sounds/trash.mp3'
+import binSound from '../../assets/sounds/trash.wav'
 import dingSound from '../../assets/sounds/ding.wav'
 import wrongSound from '../../assets/sounds/wrong.mp3'
 
@@ -332,9 +332,9 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
         setActiveId(null)
         setHoverDropped(false)
         setHoverDroppedItem(null)
-        binImg.current.style.backgroundImage = 'url(binEmpty.png)'
 
-        if (orderAnswer[orderAnswerContainer.BIN].items > 0) {
+        if (orderAnswer[orderAnswerContainer.BIN].items.length > 0) {
+            binImg.current.style.backgroundImage = 'url(binEmpty.png)'
             playBin()
             setOrderAnswer(prev => {
                 return prev.map((c) => {
