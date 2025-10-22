@@ -52,7 +52,7 @@
 
 .music-btn {
     all: unset;
-    z-index: 200;
+    z-index: 9999;
     position: absolute;
     right: 0;
     margin: 36px;
