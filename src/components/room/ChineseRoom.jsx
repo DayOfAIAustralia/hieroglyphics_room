@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import { LevelContext } from '../Context'
 
 import { MdMusicNote } from "react-icons/md";
@@ -7,10 +7,27 @@ import { MdMusicOff } from "react-icons/md";
 import useSound from 'use-sound';
 import egyptMusic from '../../assets/music/egyptMusic.wav'
 
+import { useXpParticles } from './useXpParticles';
+import xpSound from '../../assets/sounds/xpPoints.mp3'
+
 export default function ChineseRoom() {
     const [levelData, setLevel] = useContext(LevelContext).level
     const [dialogue, setDialogue] = useContext(LevelContext).dialogue
     const [musicMuted, setMusicMuted] = useState(true)
+    const { burst, Overlay } = useXpParticles();
+    const xpIconRef = useRef(null);
+
+    const [playXp] = useSound(xpSound)
+
+    // xp particles
+
+    const grantXp = (originEl) => {
+        burst(
+            originEl || { x: window.innerWidth - 40, y: window.innerHeight - 40 }, // from
+            xpIconRef.current || { x: 12, y: 12 },                              // to
+            { count: 42, scatter: 120, color: "limegreen", size: 8 }
+        );
+    };
 
     const { level, prestige, xp, xpRequired } = levelData
     
@@ -46,6 +63,10 @@ export default function ChineseRoom() {
     }
 
     useEffect(() => {
+        if (xp !== 0) {
+            grantXp()
+            playXp()
+        }
         if (xp >= xpRequired) {
             executeLevelUp()
         }
@@ -68,14 +89,14 @@ export default function ChineseRoom() {
                 <div className='level-number'>
                     <span>Level {level}</span>
                 </div>
-                <div className='level-bar'>
+                <div className='level-bar' ref={xpIconRef}>
                     <div className='level-progress' style={levelProgressStyle}>
 
                     </div>
                 </div>
             </div>
             {musicButton}
-
+        <Overlay />
         </section>
     )
 }

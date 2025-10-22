@@ -17,6 +17,7 @@
     "@react-hook/window-size": "^3.1.1",
     "ai": "^5.0.71",
     "axios": "^1.11.0",
+    "framer-motion": "^12.23.24",
     "openai": "^5.19.1",
     "react": "^19.1.1",
     "react-confetti": "^6.4.0",
