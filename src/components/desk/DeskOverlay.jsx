@@ -75,7 +75,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     }, [holdingOutput])
 
     const orderList = orderAnswer.find(container => container.id === 'orders').items.map(order => {
-        return <Order id={order.id} key={order.id} className='paper-off-screen'>
+        return <Order id={order.id} key={order.id} slide={order.initial} className='paper-off-screen'>
             {order.text}
         </Order>
     })
@@ -129,23 +129,6 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
         )?.id;
     }
 
-    const getActiveItem = () => {
-        let item;
-        
-        for (const container of orderAnswer) {
-            item = container.items.find(item => item.id === activeId)
-            if (item) return item
-        }
-        return null
-    }
-    function PaperOverlay({ children, className }) {
-        return (
-            <div className={className}>
-                {children.type === 'orders' ? <span>Please Respond To:</span>: null}
-                {children.type !== 'responses' ? children.text: null}
-            </div>
-        )
-    }
 
     function createResponse() {
         playStaple()
@@ -183,8 +166,6 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     }
 
     function handleNotesDragOver(event) {
-
-
         const { active, over } = event;
 
         const activeId = active.id;
@@ -192,7 +173,12 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
         const activeContainerIndex = orderAnswer.findIndex(c => c.id === activeContainerId)
         const activeObj = orderAnswer[activeContainerIndex].items.find(item => item.id === activeId)
         
-        if (over?.id === 'paper-container' && activeObj.type != 'responses') return;
+        // Paper container is only interactable with a responses object, not an order or answer slip
+        if (over?.id === 'paper-container' && activeObj.type !== 'responses') return;
+        if (over?.id === 'stapler' && activeObj.type === 'responses') return;
+
+        // remove animation from when it first appeared
+        if (activeObj.type === 'orders') activeObj.initial = false;
 
         if (!over) {
             if (hoverDropped) {
@@ -271,6 +257,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
 
         let tempHoverDropped = false;
         let tempHoverDroppedItem = null;
+
 
         setOrderAnswer(prev => {
             return prev.map(container => {
@@ -448,18 +435,6 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
                     {staplerItemsElements}
                 </Droppable>
             </div>
-            <DragOverlay
-                > 
-                {activeId && getActiveItem().type !== 'responses' ? (
-                <PaperOverlay 
-                    className={
-                        getActiveItem().type === 'orders' ? 'paper order'
-                        : 'paper answer'
-                        }>
-                    {getActiveItem()}
-                </PaperOverlay>
-                ): null}
-            </DragOverlay>
         
         </DndContext>
     )

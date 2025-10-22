@@ -173,9 +173,10 @@ export default function Desk({orderAnswerArr}) {
         if (!rules.active?.length) return;
         const randRule = Math.floor(Math.random() * rules.active.length);
         const newOrder = {
-        id: newId(),
-        text: rules.active[randRule].order,
-        type: 'orders',
+            id: newId(),
+            text: rules.active[randRule].order,
+            type: 'orders',
+            initial: true
         };
         setOrderAnswer(prev => {
             if (prev[orderAnswerContainer.ORDER].items.length >= 3) {

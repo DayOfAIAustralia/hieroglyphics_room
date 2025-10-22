@@ -26,7 +26,8 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
             const newOrder = {
                 id: 0,
                 text: "𓊽𓉐𓉐",
-                type: 'orders'
+                type: 'orders',
+                initial: true
             }
             setOrderAnswer(prev => {
                 return prev.map((c) => {

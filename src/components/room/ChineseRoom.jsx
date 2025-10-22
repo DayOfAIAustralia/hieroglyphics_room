@@ -10,7 +10,7 @@ import egyptMusic from '../../assets/music/egyptMusic.wav'
 export default function ChineseRoom() {
     const [levelData, setLevel] = useContext(LevelContext).level
     const [dialogue, setDialogue] = useContext(LevelContext).dialogue
-    const [musicMuted, setMusicMuted] = useState(false)
+    const [musicMuted, setMusicMuted] = useState(true)
 
     const { level, prestige, xp, xpRequired } = levelData
     
