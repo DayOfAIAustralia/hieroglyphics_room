@@ -1,7 +1,7 @@
 import {CSS} from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
 
-export default function SortableDraggable({id, disabled=false, children}){
+export default function SortableDraggable({id, disabled=false, children, className}){
     const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({
         id,
         data: {
@@ -20,7 +20,7 @@ export default function SortableDraggable({id, disabled=false, children}){
             style={style} 
             {...listeners} 
             {...attributes} 
-            className={isDragging ? "dragging draggable" : 'draggable'}
+            className={`${className} ${isDragging ? "dragging draggable" : 'draggable'}`}
 
         >
             {children}

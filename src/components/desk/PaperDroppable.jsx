@@ -6,7 +6,7 @@ export default function PaperDroppable({container}) {
     const items = container.items;
 
     const playedWords = items.map((word) => {
-        return <SortableDraggable key={word.id} id={word.id}>
+        return <SortableDraggable key={word.id} id={word.id} className='character'>
             {word.character}
         </SortableDraggable>
     })

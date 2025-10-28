@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useWindowHeight } from '@react-hook/window-size'
 
 
-export default function Order({ children, id, slide }) {
+export default function Order({ children, id, slide, className }) {
     const [show, setShow] = useState(false)
 
     useEffect(() => {

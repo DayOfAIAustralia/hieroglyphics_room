@@ -238,7 +238,7 @@
     padding: 6px;
     z-index: 10;
     
-    width: 50vh; 
+    width: 40vh; 
     min-height: 220px;
     height: calc-size(max-content, size + 30px); 
     cursor: grab;
@@ -320,14 +320,18 @@
     z-index: 10;
     padding:6px;
     
-    width: 50vh; 
+    width: 40vh; 
     height: 30vh; 
     cursor: grab;
 }
 
+.character {
+    font-size: 24px;
+}
+
 .draggable {
     padding: 4px;
-    width: 16px;
+    width: 24px;
     text-align: center;
     height: auto;
     background-color: rgb(245, 245, 220);

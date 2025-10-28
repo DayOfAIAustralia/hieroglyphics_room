@@ -76,14 +76,14 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     }, [holdingOutput])
 
     const orderList = orderAnswer.find(container => container.id === 'orders').items.map(order => {
-        return <Order id={order.id} key={order.id} slide={order.initial} className='paper-off-screen'>
-            {order.text}
+        return <Order id={order.id} key={order.id} slide={order.initial}>
+            <span className='character'>{order.text}</span>
         </Order>
     })
 
     const answerList = orderAnswer.find(container => container.id === 'answers').items.map(answer => {
         return <Answer id={answer.id} key={answer.id}>
-            {answer.text}
+            <span className='character'>{answer.text}</span>
         </Answer>
     })
 

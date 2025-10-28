@@ -27,16 +27,16 @@ export default function RuleBook({ref, rules, updateRule=null}) {
         if (level.level < 2) {
             return (
             <div className='rule' key={rule.id}>
-                <span>They say: {rule.order}</span>
-                <span>Then you say: {rule.answer}</span>
+                <span>You Receive: <span className="character">{rule.order}</span></span>
+                <span>You Respond: <span className="character">{rule.answer}</span></span>
             </div>
             )
         }
         
         return (
             <div className='rule' key={rule.id}>
-                <span>They say: {rule.order}</span>
-                <span>Then you say: {rule.answer}</span>
+                <span>You Receive: <span className="character">{rule.order}</span></span>
+                <span>You Respond: <span className="character">{rule.answer}</span></span>
                 <button onClick={() => updateRule(rule.order)}>Generate</button>
             </div>
         )
