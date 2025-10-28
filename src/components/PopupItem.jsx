@@ -19,7 +19,33 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
     const [playSwoosh] = useSound(swooshSound)
     const [showTutorialArrow, setShowTutorialArrow] = useState(false);
     const [arrowLocation, setArrowLocation] = useState({})
+    const [useButton, setUseButton] = useState(true)
+    const [ tutorialState, setTutorialState ] = useContext(LevelContext).tutorialState
+    
+    // Non button progression
+    useEffect(() => {
+        if (actions === 1 && tutorialState === 'rulebook-open') {
+            updateDialogue(buttons[0].goto)
+        
+        } else if (actions === 2 && tutorialState === 'dictionary-open') {
+            updateDialogue(buttons[0].goto)
 
+        } else if (actions === 3 && tutorialState === 'filled-paper') {
+            updateDialogue(buttons[0].goto)
+        } else if (actions === 4 && tutorialState === 'slip-created') {
+            updateDialogue(buttons[0].goto)
+        } else if (actions === 5 && tutorialState === 'stapler-open') {
+            updateDialogue(buttons[0].goto)
+        // next is out of order because it was added later
+        } else if (actions === 7 && tutorialState === 'stapled-response') {
+            updateDialogue(buttons[0].goto)
+        } else if (actions === 6 && tutorialState === 'finished-response') {
+            updateDialogue(buttons[0].goto)
+
+        }
+    }, [tutorialState])
+
+    // Button progression
     useEffect(() => {
         if (actions === -1) {
             setIsTutorial(true)
@@ -27,6 +53,7 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
         } else if (actions === 0) {
             setShowTutorialArrow(true)
             playSwoosh()
+            // create tutorial order
             const newOrder = {
                 id: 0,
                 text: "𓊽𓉐𓉐",
@@ -55,13 +82,15 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
             setPosition({top: "30%", left: "auto", right: "0", bottom: "auto"})
             setArrowLocation({top: "auto", left: "auto", right: "18%", bottom: "20%"})
 
+            setUseButton(false)
+
         } else if (actions === 2) {
             setPosition({top: "30%", left: "auto", right: "5%", bottom: "auto"})
             setArrowLocation({top: "auto", left: "47%", right: "auto", bottom: "20%"})
 
         } else if (actions === 3) {
             setShowTutorialArrow(false)
-
+            
             setPosition({top: "30%", left: "auto", right: "30%", bottom: "auto"})
         } else if (actions === 4) {
             setShowTutorialArrow(true)
@@ -81,6 +110,7 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
         } else if (actions === 8) {
             // removed
         } else if (actions === 9) {
+            setUseButton(true)
             setShowTutorialArrow(false)
 
             setStartUpdate(true)
@@ -156,9 +186,9 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
                     {text}
 
                 </div>
-                <div className={`popup-btns ${btnClass}`}>
+                {useButton && <div className={`popup-btns ${btnClass}`}>
                     {buttonElements}
-                </div>
+                </div>}
                 {help &&
                 <button className="popup-help" onClick={() => requestHelp(text)} disabled={helpDisabled}>
                     <img src="question.png" alt="question button"></img>

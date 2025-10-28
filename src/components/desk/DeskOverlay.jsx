@@ -40,6 +40,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     const [ orderAnswer, setOrderAnswer ] = orderAnswerArr;
     const [ rules, setRules ] = rulesList
     const [ level, setLevel ] = React.useContext(LevelContext).level
+    const [ tutorialState, setTutorialState ] = React.useContext(LevelContext).tutorialState
     
     const [key, setKey] = React.useState(0);
     const paperContainerImg = React.useRef(null)
@@ -132,6 +133,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
 
     function createResponse() {
         playStaple()
+        setTutorialState('stapled-response')
         setOrderAnswer(prev => {
             return prev.map(c => {
                 if (c.id === 'stapler') {
@@ -334,6 +336,8 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
         setHoverDroppedItem(null)
 
         if (orderAnswer[orderAnswerContainer.BIN].items.length > 0) {
+            setTutorialState('finished-response')
+
             binImg.current.style.backgroundImage = 'url(binEmpty.png)'
             playBin()
             setOrderAnswer(prev => {
@@ -348,6 +352,8 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
         }
 
         if (orderAnswer[orderAnswerContainer.PAPERCONTAINER].items.length > 0) {
+            setTutorialState('finished-response')
+
             playPaperPlace()
             processResponse()
             paperContainerImg.current.style.backgroundImage = 'url(paperContainerEmpty.png)'
@@ -382,6 +388,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
 
     function openStapler() {
         playOpenStapler()
+        setTutorialState('stapler-open')
         setStaplerOpen(prev => !prev)
     }
 

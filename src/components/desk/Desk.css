@@ -149,7 +149,7 @@
     "paper-container"
     ".";
 
-    z-index: 10;
+    z-index: 20;
 
     transform: translateX(100%);
     transition: all 0.3s ease;
@@ -167,7 +167,7 @@
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;
-
+    z-index: 20;
 
 }
 
@@ -179,7 +179,7 @@
 
     background-size: contain;
     background-repeat: no-repeat;
-
+    z-index: 20;
 
 }
 
@@ -235,8 +235,8 @@
     border: 1px solid black; 
     position:fixed; 
 
-    padding:6px;
-    z-index: 101;
+    padding: 6px;
+    z-index: 10;
     
     width: 50vh; 
     min-height: 220px;
@@ -317,7 +317,7 @@
     background-color: aliceblue; 
     border: 1px solid black; 
     position:fixed; 
-    z-index: 101;
+    z-index: 10;
     padding:6px;
     
     width: 50vh; 

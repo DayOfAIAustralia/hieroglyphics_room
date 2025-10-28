@@ -40,6 +40,8 @@ function App() {
     xpRequired: 90
   })
 
+  const [tutorialState, setTutorialState] = useState(null)
+
   const [dialogue, setDialogue] = useState(0)
 
   const [currentlyPlaying, setCurrentlyPlaying] = useState(false)
@@ -75,7 +77,7 @@ function App() {
 
   return (
     <>
-      <LevelContext value={{level: [level, setLevel], dialogue: [dialogue, setDialogue], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate]
+      <LevelContext value={{level: [level, setLevel], dialogue: [dialogue, setDialogue], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState]
       }}>
         <Popups orderAnswerArr={[orderAnswer, setOrderAnswer]}/>
         <ChineseRoom />

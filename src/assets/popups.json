@@ -64,7 +64,7 @@
                 "actions": 0
             },
             {
-                "text": "Then, you can open your rulebook to find out how to respond. Click the rules book below to see. You can drag it around. And if you ever need to close it just click it again!",
+                "text": "Then, you can open your rulebook to find out how to respond. You can drag it around as you need. Click the rules book below to see. If you ever need to close it just click it again!",
                 "buttons": [
                     {
                         "id": 1,
@@ -75,7 +75,7 @@
                 "actions": 1
             },
             {
-                "text": "To make your response, firstly, click the dictionary below to access your available characters. You can drag this around too!",
+                "text": "To make your response, firstly, click the dictionary below to access your available characters. You can drag the popout dictionary around too!",
                 "buttons": [
                     {
                         "id": 1,
@@ -86,7 +86,7 @@
                 "actions": 2
             },
             {
-                "text": "That's okay, just follow the rulebook and drag them onto the paper in the right order.",
+                "text": "It might not make sense just yet, but follow the rulebook's rule and drag them the characters from the dictionary onto the paper in the right order.",
                 "buttons": [
                     {
                         "id": 1,
@@ -108,7 +108,7 @@
                 "actions": 4
             },
             {
-                "text": "Great! The job and your answer are ready to combine. Click on the stapler to open it's menu. Then drag the job and your answer onto it and hit staple!",
+                "text": "Great! The job and your answer are ready to combine. Click on the stapler to open it's menu.",
                 "buttons": [
                     {
                         "id": 1,
@@ -119,12 +119,23 @@
                 "actions": 5
             },
             {
-                "text": "Now, the final step is to drag it over to the right side, a menu will appear where you can either bin it or finish the job. Don't continue until this is done!",
+                "text": "Fantastic, now you can drag both the request and your response onto the stapler menu, and a button will appear which you can use to staple them together!",
+                "buttons": [
+                    {
+                        "id": 1,
+                        "text": "They're stapled.",
+                        "goto": 11
+                    }
+                ],
+                "actions": 7
+            },
+            {
+                "text": "Now, the final step is to drag your completed order to the right side, a menu will appear where you can either bin it or finish the job.",
                 "buttons": [
                     {
                         "id": 1,
                         "text": "Ok great, done.",
-                        "goto": 11
+                        "goto": 12
                     }
                 ],
                 "actions": 6

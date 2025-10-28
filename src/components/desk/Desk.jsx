@@ -43,6 +43,7 @@ export default function Desk({orderAnswerArr}) {
     const [playTile] = useSound(tileSound)
     const [playHorn] = useSound(hornSound)
 
+    const [ tutorialState, setTutorialState ] = React.useContext(LevelContext).tutorialState
     const [startUpdate, setStartUpdate] = React.useContext(LevelContext).startUpdate;
     const [currentlyPlaying, setCurrentlyPlaying] = React.useContext(LevelContext).currentlyPlaying
     const [level, setLevel] = React.useContext(LevelContext).level
@@ -289,6 +290,8 @@ export default function Desk({orderAnswerArr}) {
     function openDictionary() {
         const dictionaryEl = dictionaryUIRef.current;
         if (!dictionaryEl.style.visibility || dictionaryEl.style.visibility === "hidden") {
+            setTutorialState("dictionary-open")
+
             playBookOpen()
             dictionaryEl.style.visibility = "visible"
             dictionaryImg.current.src= "dictionaryOpen.png"
@@ -304,6 +307,8 @@ export default function Desk({orderAnswerArr}) {
     function openRuleBook() {
         const ruleBookEl = ruleBookUIRef.current;
         if (!ruleBookEl.style.visibility || ruleBookEl.style.visibility === "hidden") {
+            setTutorialState("rulebook-open")
+
             playBookOpen()
             ruleBookEl.style.visibility = "visible"
             ruleBookImg.current.src= "rulesOpen.png"
@@ -486,6 +491,10 @@ export default function Desk({orderAnswerArr}) {
             })
         }
         setActiveId(null)
+
+        if (characters[characterContainer.PAPER].items.length == 2) {
+            setTutorialState('filled-paper')
+        }
     }
 
     function normaliseDictionary(c) {
@@ -534,6 +543,7 @@ export default function Desk({orderAnswerArr}) {
     function createAnswer() {
         if (characters[characterContainer.PAPER].items.length === 0) return;
         playRuffle()
+        setTutorialState('slip-created')
         setOrderAnswer(prev => {
             return prev.map(container => {
                 if (container.id !== 'answers') return container
