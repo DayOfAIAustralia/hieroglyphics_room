@@ -584,8 +584,9 @@ export default function Desk({orderAnswerArr}) {
             <DeskOverlay orderAnswerArr = {[orderAnswer, setOrderAnswer]} rulesList = {[rules, setRules]}/>
 
             <section id='desk'>
-                {/* Gives space for the image which is used in overlay */}
-                <div className='stapler'>
+                {/* Gives space for the button which is used in overlay */}
+                <div className='stapler-2'>
+                    <img src='stapler.png' alt='stapler button'></img>
                 </div>
             
             <DndContext

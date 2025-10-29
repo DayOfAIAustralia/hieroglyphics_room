@@ -429,10 +429,8 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
                 
             </div>
             <div className='stapler'>
-                <button onClick={openStapler}>
-                    <img src='stapler.png' alt='stapler button'></img>
+                <button className='stapler'onClick={openStapler}>
 
-                    
                 </button>
                 <Droppable 
                     id='stapler' 

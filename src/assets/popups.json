@@ -21,7 +21,7 @@
                 "buttons": [
                     {
                         "id": 1,
-                        "text": "That sounds really weird.",
+                        "text": "Interesting...",
                         "goto": 2
                     },
                     {
@@ -46,7 +46,7 @@
                 "buttons": [
                     {
                         "id": 1,
-                        "text": "Go ahead.",
+                        "text": "Go ahead",
                         "goto": 4
                     }
                 ],
@@ -57,7 +57,7 @@
                 "buttons": [
                     {
                         "id": 1,
-                        "text": "Ok, cool.",
+                        "text": "Cool",
                         "goto": 5
                     }
                 ],
@@ -86,7 +86,7 @@
                 "actions": 2
             },
             {
-                "text": "It might not make sense just yet, but follow the rulebook's rule and drag them the characters from the dictionary onto the paper in the right order.",
+                "text": "Using the rule stated in the rulebook, drag the characters from the dictionary onto the paper in the right order.",
                 "buttons": [
                     {
                         "id": 1,
@@ -97,7 +97,7 @@
                 "actions": 3
             },
             {
-                "text": "Now that your answer is ready, click the top right corner of that paper to complete it.",
+                "text": "Amazing, now that your answer is ready, click the top right corner of the paper to complete it.",
                 "buttons": [
                     {
                         "id": 1,
@@ -108,7 +108,7 @@
                 "actions": 4
             },
             {
-                "text": "Great! The job and your answer are ready to combine. Click on the stapler to open it's menu.",
+                "text": "Great! Now both of those paper slips are ready to combine. Click on the stapler to open it.",
                 "buttons": [
                     {
                         "id": 1,
@@ -141,7 +141,7 @@
                 "actions": 6
             },
             {
-                "text": "And that's all you'll need to know for your first day on the job! Keep a look out on the top left to keep track of how your progressing, we'll be explaining the meaning of all your menial labour soon. Good luck!",
+                "text": "And that's all you'll need to know for your first day on the job! Keep a look out on the top left to keep track of how you're progressing, we'll be explaining the meaning of all this labour soon. Good luck!",
                 "buttons": [
                     {
                         "id": 1,
@@ -178,21 +178,21 @@
             },
             {
             "id": 2,
-            "text": "I'm going to have to disagree with you there, I'll explain why. And just before I get into the finer detailsm note that a question mark will appear in the top right hand corner for more complicated stages (you'll see it on the dialogue box) which you can use to get some AI help to assist your understanding!",
+            "text": "I'm going to have to disagree with you there, I'll explain why. And just before I get into the finer details, I want to note that a question mark will appear in the top right hand corner of this dialogue box for more complicated stages. This calls our purpose-built AI teacher to assist in your understanding!",
             "buttons": [
                 { "id": 1, "text": "Thanks, go on", "goto": 4 }
             ]
             },
             {
             "id": 3,
-            "text": "You are right there. But let's explore why. And just before I get into the finer detailsm note that a question mark will appear in the top right hand corner for more complicated stages (you'll see it on the dialogue box) which you can use to get some AI help to assist your understanding!",
+            "text": "You are right there. But let's explore why. And just before I get into the finer details, I want to note that a question mark will appear in the top right hand corner of this dialogue box for more complicated stages. This calls our purpose-built AI teacher to assist in your understanding!",
             "buttons": [
                 { "id": 1, "text": "Thanks, go on", "goto": 4 }
             ]
             },
             {
             "id": 4,
-            "text": "'Understanding' can mean two things. Syntax is putting words in a correct order. Semantics is what the words mean. When you follow the rulebook, which are you using?",
+            "text": "'Understanding' can mean two things. Firstly, 'Syntax', which is putting words in a correct order. Secondly, 'Semantics', which is what the words mean. When you follow the rulebook, which type of 'understanding' are you using?",
             "buttons": [
                 { "id": 1, "text": "Syntax", "goto": 5 },
                 { "id": 2, "text": "Semantics", "goto": 6 }
@@ -210,7 +210,7 @@
             },
             {
             "id": 6,
-            "text": "Not quite, that would mean you understand the meaning behind all the characters your placing. But in your case you understand how to place them in the correct order, the syntax, but there's nothing there that teaches you why you should be placing them in that order, the semantics. Or is there? Do you think with enough time and enough rules you would be able to fully understand Heiroglyphics?",
+            "text": "Not quite, that would mean you understand the meaning behind all the characters your placing. But in your case you understand how to place them in the correct order, the syntax, but there's nothing there that teaches you 'why' you should be placing them in that order, the semantics. Or is there? Do you think with enough time and enough rules you would be able to fully understand Heiroglyphics?",
             "buttons": [
                 { "id": 1, "text": "Yes", "goto": 7 },
                 { "id": 2, "text": "No", "goto": 7 }
@@ -219,15 +219,15 @@
             },
             {
             "id": 7,
-            "text": "Well that's the interesting thing. Because from the outside you would appear to understand Heiroglpyhs. Anyone who knew how to read and write them can ask you any question and you would have the ability to respond the right thing. Whether Geography, History, or Math, they could ask you a question and you could respond. But you would never be able to know what your saying.",
+            "text": "Well that's the interesting thing. Because from the outside you would appear to understand Heiroglpyhs. Given enough rules, anyone who knew how to read and write them can ask you any question they want, and you could to respond with the right thing. Whether Geography, History, or Math, they could ask you a question and you could respond. But, you would never be able to know what your saying.",
             "buttons": [
-                { "id": 1, "text": "Okay, but what's your point", "goto": 8 }
+                { "id": 1, "text": "I see, what does this all mean", "goto": 8 }
             ],
             "help": true
             },
             {
             "id": 8,
-            "text": " If you hadn't realised yet, in this situation, you are the brain of a computer, the 'CPU' - Central Processing Unit. You are given a request (user input), use your instructions to make your response (program code), and put it in the responses pile (output). But I think I've done enough talking, how about you get back to work and we'll discuss more soon.",
+            "text": "If you hadn't realised yet, in this situation, you are the brain of a computer, the 'CPU' - Central Processing Unit. You are (1) given a request (user input), (2) use your instructions to make your response (program code), and (3) put it in the responses pile (output). But I think I've done enough talking, how about I add some more rules and see if you can imagine how you might be a computer and we'll discuss more soon.",
             "buttons": [
                 { "id": 1, "text": "Let's do it", "goto": null }
             ],
@@ -247,7 +247,7 @@
             },
             {
             "id": 1,
-            "text": "If you are confident that you can make the jump from syntax to semantics, you may be a proponent of so-called 'strong AI', that in a matter of time our computers are going to achieve 'AGI' - Artificial General Intelligence. But let me tell you why you should be a bit skeptical of that.",
+            "text": "If you are confident that you can make the jump from syntax to semantics, you may be a proponent of so-called 'strong AI', that in a matter of time our computers are going to achieve 'AGI' - Artificial General Intelligence. But let me tell you why you should be at least a bit skeptical of that.",
             "buttons": [
                 { "id": 1, "text": "Ok", "goto": 3 }
             ],
@@ -255,7 +255,7 @@
             },
             {
             "id": 2,
-            "text": "Right, as discussed you cannot make the jump from syntax to semantics. This has implications for the theory of 'strong AI', that in a matter of time our computers are going to achieve 'AGI' - Artificial General Intelligence. Let me try and explain why this is unlikely to be the case.",
+            "text": "Right, as discussed you cannot make the jump from syntax to semantics. This has implications for the theory of 'strong AI', that in a matter of time our computers are going to achieve 'AGI' - Artificial General Intelligence. Let me try and explain why this may be unlikely to be the case.",
             "buttons": [
                 { "id": 1, "text": "Ok", "goto": 3 }
             ],
@@ -271,7 +271,7 @@
             },
             {
             "id": 4,
-            "text": "A computer can never 'learn' in the way that we think of learning, because it's entirely limited to syntax. A computer never knows why it manipulates systems in different ways, even if to us it correctly does so every time. However, I will admit, this argument is based on programs that are pre-defined. I've given you rules that provide an exact answer every time, but that's not how modern AI LLM's - 'Large Language Models' work.",
+            "text": "A computer can never 'learn' in the way that we think of learning, because it's entirely limited to syntax. A computer never knows why it manipulates the symbols (1's and 0's) its given in different ways. Even if to us it seems to 'correctly' interpret our input, that's only because we told it how. However, I will admit, this argument is based on programs that are pre-defined. I've given you rules that provide an exact answer every time, but that's not how modern AI LLM's - 'Large Language Models' work.",
             "buttons": [
                 { "id": 1, "text": "How do those work?", "goto": 5 }
             ],
@@ -313,7 +313,7 @@
         },
         {
         "id": 3,
-        "text": "You can think of this as the initial training state for an LLM, which is being trained on a 'probabilistic' model. AI chatbots like ChatGPT start off knowing nothing, and randomly guessing at responses from given inputs. So all the letters you just made would have made no sense to the recipient, because the syntax would be completely wrong. If asked “what colour is a tree?” it may have responded “balloon giant the frog”, who knows.",
+        "text": "You can think of this as the initial training state for an LLM, here we are aiming to develop a 'probabilistic' model. AI chatbots like ChatGPT or Google Gemini start off knowing nothing. If you tried to ask it a question at this stage it would just randomly guess words. If asked “what colour is a tree?” it may have responded “balloon giant the frog”, who knows. The same is the case for the letters you just made, the syntax and semantics would be completely wrong.",
         "buttons": [
             { "id": 1, "text": "So how do we make it make sense", "goto": 4 }
         ],
@@ -321,7 +321,7 @@
         },
         {
         "id": 4,
-        "text": "That''s where feedback comes in. You can let it know when it's made a mistake, and let it try again. Think of it like when you next generate a random response, it will tweak the odds on the spinwheel to see if it gets closer or further to a sensible answer when asked the same question again. And so on it goes for thousands of attempts until you end up getting something closer to “the colour is brown” to the “what colour is a tree?” question. So, every time an LLM answers your question you can think of it just continually making good guesses as to what a proper answer would be.",
+        "text": "That's where feedback comes in. You can let it know when it's made a mistake, and let it try again. Then when you next generate a random response, it's like will tweaking odds on the spinwheel to see if it gets closer or further to the answer you were expecting when asked the same question again. And it will probably get it wrong for hundreds, even thousands of attempts. But, eventually, it will say something like “the colour is brown” and the spinwheel odds will become much more biased towards that output, making it 1 in a billion that it would say something like “balloon giant the frog”. But, even once training is complete, every time an LLM answers your question it is still just continually making good guesses as to what the right words would be.",
         "buttons": [
             { "id": 1, "text": "But why go through this extra effort", "goto": 5 }
         ],
@@ -329,7 +329,7 @@
         },
         {
         "id": 5,
-        "text": "This is what allows LLM models to be dynamic and evolving. If you need a human to handcraft every response to every possible question it will take quite literally forever. To a 'hard-coded' machine the similarity between “what colour is a tree?” and “what colour are trees?” is none. They both need a separate encoding, as each is a separate syntactic arrangement of characters. However, to an LLM, these things can be interpreted as similar.",
+        "text": "This is what allows LLM models to be dynamic and evolving. If you need a human to handcraft every response to every possible question it will take quite literally forever. To a 'hard-coded' machine the similarity between “what colour is a tree?” and “what colour are trees?” is none. They both need a separate encoding, as they use a different final character. Like you wouldn't realise if it turned out 𓀀𓃹𓃒 and 𓀀𓃹𓆤 translated to the above. However, to an LLM, these things can be interpreted as similar.",
         "buttons": [
             { "id": 1, "text": "How does it do that?", "goto": 6 }
         ],

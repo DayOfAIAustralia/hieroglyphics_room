@@ -16,8 +16,7 @@
     position: relative;
 }
 
-.stapler     {
-    
+.stapler    {
     position: absolute;
     height: 40vh;
     width: 40vh;
@@ -26,19 +25,38 @@
     left: 20%;
     cursor: pointer;
 
-
 }
 
 .stapler > button {
     all: unset;
+    height: 40vh;
+    width: 40vh;
+    margin: 0;
+    top: 50%;
+    left: 20%;
+    cursor: pointer;
 }
 
-.stapler > button > img {
-    height: 40vh;
-    margin: 0;
-    position: absolute;
-    top: 0;
+
+.stapler-2 {
+    all: unset;
+    grid-area: stapler;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    pointer-events: none
 }
+
+.stapler-2 > img   {
+
+    max-height: 40vh;
+    width: 100%;
+    margin: 0;
+    
+}
+
+
 
 .stapler-ui {
     position: absolute;
@@ -57,7 +75,7 @@
     background-color: rgba(111, 182, 220, 0.6);
     border: 1px solid white;
     border-radius: 8px;
-
+    z-index: 10;
 }
 
 .stapler-drop {
@@ -220,15 +238,6 @@
 
 }
 
-.rules {
-    all: unset;
-    cursor: pointer;
-}
-
-.rules > img {
-    height: 40vh;
-
-}
 
 .rulebook-ui {
     background-color: aliceblue; 
@@ -288,16 +297,19 @@
 }
 
 .dictionary {
-    grid-area: dictionary;
-
     all: unset;
+    grid-area: dictionary;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-
 }
 
+
 .dictionary > img {
-    height: 40vh;
+    max-height: 40vh;
     margin: 0;
+    max-width: 100%;
 }
 
 .default-off {
@@ -349,8 +361,18 @@
 }
 
 .rules {
+    all: unset;
+    cursor: pointer;
     grid-area: rules;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.rules > img {
+    max-height: 40vh;
+    margin: 0;
+    max-width: 100%;
 }
 
 .spinner-wheel {
