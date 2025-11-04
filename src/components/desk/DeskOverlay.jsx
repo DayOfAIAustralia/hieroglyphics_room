@@ -57,22 +57,27 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     const [firstOrderPickup, setFirstOrderPickup] = React.useState(false);
 
     React.useEffect(() => {
-        const checkMousePosition = (e) => {
-            if (holdingOutput) {
+        const checkPosition = (e) => {
+            const clientX = e.clientX ?? e.touches?.[0]?.clientX;
 
-                if (e.clientX > (windowWidth * 0.6)) {
+            if (clientX === undefined) {
+                return;
+            }
+            if (holdingOutput) {
+                if (clientX > (windowWidth * 0.6)) {
                     setShowOutput(true)
                 } else {
                     setShowOutput(false)
                 }
             }
         }
-        window.addEventListener('mousemove', checkMousePosition)
+        window.addEventListener('mousemove', checkPosition)
+        window.addEventListener('touchmove', checkPosition);
 
         return () => {
-            window.removeEventListener('mousemove', checkMousePosition)
+            window.removeEventListener('mousemove', checkPosition)
+            window.removeEventListener('touchmove', checkPosition);
             setShowOutput(false)
-
         }
     }, [holdingOutput])
 

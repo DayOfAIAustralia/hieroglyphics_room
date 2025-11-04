@@ -515,7 +515,7 @@ export default function Desk({orderAnswerArr}) {
     function CharacterOverlay({ children, className }) {
         return (
             <div className={className}>
-                <span >{children}</span>
+                <span className='character'>{children}</span>
             </div>
         )
     }
