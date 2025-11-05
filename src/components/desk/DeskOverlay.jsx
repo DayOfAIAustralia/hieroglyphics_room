@@ -27,7 +27,6 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     const [playWrong] = useSound(wrongSound)
     const [playDing] = useSound(dingSound)
     
-
     const orderAnswerContainer = {
     ORDER: 0,
     ANSWER: 1,
@@ -55,8 +54,12 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     const [hoverDroppedItem, setHoverDroppedItem] = React.useState(null)
     const [activeId, setActiveId] = React.useState(null)
     const [firstOrderPickup, setFirstOrderPickup] = React.useState(false);
+    const [startUpdate, setStartUpdate] = React.useContext(LevelContext).startUpdate;
+
 
     React.useEffect(() => {
+        if (!startUpdate && tutorialState != "stapled-response") return;
+
         const checkPosition = (e) => {
             const clientX = e.clientX ?? e.touches?.[0]?.clientX;
 
@@ -401,6 +404,8 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     }
 
     function openStapler() {
+        if (!startUpdate && tutorialState != "slip-created") return;
+
         playOpenStapler()
         setTutorialState('stapler-open')
         setStaplerOpen(prev => !prev)

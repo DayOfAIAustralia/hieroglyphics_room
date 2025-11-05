@@ -121,6 +121,10 @@
   transform: translateX(0);
 }
 
+.answer {
+  max-height: 32px;
+}
+
 .response {
   background-image: url("/response.png");
   background-size: cover;

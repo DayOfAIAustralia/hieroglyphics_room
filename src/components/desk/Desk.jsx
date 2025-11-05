@@ -248,8 +248,8 @@ export default function Desk({orderAnswerArr}) {
                 const randInd = Math.floor(Math.random() * characters[characterContainer.DICTIONARY].items.length)
                 prizeChars.push(characters[characterContainer.DICTIONARY].items[randInd].character)
             }
-            const color = i % 2 === 0 ? 'green' : 'white';
-            data.push({ option: prizeChars.join(''), style: { backgroundColor: color, textColor: 'black' } })
+
+            data.push({ option: prizeChars.join('') })
         }
         consideredRule.current = order
         setWheelData(data)
@@ -292,6 +292,7 @@ export default function Desk({orderAnswerArr}) {
     )
 
     function openDictionary() {
+        if (!startUpdate && tutorialState != "rulebook-open") return;
         const dictionaryEl = dictionaryUIRef.current;
         if (!dictionaryEl.style.visibility || dictionaryEl.style.visibility === "hidden") {
             setTutorialState("dictionary-open")
@@ -309,6 +310,8 @@ export default function Desk({orderAnswerArr}) {
 
     
     function openRuleBook() {
+        if (!startUpdate && tutorialState != "paper-dragged") return;
+
         const ruleBookEl = ruleBookUIRef.current;
         if (!ruleBookEl.style.visibility || ruleBookEl.style.visibility === "hidden") {
             setTutorialState("rulebook-open")
@@ -568,7 +571,6 @@ export default function Desk({orderAnswerArr}) {
         resetPaper()
     }
 
-
     return (
         <>
             {wheelPresent && wheelData.length > 0 && 
@@ -577,11 +579,12 @@ export default function Desk({orderAnswerArr}) {
                     mustStartSpinning={mustSpin}
                     prizeNumber={winningNumber}
                     data={wheelData}
-                    backgroundColors={['#3e3e3e', '#df3428']}
-                    textColors={['#ffffff']}
+                    backgroundColors={['#4bc1f5', '#f6cb69']}
+                    textColors={['#000000ff']}
                     onStopSpinning={finishSpinning}
-                    spinDuration={0.4}
+                    spinDuration={0.45}
                     disableInitialAnimation={true}
+                    pointerProps={{src: "/spinwheelPointer.png"}}
                 />
                 
             </div>}

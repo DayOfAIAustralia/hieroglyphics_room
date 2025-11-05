@@ -12,7 +12,6 @@ import xpSound from '../../assets/sounds/xpPoints.mp3'
 
 export default function ChineseRoom() {
     const [levelData, setLevel] = useContext(LevelContext).level
-    const [dialogue, setDialogue] = useContext(LevelContext).dialogue
     const [musicMuted, setMusicMuted] = useState(true)
     const { burst, Overlay } = useXpParticles();
     const xpIconRef = useRef(null);
@@ -80,7 +79,6 @@ export default function ChineseRoom() {
                 xp: prev.xp - prev.xpRequired,
             }
         })
-        setDialogue(prev => prev + 1)
     }
 
     return (

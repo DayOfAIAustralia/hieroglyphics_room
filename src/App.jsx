@@ -36,15 +36,13 @@ function App() {
   // }
 
   const [level, setLevel] = useState({
-    level: 0,
+    level: 0, // can change to skip to later levels
     xp: 0,
     prestige: 0,
-    xpRequired: 60
+    xpRequired: 90
   })
 
   const [tutorialState, setTutorialState] = useState(null)
-
-  const [dialogue, setDialogue] = useState(0)
 
   const [currentlyPlaying, setCurrentlyPlaying] = useState(false)
 
@@ -154,7 +152,7 @@ function App() {
         )}
       </AnimatePresence>
 
-      <LevelContext value={{level: [level, setLevel], dialogue: [dialogue, setDialogue], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState]
+      <LevelContext value={{level: [level, setLevel], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState]
       }}>
         <Popups orderAnswerArr={[orderAnswer, setOrderAnswer]}/>
         <ChineseRoom />

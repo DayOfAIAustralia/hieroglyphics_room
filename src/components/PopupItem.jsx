@@ -126,9 +126,9 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
         className='tutorial-arrow'
         animate={{
             filter: [
-            "drop-shadow(0 0 6px orange)",
-            "drop-shadow(0 0 12px orange)",
-            "drop-shadow(0 0 6px orange)"
+            "drop-shadow(0 0 4px red)",
+            "drop-shadow(0 0 8px red)",
+            "drop-shadow(0 0 4px red)"
             ]
         }}
         transition={{

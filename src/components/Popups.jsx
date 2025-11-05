@@ -11,16 +11,16 @@ import React from 'react'
 
 export default function Popups({orderAnswerArr}) {
     const [popupIndex, setPopupIndex] = React.useState(0)
-    const [dialogue, setDialogue] = React.useContext(LevelContext).dialogue
     const [currentlyPlaying, setCurrentlyPlaying] = React.useContext(LevelContext).currentlyPlaying
     const dialogueClosed = React.useRef(false)
+    const [level, setLevel] = React.useContext(LevelContext).level
     const [isTutorial, setIsTutorial] = React.useState(false)
 
     let currentPopup
     if (dialogueClosed.current) {
         currentPopup = null
     } else {
-        currentPopup = popupsJSON[dialogue].popups;
+        currentPopup = popupsJSON[level.level].popups;
     }
 
     function updateDialogue(goto) {
@@ -37,7 +37,7 @@ export default function Popups({orderAnswerArr}) {
         setPopupIndex(0)
         dialogueClosed.current = false;
         setCurrentlyPlaying(false)
-    }, [dialogue])
+    }, [level.level])
 
     if (currentPopup === null) return;
     return (
