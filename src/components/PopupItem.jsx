@@ -4,9 +4,9 @@ import axios from "axios"
 import useSound from 'use-sound';
 import Markdown from 'react-markdown'
 import { motion } from 'framer-motion'
-
+import TextHighlighter from './TextHighlighter';
 import swooshSound from '../assets/sounds/swoosh.wav'
-
+import { RiMailSendLine } from "react-icons/ri";
 
 export default function PopupItem({text, buttons, updateDialogue, actions, orderAnswerArr, help=false}) {
     const [orderAnswer, setOrderAnswer] = orderAnswerArr
@@ -21,7 +21,10 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
     const [arrowLocation, setArrowLocation] = useState({})
     const [useButton, setUseButton] = useState(true)
     const [ tutorialState, setTutorialState ] = useContext(LevelContext).tutorialState
-    
+    const [isHighlighting, setIsHighlighting] = useState(false);
+    const [highlightedText, setHighlightedText] = useState("");
+    const [showSendHelp, setShowSendHelp] = useState(false)
+
     // Non button progression
     useEffect(() => {
         if (actions === 0 && tutorialState === 'paper-dragged') {
@@ -161,10 +164,17 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
 
     }
 
-    async function requestHelp(data) {
+    function changeHighlighting() {
+        setIsHighlighting(prev => !prev)
+        setShowSendHelp(prev => !prev)
+    }
+
+    async function requestHelp() {
         setHelpVisible(true)
+        setIsHighlighting(false)
+        setShowSendHelp(false)
         setHelpDisabled(true)
-        const response = await axios.post(`/api/requesthelp`, {data: data}, { withCredentials: false })
+        const response = await axios.post(`/api/requesthelp`, {context: text, highlight: highlightedText}, { withCredentials: false })
         setHelpData(response.data.text)
     }
 
@@ -185,15 +195,22 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
         <div className="popup" key={'dialogue-box'} style={popupStyle}>
             <section className="popup-data" style={dataStyle}>
                 <div className="popup-text">
-                    {text}
-
+                    <TextHighlighter isHighlighting={isHighlighting}
+                        setIsHighlighting={setIsHighlighting} setHighlightedText={setHighlightedText}>
+                        {text}
+                    </TextHighlighter>
                 </div>
-                {useButton && <div className={`popup-btns ${btnClass}`}>
+                {useButton && !showSendHelp && <div className={`popup-btns ${btnClass}`}>
                     {buttonElements}
                 </div>}
-                {help &&
-                <button className="popup-help" onClick={() => requestHelp(text)} disabled={helpDisabled}>
+                { help &&
+                <button className="popup-help" onClick={changeHighlighting} disabled={helpDisabled}>
                     <img src="question.png" alt="question button"></img>
+                </button>
+                }
+                { showSendHelp &&
+                <button className="popup-help-send" onClick={requestHelp}>
+                    <RiMailSendLine size="1.5em"/>
                 </button>
                 }
             </section>

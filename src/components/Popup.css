@@ -85,6 +85,43 @@ button.btn-disabled {
 
 }
 
+.popup-help-send {
+  /* Shape and Size */
+  width: 44px;
+  height: 44px;
+  border-radius: 50%; /* Makes it a perfect circle */
+  
+  /* Icon Centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Base Style */
+  background-color: #f4f4f4; /* Light grey background */
+  border: 1px solid black;
+  color: #333; /* Icon color (dark grey) */
+  cursor: pointer;
+  outline: none; /* Removed for aesthetics, added back on :focus-visible */
+  
+  /* Smooth transitions for all changes */
+  transition: all 0.2s ease-in-out;
+}
+
+.popup-help-send:hover {
+    color: rgb(84, 190, 239);
+}
+
+.popup-help-send:active {
+  transform: scale(0.95); /* "Press down" effect on click */
+  background-color: #f0f0f0; /* Slightly darker when pressed */
+  box-shadow: none; /* Remove shadow when pressed */
+}
+
+/* Accessibility: Adds a visible ring ONLY for keyboard navigation */
+.popup-help-send:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
 
 .popup-help {
     all: unset;

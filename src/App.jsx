@@ -36,7 +36,7 @@ function App() {
   // }
 
   const [level, setLevel] = useState({
-    level: 0, // can change to skip to later levels
+    level: 1, // can change to skip to later levels
     xp: 0,
     prestige: 0,
     xpRequired: 90
