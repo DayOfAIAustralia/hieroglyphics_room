@@ -177,14 +177,14 @@
             },
             {
             "id": 2,
-            "text": "I'm going to have to disagree with you there, I'll explain why. And just before I get into the finer details, I want to note that a question mark will appear in the top right hand corner of this dialogue box for more complicated stages. This calls our purpose-built AI teacher to assist in your understanding!",
+            "text": "I'm going to have to disagree with you there, I'll explain why. And just before I get into the finer details,I want to note that a question mark will appear in the top right hand corner of this dialogue box for more complicated stages. This allows you to highlight anything your struggling with, and call our purpose-built AI teacher to assist in your understanding! If you change your mind just tap it again.",
             "buttons": [
                 { "id": 1, "text": "Thanks, go on", "goto": 4 }
             ]
             },
             {
             "id": 3,
-            "text": "You are right there. But let's explore why. And just before I get into the finer details, I want to note that a question mark will appear in the top right hand corner of this dialogue box for more complicated stages. This calls our purpose-built AI teacher to assist in your understanding!",
+            "text": "You are right there. But let's explore why. And just before I get into the finer details, I want to note that a question mark will appear in the top right hand corner of this dialogue box for more complicated stages. This allows you to highlight anything your struggling with, and call our purpose-built AI teacher to assist in your understanding! If you change your mind just tap it again.",
             "buttons": [
                 { "id": 1, "text": "Thanks, go on", "goto": 4 }
             ]

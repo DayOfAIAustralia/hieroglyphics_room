@@ -1,17 +1,55 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
+// Import motion and AnimatePresence from framer-motion
+import { motion, AnimatePresence } from 'framer-motion';
 
-function TextHighlighter({children, isHighlighting, setIsHighlighting,
-    setHighlightedText
+/**
+ * These are "variants" for the helper text.
+ * It will animate from hidden (0 height, 0 opacity)
+ * to visible (auto height, 1 opacity).
+ */
+const pVariants = {
+  hidden: { opacity: 0, height: 0, y: -20, marginBottom: 0 },
+  visible: {
+    opacity: 1,
+    height: 'auto',
+    y: 0,
+    marginBottom: '1em', // This was your marginTop
+    transition: { duration: 0.3, ease: 'easeInOut' },
+  },
+};
+
+/**
+ * These are variants for the highlightable box.
+ * It will animate between these two states.
+ */
+const boxVariants = {
+  // State when NOT highlighting
+  inactive: {
+    borderColor: 'rgba(204, 204, 204, 0)', // Start transparent
+    transform: 'scale(1)',
+    boxShadow: '0px 0px 0px rgba(0, 0, 0, 0)',
+    userSelect: 'none',
+    padding: "0.25em",
+
+  },
+  // State WHEN highlighting
+  active: {
+    borderColor: 'rgba(59, 130, 246, 1)', // A nice blue
+    transform: 'scale(1.02)', // "Grow" slightly
+    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+    userSelect: 'auto',
+    padding: "1em",
+  },
+};
+
+function TextHighlighter({
+  children,
+  isHighlighting,
+  // We no longer need setIsHighlighting, the parent controls this
+  setHighlightedText,
 }) {
-    if (!isHighlighting) return <>{children}</>;
-  
-  // A ref to attach to our "box"
   const highlightableBoxRef = useRef(null);
 
-  /**
-   * This function runs whenever the user releases their mouse
-   * button *inside* the highlightable box.
-   */
   const handleMouseUp = () => {
     // Do nothing if highlighting mode is off
     if (!isHighlighting) {
@@ -31,38 +69,50 @@ function TextHighlighter({children, isHighlighting, setIsHighlighting,
     ) {
       // Save the text
       setHighlightedText(selectedText);
-      // Automatically turn off highlighting mode after a successful selection
+      // You could also have the parent turn off highlighting here
+      // by calling a prop like `onHighlightComplete()`
     }
   };
 
-  /**
-   * This is where you would send the data to an API,
-   * a parent component, etc.
-   */
-
   return (
-    <div>    
-      <p>
-        {isHighlighting &&
-        'Highlight your point of confusion in the box below and then click the mail icon to send it to your AI assistant.'
-        }
-      </p>
+    <div>
+      {/* AnimatePresence handles the "enter" and "exit"
+        of the helper text component.
+      */}
+      <AnimatePresence>
+        {isHighlighting && (
+          <motion.p
+            variants={pVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            Highlight your point of confusion in the box below...
+          </motion.p>
+        )}
+      </AnimatePresence>
 
-      <div
+      {/* This motion.div is your main box.
+        It doesn't enter/exit, it just animates
+        between the "active" and "inactive" states.
+      */}
+      <motion.div
         ref={highlightableBoxRef}
         onMouseUp={handleMouseUp}
+        
+        // Tell motion to animate between variants
+        variants={boxVariants}
+        animate={isHighlighting ? 'active' : 'inactive'}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+
         style={{
-          border: `3px solid ${isHighlighting ? 'blue' : '#ccc'}`,
-          padding: '1em',
-          marginTop: '1em',
+          borderWidth: '3px',
+          borderStyle: 'solid',
           borderRadius: '5px',
-          // This CSS prevents text selection when highlighting is *off*
-          userSelect: isHighlighting ? 'auto' : 'none',
         }}
       >
         {children}
-      </div>
-
+      </motion.div>
     </div>
   );
 }

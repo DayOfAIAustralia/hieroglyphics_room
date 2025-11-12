@@ -24,6 +24,7 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
     const [isHighlighting, setIsHighlighting] = useState(false);
     const [highlightedText, setHighlightedText] = useState("");
     const [showSendHelp, setShowSendHelp] = useState(false)
+    const [helpButtonHover, setHelpButtonHover] = useState(false)
 
     // Non button progression
     useEffect(() => {
@@ -189,6 +190,14 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
         return <button key={btn.id} disabled={helpDisabled} className={helpDisabled ? 'btn-disabled' : ''} onClick={() => updateDialogue(btn.goto)}>{btn.text}</button>
     })
 
+    // Handle hover and state for help button
+    let helpImage;
+    if ((isHighlighting && helpButtonHover) || (!isHighlighting && !helpButtonHover)) {
+        helpImage = "/question.png"
+    } else {
+        helpImage = "/questionHighlight.png"
+    }
+
     return (
         <>
         {showTutorialArrow && arrow}
@@ -204,8 +213,10 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
                     {buttonElements}
                 </div>}
                 { help &&
-                <button className="popup-help" onClick={changeHighlighting} disabled={helpDisabled}>
-                    <img src="question.png" alt="question button"></img>
+                <button className="popup-help" onClick={changeHighlighting} disabled={helpDisabled}
+                    onMouseEnter={() => setHelpButtonHover(true)}
+                    onMouseLeave={() => setHelpButtonHover(false)}>
+                    <img src={helpImage} alt="question button"></img>
                 </button>
                 }
                 { showSendHelp &&

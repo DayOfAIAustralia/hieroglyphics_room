@@ -44,6 +44,7 @@
 .popup-text {
     margin: 6px;
     padding-inline: 12px;
+    
 }
 
 .popup-btns-bottom {
@@ -105,6 +106,9 @@ button.btn-disabled {
   
   /* Smooth transitions for all changes */
   transition: all 0.2s ease-in-out;
+
+  /* Padding */
+  margin-block: 4px;
 }
 
 .popup-help-send:hover {
@@ -117,11 +121,6 @@ button.btn-disabled {
   box-shadow: none; /* Remove shadow when pressed */
 }
 
-/* Accessibility: Adds a visible ring ONLY for keyboard navigation */
-.popup-help-send:focus-visible {
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
-}
-
 
 .popup-help {
     all: unset;
@@ -131,13 +130,9 @@ button.btn-disabled {
     top: 0;
     right: 0;
     padding: 4px;
-}
-
-.popup-help:hover:enabled > img {
-    content: url("/questionHighlight.png");
     cursor: pointer;
-
 }
+
 
 .popup-help > img {
     width: 100%;
