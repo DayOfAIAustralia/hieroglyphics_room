@@ -171,22 +171,22 @@ export default function Desk({orderAnswerArr}) {
 
     const generateNewOrder = React.useCallback(() => {
         if (!rules.active?.length) return;
-        // finds a random rule that isnt already on the table
-        let randRule = Math.floor(Math.random() * rules.active.length);
-        while (orderAnswer[orderAnswerContainer.ORDER].items.find(item => item.id === randRule)) {
-            randRule = Math.floor(Math.random() * rules.active.length);
-        }
-        
-        const newOrder = {
-            id: randRule,
-            text: rules.active[randRule].order,
-            type: 'orders',
-            initial: true
-        };
         setOrderAnswer(prev => {
             if (prev[orderAnswerContainer.ORDER].items.length >= 3) {
                 return prev
             } else {
+                // finds a random rule that isnt already on the table
+                let randRule = Math.floor(Math.random() * rules.active.length);
+                while (prev[orderAnswerContainer.ORDER].items.find(item => item.id === randRule)) {
+                    randRule = Math.floor(Math.random() * rules.active.length);
+                }
+                
+                const newOrder = {
+                    id: randRule,
+                    text: rules.active[randRule].order,
+                    type: 'orders',
+                    initial: true
+                };
                 playSwoosh()
                 return prev.map(c =>
                 c.id === 'orders'
@@ -205,7 +205,7 @@ export default function Desk({orderAnswerArr}) {
     const ruleBookImg = React.useRef(null)
 
 
-    const orderDelay = 20 * 1000; // 20 seconds
+    const orderDelay = 2 * 1000; // 20 seconds
 
     React.useEffect(() => {
         if (!currentlyPlaying) return

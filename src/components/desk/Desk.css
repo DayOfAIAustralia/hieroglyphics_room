@@ -230,8 +230,7 @@
   z-index: 10;
 
   width: 42vh;
-  min-height: 280px;
-  height: calc-size(max-content, size + 30px);
+  min-height: 345px;
   cursor: grab;
 
   display: flex;
