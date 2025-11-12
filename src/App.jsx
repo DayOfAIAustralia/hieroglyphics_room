@@ -82,7 +82,7 @@ function App() {
 
   return (
     <>
-      <div className="popups rotate-device-overlay" style={{backgroundImage: 'url("/desk.jpg")', zIndex: 99999999}}>
+      <div className="popups rotate-device-overlay" style={{backgroundImage: 'url("/desk.jpg")', zIndex: 9999}}>
           <div className="popup">
           <section className="popup-data" style={{fontSize: "30px"}}>
               <div className="popup-text" style={{textAlign: "center"}}>
