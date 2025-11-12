@@ -3,7 +3,7 @@ import { TutorialContext, LevelContext } from './Context'
 import axios from "axios"
 import useSound from 'use-sound';
 import Markdown from 'react-markdown'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import TextHighlighter from './TextHighlighter';
 import swooshSound from '../assets/sounds/swoosh.wav'
 import { RiMailSendLine } from "react-icons/ri";
@@ -25,6 +25,8 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
     const [highlightedText, setHighlightedText] = useState("");
     const [showSendHelp, setShowSendHelp] = useState(false)
     const [helpButtonHover, setHelpButtonHover] = useState(false)
+    const [arrowRotation, setArrowRotation] = useState(0)
+    const [arrowMoveDirection, setArrowMoveDirection] = useState('vertical')
 
     // Non button progression
     useEffect(() => {
@@ -83,16 +85,19 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
                 })
             })
             setPosition({top: "30%", left: "0%", right: "auto", bottom: "auto"})
-            setArrowLocation({top: "30%", left: "0%", right: "auto", bottom: "auto", transform: "rotate(90deg)"})
-
+            setArrowLocation({top: "30%", left: "0%", right: "auto", bottom: "auto"})
+            setArrowRotation(90)
+            setArrowMoveDirection('vertical')
         } else if (actions === 1) {
             setPosition({top: "30%", left: "auto", right: "0", bottom: "auto"})
             setArrowLocation({top: "auto", left: "auto", right: "16%", bottom: "20%"})
-
+            setArrowRotation(0)
+            setArrowMoveDirection('horizontal')
 
         } else if (actions === 2) {
             setPosition({top: "30%", left: "auto", right: "5%", bottom: "auto"})
             setArrowLocation({top: "auto", left: "51%", right: "auto", bottom: "20%"})
+            setArrowRotation(0)
 
         } else if (actions === 3) {
             setShowTutorialArrow(false)
@@ -100,15 +105,21 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
             setPosition({top: "30%", left: "auto", right: "30%", bottom: "auto"})
         } else if (actions === 4) {
             setShowTutorialArrow(true)
-            setArrowLocation({top: "auto", left: "60%", right: "auto", bottom: "38%",  transform: "rotate(180deg)"})
+            setArrowLocation({top: "auto", left: "60%", right: "auto", bottom: "38%"})
+            setArrowRotation(180)
 
             setPosition({top: "30%", left: "auto", right: "25%", bottom: "auto"})
         } else if (actions === 5) {
-            setArrowLocation({top: "auto", left: "12%", right: "auto", bottom: "10%", transform: "rotate(320deg)"})
-
+            setArrowLocation({top: "auto", left: "12%", right: "auto", bottom: "10%"})
+            setArrowRotation(320)
+            setArrowMoveDirection('north-east')
+            
             setPosition({top: "30%", left: "0", right: "auto", bottom: "auto"})
         } else if (actions === 6) {
             setArrowLocation({top: "auto", left: "auto", right: "22%", bottom: "22%",})
+            setArrowRotation(0)
+            setArrowMoveDirection('horizontal')
+
 
             setPosition({top: "30%", left: "auto", right: "0", bottom: "auto"})
         } else if (actions === 7) {
@@ -123,17 +134,45 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
         }
     }, [actions])
 
+    const moveDistance = 15;
+    let movementKeyframes;
+    switch (arrowMoveDirection) {
+        case 'vertical':
+            movementKeyframes = { y: [0, -moveDistance, 0] }; // Up
+            break;
+        case 'horizontal':
+            movementKeyframes = { x: [0, moveDistance, 0] }; // Right
+            break;
+
+        case 'north-east':
+            movementKeyframes = {
+            y: [0, -moveDistance, 0], // Moves up
+            x: [0, moveDistance, 0]   // Moves right
+            };
+            break;
+        
+        default:
+            // No movement if direction is unknown
+            movementKeyframes = {};
+    }
+
     const arrow = <motion.img
         src='/arrow.png'
+        key={arrowRotation}
         alt="glowing arrow"
         style={arrowLocation}
         className='tutorial-arrow'
+        initial={{
+            rotate: arrowRotation
+        }}
         animate={{
             filter: [
             "drop-shadow(0 0 4px red)",
             "drop-shadow(0 0 8px red)",
             "drop-shadow(0 0 4px red)"
-            ]
+            ],
+            ...movementKeyframes,
+            
         }}
         transition={{
             duration: 2,
@@ -186,6 +225,12 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
         setHelpVisible(false)
     }
 
+    const fadeVariants = {
+        hidden: { opacity: 0, scale: 0.2 }, // Start smaller and invisible
+        visible: { opacity: 1, scale: 1, transition: { duration: 0.2 } }, // Fade in, normal size
+        exit: { opacity: 0, scale: 0.8, transition: { duration: 0.15 } }, // Fade out, shrink slightly
+    };
+
     const buttonElements = buttons.map(btn => {
         return <button key={btn.id} disabled={helpDisabled} className={helpDisabled ? 'btn-disabled' : ''} onClick={() => updateDialogue(btn.goto)}>{btn.text}</button>
     })
@@ -209,21 +254,48 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
                         {text}
                     </TextHighlighter>
                 </div>
-                {useButton && !showSendHelp && <div className={`popup-btns ${btnClass}`}>
-                    {buttonElements}
-                </div>}
-                { help &&
-                <button className="popup-help" onClick={changeHighlighting} disabled={helpDisabled}
-                    onMouseEnter={() => setHelpButtonHover(true)}
-                    onMouseLeave={() => setHelpButtonHover(false)}>
-                    <img src={helpImage} alt="question button"></img>
-                </button>
-                }
-                { showSendHelp &&
-                <button className="popup-help-send" onClick={requestHelp}>
-                    <RiMailSendLine size="1.5em"/>
-                </button>
-                }
+                <AnimatePresence mode="wait"> {/* 'mode="wait"' ensures one animation finishes before the next starts if both change */}
+                    {useButton && !showSendHelp && 
+                        <motion.div 
+                            className={`popup-btns ${btnClass}`}
+                            variants={fadeVariants}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit">
+                            {buttonElements}
+                        </motion.div>
+                    }
+                    {help && (
+                        <motion.button
+                        key="helpButton" 
+                        className="popup-help"
+                        onClick={changeHighlighting}
+                        disabled={helpDisabled}
+                        onMouseEnter={() => setHelpButtonHover(true)}
+                        onMouseLeave={() => setHelpButtonHover(false)}
+                        variants={fadeVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        >
+                        <img src={helpImage} alt="question button" />
+                        </motion.button>
+                    )}
+
+                    {showSendHelp && (
+                        <motion.button
+                        key="sendHelpButton" 
+                        className="popup-help-send"
+                        onClick={requestHelp}
+                        variants={fadeVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        >
+                        <RiMailSendLine size="1.5em" />
+                        </motion.button>
+                    )}
+                    </AnimatePresence>
             </section>
             {helpVisible &&
                 <div className="help-box">
