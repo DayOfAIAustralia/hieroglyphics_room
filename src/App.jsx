@@ -9,31 +9,9 @@ import Popups from './components/Popups'
 import './components/room/ChineseRoom.css'
 import './components/desk/Desk.css'
 
-import { isMobile } from 'react-device-detect';
 import "./components/Popup.css"
 
 function App() {
-
-  // removed because was breaking tablet experience
-  // if (isMobile) {
-  //   return (
-  //       <div className="popups" style={{backgroundImage: 'url("/desk.jpg")'}}>
-  //           <div className="popup">
-  //           <section className="popup-data" style={{fontSize: "30px"}}>
-  //               <div className="popup-text" style={{textAlign: "center"}}>
-  //                   Apologies, this experience only work on laptops and PC's. 
-
-  //               </div>
-  //               <div className="popup-text" style={{textAlign: "center"}}>
-  //                   Please relaunch through a desktop browser for access to 'The Pyramid Puzzles' Philosophy Game
-                    
-  //               </div>
-  //           </section>
-            
-  //         </div>
-  //       </div>
-  //   )
-  // }
 
   const [level, setLevel] = useState({
     level: 0, // can change to skip to later levels
@@ -104,6 +82,21 @@ function App() {
 
   return (
     <>
+      <div className="popups rotate-device-overlay" style={{backgroundImage: 'url("/desk.jpg")', zIndex: 99999999}}>
+          <div className="popup">
+          <section className="popup-data" style={{fontSize: "30px"}}>
+              <div className="popup-text" style={{textAlign: "center"}}>
+                  This game can only be played in landscape mode. 
+
+              </div>
+              <div className="popup-text" style={{textAlign: "center"}}>
+                  Please rotate your device to continue!
+                  
+              </div>
+          </section>
+          
+        </div>
+      </div>
       <AnimatePresence>
         {isLoading && (
           <motion.div

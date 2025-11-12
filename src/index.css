@@ -18,3 +18,19 @@ html, body {
   min-width: 600px;
   font-size: 1em;
 }
+
+
+.rotate-device-overlay {
+  display: none; 
+}
+
+@media (orientation: portrait) 
+   and (pointer: coarse) 
+   and (min-width: 768px) {
+
+  /* Show the overlay */
+  .rotate-device-overlay {
+    display: flex;
+  }
+
+}
