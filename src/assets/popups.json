@@ -436,7 +436,7 @@
       },
       {
         "id": 5,
-        "text": "This is what allows LLM models to be **dynamic and evolving**.\n\nIf you need a human to handcraft every response to every possible question it will take quite literally forever. To a **'hard-coded'** machine the similarity between *“what colour is a tree?”* and *“what colour are trees?”* is none. They both need a separate encoding, as they use a different final character. \n\nLike you wouldn't realise if it turned out 𓀀𓃹𓃒 and 𓀀𓃹𓆤 translated to the above. However, to an LLM, these things can be interpreted as similar.",
+        "text": "This is what allows LLM models to be **dynamic and evolving**.\n\nIf you need a human to handcraft every response to every possible question it will take quite literally forever. To a **'hard-coded'** machine the similarity between *“what colour is a tree?”* and *“what colour are trees?”* is none. They both need a separate encoding, as they use a different final character. \n\nLike you wouldn't know if 𓀀𓃹𓃒 and 𓀀𓃹𓆤 meant something similar or turned out to be have entirely different meanings. However, to an LLM, ideas can be interpreted as similar closer to how a human would do so.",
         "buttons": [
           {
             "id": 1,
@@ -460,7 +460,7 @@
       },
       {
         "id": 7,
-        "text": "This leaves us with the notion that AI as we know it likely won't become **'conscious'**.\n\nIt doesn't discount the idea of new forms of intelligence forming, but just that computers as we've built them today are constrained in this way. \n\nBut this doesn't discount the importance that emerging AI systems will have in **changing the way we live, work, and learn**. Just that, maybe, we should be careful how much we trust a system that literally doesn't know what it is talking about. \n\n**That's the end for now, thanks for playing!**",
+        "text": "This leaves us with the notion that AI as we know it likely won't become **'conscious'**.\n\nIt doesn't discount the idea of new forms of intelligence forming, but just that computers as we've built them today are constrained in this way. \n\nBut this doesn't discount the importance that emerging AI systems will have in **changing the way we live, work, and learn**. Just that, maybe, we should be careful how much we trust a system that literally doesn't know what it is talking about. \n\n**That's the end for now, thanks for playing!** 🥳🎉",
         "buttons": [],
         "help": true
       }

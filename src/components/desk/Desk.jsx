@@ -152,6 +152,7 @@ export default function Desk({orderAnswerArr}) {
             },
         ]
     })
+    const [seenRules, setSeenRules] = React.useState([])
 
     React.useEffect(() => {
         if (!startUpdate) return
@@ -169,33 +170,72 @@ export default function Desk({orderAnswerArr}) {
         }
     }, [currentlyPlaying])
 
+
     const generateNewOrder = React.useCallback(() => {
         if (!rules.active?.length) return;
+
+        const currentOrders = orderAnswer[orderAnswerContainer.ORDER].items;
+        if (currentOrders.length >= 3) return;
+
+        let currentSeenRules = seenRules;
+        
+        if (seenRules.length >= rules.active.length) {
+            currentSeenRules = [];
+            setSeenRules([]); // Schedule the UI update for the reset
+        }
+
+        // Finds all the rules that are seen and not seen and in play already
+        const allIndices = rules.active.map(item => item.id);
+        const seenIndices = currentSeenRules.map(item => item.id); 
+        const orderIndices = orderAnswer[orderAnswerContainer.ORDER].items.map(item => item.id); 
+        const staplerIndices = orderAnswer[orderAnswerContainer.STAPLER].items.map(item => item.id); 
+        
+        let availableIndices = allIndices.filter(i => !seenIndices.includes(i));
+        availableIndices = availableIndices.filter(i => !orderIndices.includes(i));
+        availableIndices = availableIndices.filter(i => !staplerIndices.includes(i));
+
+        if (availableIndices.length === 0) {
+            currentSeenRules = [];
+            setSeenRules([]);
+            availableIndices = allIndices; // Reset available pool and allow recents
+            availableIndices = availableIndices.filter(i => !orderIndices.includes(i));
+            availableIndices = availableIndices.filter(i => !staplerIndices.includes(i));
+        }
+
+        const randomIndex = Math.floor(Math.random() * availableIndices.length);
+        const selectedRuleId = availableIndices[randomIndex];
+        const selectedRule = rules.active.find(elem => elem.id === selectedRuleId);
+
         setOrderAnswer(prev => {
             if (prev[orderAnswerContainer.ORDER].items.length >= 3) {
-                return prev
-            } else {
-                // finds a random rule that isnt already on the table
-                let randRule = Math.floor(Math.random() * rules.active.length);
-                while (prev[orderAnswerContainer.ORDER].items.find(item => item.id === randRule)) {
-                    randRule = Math.floor(Math.random() * rules.active.length);
-                }
-                
-                const newOrder = {
-                    id: randRule,
-                    text: rules.active[randRule].order,
-                    type: 'orders',
-                    initial: true
-                };
-                playSwoosh()
-                return prev.map(c =>
-                c.id === 'orders'
-                ? { ...c, items: [...c.items, newOrder] }
-                : c)
+                return prev;
             }
-        }
-        );
-    }, [rules.active, setOrderAnswer]);
+
+            playSwoosh();
+
+            const newOrder = {
+                id: selectedRule.id,
+                text: selectedRule.order,
+                type: 'orders',
+                initial: true
+            };
+
+            return prev.map(c =>
+                c.id === 'orders'
+                    ? { ...c, items: [...c.items, newOrder] }
+                    : c
+            );
+        });
+
+        // Update Seen Rules
+        setSeenRules(prev => {
+            if (currentSeenRules.length === 0) {
+                return [selectedRule];
+            }
+            return [...prev, selectedRule];
+        });
+
+    }, [rules.active, orderAnswer, seenRules]); 
 
     const [activeId, setActiveId] = React.useState(null)
     const [parentDisabled, setParentDisabled] = React.useState(false)
@@ -205,7 +245,7 @@ export default function Desk({orderAnswerArr}) {
     const ruleBookImg = React.useRef(null)
 
 
-    const orderDelay = 20 * 1000; // 20 seconds
+    const orderDelay = 5 * 1000; // 15 seconds
 
     React.useEffect(() => {
         if (!currentlyPlaying) return

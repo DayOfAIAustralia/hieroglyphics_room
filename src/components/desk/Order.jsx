@@ -20,7 +20,7 @@ export default function Order({ children, id, slide, className }) {
     const estimatedHeight = 80; // Estimated height of the Order component
     const spawnableHeight = windowHeight - deskTop - estimatedHeight;
 
-    const yStart = Math.random() * spawnableHeight + deskTop;
+    const yStart = Math.random() * spawnableHeight + deskTop - 30;
     const start = slide ? {x: 0, y: yStart} : {x: 0, y: 150};
 
 
