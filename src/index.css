@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+
+}
+
+html, body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  min-width: 600px;
+  font-size: 1em;
+}
+
+
+.rotate-device-overlay {
+  display: none; 
+}
+
+@media (orientation: portrait) 
+   and (pointer: coarse) 
+   and (min-width: 700px) {
+
+  /* Show the overlay */
+  .rotate-device-overlay {
+    display: flex;
+  }
+
+}

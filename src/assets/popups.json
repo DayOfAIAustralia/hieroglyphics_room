@@ -1,0 +1,469 @@
+[
+  {
+    "popups": [
+      {
+        "text": "## Welcome to **The Pyramid Puzzles!** 🏜️",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Great to be here",
+            "goto": 1
+          },
+          {
+            "id": 2,
+            "text": "What is this place?",
+            "goto": 1
+          }
+        ]
+      },
+      {
+        "text": "This is a game based on **'The Chinese Room Argument'**. \n\nIt's a philosophical thought experiment by **John Searle** that aims to see if modern computers can ever *'understand'* the things they've been programmed to do.\n\n",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Interesting...",
+            "goto": 2
+          },
+          {
+            "id": 2,
+            "text": "Why am I here?",
+            "goto": 2
+          }
+        ]
+      },
+      {
+        "text": "You're a new intern in the **Heiroglyph Translation Department** in the University of New South Wale's Egyptology department.\n\nYou've been sent to Egypt to help translate these ancient messages! You will receive a message written in Heiroglyphs from the outside, and your job is to use the **dictionary and rulebook** provided to create the right response, and send that back outside. \n\nMake sense?",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "How do I do that?",
+            "goto": 3
+          }
+        ]
+      },
+      {
+        "text": "Let me show you the ropes. Follow along with the directions I give you.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Go ahead",
+            "goto": 4
+          }
+        ]
+      },
+      {
+        "text": "**Step 1:** You receive a message from the outside.\n\nLook, one's just come in below! Try dragging it around.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Cool",
+            "goto": 5
+          }
+        ],
+        "actions": 0
+      },
+      {
+        "text": "**Step 2:** Open your **rulebook** to find out how to respond.\n\nYou can drag the popup around as needed. After the tutorial, if you want to close it, just click the book again.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "I've clicked it.",
+            "goto": 6
+          }
+        ],
+        "actions": 1
+      },
+      {
+        "text": "**Step 3:** To make your response, click the **dictionary** below to access your available characters.\n\nYou can drag the popout dictionary around too!",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "I can't read this.",
+            "goto": 7
+          }
+        ],
+        "actions": 2
+      },
+      {
+        "text": "**Step 4:** Using the rule stated in the rulebook, drag the characters from the dictionary onto the paper in the **right order**.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "I've dragged them on.",
+            "goto": 8
+          }
+        ],
+        "actions": 3
+      },
+      {
+        "text": "**Step 5:** Amazing, now that your answer is ready, click the **top right corner** of the paper to complete it.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "I've made the new piece of paper.",
+            "goto": 9
+          }
+        ],
+        "actions": 4
+      },
+      {
+        "text": "**Step 6:** Great! Now both of those paper slips are ready to combine. Click on the **stapler** to open it.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "They're stapled.",
+            "goto": 10
+          }
+        ],
+        "actions": 5
+      },
+      {
+        "text": "**Step 7:** Fantastic, now you can drag both the **request** and your **response** onto the stapler menu, and a button will appear which you can use to staple them together!",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "They're stapled.",
+            "goto": 11
+          }
+        ],
+        "actions": 7
+      },
+      {
+        "text": "**Step 8:** Now, the final step is to drag your completed order to the **right side**.\n\nA menu will appear where you can either bin it or **finish the job**.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Ok great, done.",
+            "goto": 12
+          }
+        ],
+        "actions": 6
+      },
+      {
+        "text": "### 🎉 Tutorial Complete!\n\nThat's all you'll need to know for your first day on the job! \n\nKeep a look out on the top left to keep track of how you're progressing. We'll be explaining the meaning of all this labour soon. Good luck!",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "I can't wait to level up!",
+            "goto": null
+          },
+          {
+            "id": 2,
+            "text": "I better be getting paid for this",
+            "goto": null
+          }
+        ],
+        "actions": 9
+      }
+    ]
+  },
+  {
+    "popups": [
+      {
+        "id": 0,
+        "text": "Congratulations, you're doing an excellent job so far! \n\nJust one question for you: **Do you feel like doing this is teaching you to understand Heiroglyphs?**",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Yes",
+            "goto": 1
+          },
+          {
+            "id": 2,
+            "text": "No",
+            "goto": 3
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "text": "Really? So if someone texted you using Heiroglyphs right now, with one of the rules in that rulebook, could you **intelligently respond**?",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Yes",
+            "goto": 2
+          },
+          {
+            "id": 2,
+            "text": "No",
+            "goto": 3
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "text": "I'm going to have to disagree with you there, I'll explain why.\n\nAnd just before I get into the finer details, I want to note that a **question mark** will appear in the top right hand corner of this dialogue box for more complicated stages. This allows you to highlight anything your struggling with, and call our purpose-built **AI teacher** to assist in your understanding! If you change your mind just tap it again.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Thanks, go on",
+            "goto": 4
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "text": "You are right there. But let's explore **why**.\n\nAnd just before I get into the finer details, I want to note that a **question mark** will appear in the top right hand corner of this dialogue box for more complicated stages. This allows you to highlight anything your struggling with, and call our purpose-built **AI teacher** to assist in your understanding! If you change your mind just tap it again.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Thanks, go on",
+            "goto": 4
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "text": "**'Understanding'** can mean two things:\n\n1. **Syntax:** Putting words in a correct order.\n2. **Semantics:** What the words mean.\n\nWhen you follow the rulebook, which type of 'understanding' are you using?",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Syntax",
+            "goto": 5
+          },
+          {
+            "id": 2,
+            "text": "Semantics",
+            "goto": 6
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 5,
+        "text": "That's right! \n\nYour rulebook is telling you exactly how to construct an output given an input, but there's nothing there that teaches you **why** a given output should occur from those inputs. Or is there? \n\n*Do you think with enough time and enough rules you would be able to fully understand Heiroglyphics?*",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Yes",
+            "goto": 7
+          },
+          {
+            "id": 2,
+            "text": "No",
+            "goto": 7
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 6,
+        "text": "Not quite, that would mean you understand the **meaning** behind all the characters your placing. \n\nBut in your case you understand how to place them in the correct order, the **syntax**, but there's nothing there that teaches you 'why' you should be placing them in that order, the **semantics**. Or is there? \n\n*Do you think with enough time and enough rules you would be able to fully understand Heiroglyphics?*",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Yes",
+            "goto": 7
+          },
+          {
+            "id": 2,
+            "text": "No",
+            "goto": 7
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 7,
+        "text": "Well that's the interesting thing. Because from the outside you would **appear to understand** Heiroglpyhs. \n\nGiven enough rules, anyone who knew how to read and write them can ask you any question they want, and you could to respond with the right thing. Whether Geography, History, or Math, they could ask you a question and you could respond. \n\n**But, you would never be able to know what your saying.**",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "I see, what does this all mean",
+            "goto": 8
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 8,
+        "text": "If you hadn't realised yet, in this situation, you are the brain of a computer, the **'CPU' - Central Processing Unit**.\n\n  ![CPU Image](/cpuDiagram.png 'CPU Diagram') \n\n1. You are given a **request** (input device)\n2. Use your **instructions** to make your response (CPU interacting with memory)\n3. Put it in the **responses pile** (output)\n\nBut I think I've done enough talking, how about I add some more rules and see if you can imagine how you might be a computer and we'll discuss more soon.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Let's do it",
+            "goto": null
+          }
+        ],
+        "help": true
+      }
+    ]
+  },
+  {
+    "popups": [
+      {
+        "id": 0,
+        "text": "So, how was that, do you understand Heiroglyphics any better now?",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Of course",
+            "goto": 1
+          },
+          {
+            "id": 2,
+            "text": "Of course not",
+            "goto": 2
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "text": "If you are confident that you can make the jump from syntax to semantics, you may be a proponent of so-called **'strong AI'**, that in a matter of time our computers are going to achieve **'AGI' - Artificial General Intelligence**.\n\nBut let me tell you why you should be at least a bit skeptical of that.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Ok",
+            "goto": 3
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 2,
+        "text": "Right, as discussed you cannot make the jump from syntax to semantics. \n\nThis has implications for the theory of **'strong AI'**, that in a matter of time our computers are going to achieve **'AGI' - Artificial General Intelligence**. Let me try and explain why this may be unlikely to be the case.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Ok",
+            "goto": 3
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 3,
+        "text": "As I mentioned previously, like you right now, computers are just highly complicated **symbol manipulation machines**.\n\nAt the most basic level, they are given a series of inputs, represented as either **1 or 0**. Then, based on the program it's been given, it creates a new series of 1's and 0's to send back out.\n\nAt a high level, this process may be interpreted by us as music, video, colour, or any number of other meaningful things. But to the computer, it's just moving around 1's and 0's, exactly the same way as you in the Heiroglyphics room, you're just moving around characters.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "But can't the system learn the meaning?",
+            "goto": 4
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 4,
+        "text": "A computer can never **'learn'** in the way that we think of learning, because it's entirely limited to **syntax**. A computer never knows *why* it manipulates the symbols (1's and 0's) its given in different ways. Even if to us it seems to 'correctly' interpret our input, that's only because we told it how.\n\nHowever, I will admit, this argument is based on programs that are pre-defined. I've given you rules that provide an exact answer every time, but that's not how modern AI **LLM's - 'Large Language Models'** work.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "How do those work?",
+            "goto": 5
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 5,
+        "text": "Instead of telling you, I think I'll show you. \n\nNow, for every rule you won't just be following direct programming, you're going to be **randomly generating** the response on the fly. Go check out the rule book and you'll see what I mean, and don't forget to chuck out your old slips!",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Okay",
+            "goto": null
+          }
+        ],
+        "help": true
+      }
+    ]
+  },
+  {
+    "popups": [
+      {
+        "id": 0,
+        "text": "Okay, so how was that, do you think what you were responding with made any sense?",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "No, how could it?",
+            "goto": 1
+          },
+          {
+            "id": 2,
+            "text": "Yes",
+            "goto": 2
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "text": "Precisely right, each generation was just a **random series of Heiroglyphs**.\n\nBut I promise that there is a connection here to AI.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Ok, what is it",
+            "goto": 3
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "text": "Not exactly, all the options you generated were actually a completely **random series of characters**.\n\nBut I promise that there is a connection here to AI.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "Ok, what is it",
+            "goto": 3
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "text": "You can think of this as the initial training state for an LLM, here we are aiming to develop a **'probabilistic' model**.\n\nAI chatbots like **ChatGPT** or **Google Gemini** start off knowing nothing. If you tried to ask it a question at this stage it would just randomly guess words. If asked “what colour is a tree?” it may have responded *“balloon giant the frog”*, who knows. \n\nThe same is the case for the letters you just made, the syntax and semantics would be completely wrong.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "So how do we make it make sense",
+            "goto": 4
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 4,
+        "text": "That's where **feedback** comes in. \n\nYou can let it know when it's made a mistake, and let it try again. Then when you next generate a random response, it's like **tweaking odds on the spinwheel** to see if it gets closer or further to the answer you were expecting when asked the same question again.\n\nAnd it will probably get it wrong for hundreds, even thousands of attempts. But, eventually, it will say something like *“the colour is brown”* and the spinwheel odds will become much more biased towards that output, making it 1 in a billion that it would say something like *“balloon giant the frog”*. \n\nBut, even once training is complete, every time an LLM answers your question it is still just continually making **good guesses** as to what the right words would be.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "But why go through this extra effort",
+            "goto": 5
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 5,
+        "text": "This is what allows LLM models to be **dynamic and evolving**.\n\nIf you need a human to handcraft every response to every possible question it will take quite literally forever. To a **'hard-coded'** machine the similarity between *“what colour is a tree?”* and *“what colour are trees?”* is none. They both need a separate encoding, as they use a different final character. \n\nLike you wouldn't know if 𓀀𓃹𓃒 and 𓀀𓃹𓆤 meant something similar or turned out to be have entirely different meanings. However, to an LLM, ideas can be interpreted as similar closer to how a human would do so.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "How does it do that?",
+            "goto": 6
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 6,
+        "text": "That's the scary thing, **we don't know**.\n\nThey do so through **Neural Networks**, which aim to mimic the brain, but the methods that they come up with to create their answers are incomprehensible even to scientists! \n\n![Neural Network Image](/neuralNetwork.png 'Neural Network')\n\nHowever, what we do know is that at the most fundamental level they are still dealing with the same **1's and 0's** that the computer running the hard-coded program is dealing with. For all their power, they cannot escape their hardware. \n\nThe same as humans are constrained to their biology. You, in the Heiroglyphics Room, cannot think yourself into understanding these symbols, the same as the computer cannot “think” itself into understanding the meaning behind its flipping of 1's and 0's.",
+        "buttons": [
+          {
+            "id": 1,
+            "text": "So where does that leave us",
+            "goto": 7
+          }
+        ],
+        "help": true
+      },
+      {
+        "id": 7,
+        "text": "This leaves us with the notion that AI as we know it likely won't become **'conscious'**.\n\nIt doesn't discount the idea of new forms of intelligence forming, but just that computers as we've built them today are constrained in this way. \n\nBut this doesn't discount the importance that emerging AI systems will have in **changing the way we live, work, and learn**. Just that, maybe, we should be careful how much we trust a system that literally doesn't know what it is talking about. \n\n**That's the end for now, thanks for playing!** 🥳🎉",
+        "buttons": [],
+        "help": true
+      }
+    ]
+  }
+]
