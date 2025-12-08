@@ -258,8 +258,23 @@
 }
 
 .rule {
+  display: flex;
   border-bottom: 1px solid black;
-  padding-bottom: 3px;
+  padding-block: 6px;
+  justify-content: space-between;
+}
+
+.rule-data {
+  display: flex;
+  flex-direction: column;
+  padding-inline: 8px;
+  align-items: center;
+}
+
+
+.rule-arrow {
+  padding-top: 8px;
+  align-self: center;
 }
 
 .generate-button {

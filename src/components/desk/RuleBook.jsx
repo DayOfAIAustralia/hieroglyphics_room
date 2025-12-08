@@ -2,6 +2,7 @@ import DraggableAnywhere from "../base_dnd/DraggableAnywhere"
 import { useState, useContext, useEffect } from 'react'
 import { useWindowHeight, useWindowWidth } from '@react-hook/window-size'
 import { LevelContext } from "../Context"
+import { FaArrowRight } from "react-icons/fa";
 
 import useSound from 'use-sound';
 import ruleMoveSound from '../../assets/sounds/ruleMove.wav'
@@ -33,17 +34,33 @@ export default function RuleBook({ref, rules, updateRule=null}) {
         if (level.level < 2) {
             return (
             <div className='rule' key={rule.id}>
-                <span>You Receive: <span className="character">{rule.order}</span></span>
-                <span>You Respond: <span className="character">{rule.answer}</span></span>
+                <div className="rule-data">
+                    <span>You Receive: </span>
+                    <span className="character">{rule.order}</span>
+
+                </div>
+                <span className="rule-arrow"><FaArrowRight /></span>
+                <div className="rule-data">
+                    <span>You Respond: </span>
+                    <span className="character">{rule.answer}</span>
+                </div>
             </div>
             )
         }
         
         return (
             <div className='rule' key={rule.id}>
-                <span>You Receive: <span className="character">{rule.order}</span></span>
-                <span>You Respond: <span className="character">{rule.answer}</span></span>
-                {rule.answer === "???" ? <button disabled={disabled} onClick={() => handleButtonClick(rule)} className="generate-button">Generate</button>: null}
+                <div className="rule-data">
+                    <span>You Receive: </span>
+                    <span className="character">{rule.order}</span>
+
+                </div>
+                <span className="rule-arrow"><FaArrowRight /></span>
+                <div className="rule-data">
+                    <span>You Respond: </span>
+                    {rule.answer === "???" ? <button disabled={disabled} onClick={() => handleButtonClick(rule)} className="generate-button">Generate</button>: <span className="character">{rule.answer}</span>}
+                </div>
+                
             </div>
         )
     })
