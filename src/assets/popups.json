@@ -167,11 +167,6 @@
             "id": 1,
             "text": "Amazing!",
             "goto": 1
-          },
-          {
-            "id": 2,
-            "text": "No",
-            "goto": 3
           }
         ]
       },
