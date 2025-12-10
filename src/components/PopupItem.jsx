@@ -93,7 +93,7 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
                     }
                 })
             })
-            setPosition({top: "30%", left: "0%", right: "auto", bottom: "auto"})
+            setPosition({top: "30%", left: "5%", right: "auto", bottom: "auto"})
             setArrowLocation({top: "30%", left: "0%", right: "auto", bottom: "auto"})
             setArrowRotation(90)
             setArrowMoveDirection('vertical')
@@ -123,7 +123,7 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
             setArrowRotation(320)
             setArrowMoveDirection('north-east')
             
-            setPosition({top: "30%", left: "0", right: "auto", bottom: "auto"})
+            setPosition({top: "35%", left: "0", right: "auto", bottom: "auto"})
         } else if (actions === 6) {
             setArrowLocation({top: "auto", left: "auto", right: "22%", bottom: "22%",})
             setArrowRotation(0)
