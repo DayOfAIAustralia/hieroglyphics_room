@@ -21,6 +21,7 @@ export default function DictionaryUI({ dictionary, ref, disabled, rules, zIndex 
             type='container'
             off={true}
             style={{zIndex: zIndex}}
+            doDragAnimation={true}
         >
             <div className="book-tab" style={{marginBottom: "8px"}}>
                 <h4>Dictionary</h4>

@@ -197,6 +197,8 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerOpen}) {
                 setTutorialState("paper-dragged");
             }, 500);
         }
+        document.body.classList.add('dragging-cursor');
+
     }
 
     function handleNotesDragOver(event) {
@@ -366,6 +368,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerOpen}) {
         setActiveId(null)
         setHoverDropped(false)
         setHoverDroppedItem(null)
+        document.body.classList.remove('dragging-cursor');
 
         if (orderAnswer[orderAnswerContainer.BIN].items.length > 0) {
             setTutorialState('finished-response')

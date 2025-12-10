@@ -446,6 +446,7 @@ export default function Desk({orderAnswerArr}) {
         } else if (event.active.id === 'dictionary-handle') {
             setDictionaryZIndex(rulebookZIndex + 1);
         }
+        document.body.classList.add('dragging-cursor');
     }
 
     function handleDragOver(event) {
@@ -542,6 +543,7 @@ export default function Desk({orderAnswerArr}) {
     }
 
     function handleCharacterDragEnd(event) {
+        document.body.classList.remove('dragging-cursor');
         const {active, over} = event;
         if (!over) {
             setActiveId(null);

@@ -86,6 +86,7 @@ export default function RuleBook({ref, rules, updateRule=null, zIndex}) {
             type='container'
             off={true}
             style={{zIndex: zIndex}}
+            doDragAnimation={true}
         >
             <div className="book-tab">
                 <h4>Rulebook</h4>
