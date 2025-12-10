@@ -1,8 +1,8 @@
 import {useDraggable} from '@dnd-kit/core';
 import {CSS} from '@dnd-kit/utilities';
 
-export default function Draggable({id, disabled=false, children, className, pos={x: 0,y: 0}, type, isDragging}) {
-    const {attributes, listeners, setNodeRef, transform} = useDraggable({
+export default function Draggable({id, disabled=false, children, className, pos={x: 0,y: 0}, type,  passedStyles={}, doDragAnimation=false}) {
+    const {attributes, listeners, setNodeRef, transform, isDragging} = useDraggable({
         id,
         data: {
             type
@@ -13,7 +13,8 @@ export default function Draggable({id, disabled=false, children, className, pos=
         // Outputs `translate3d(x, y, 0)`
         transform: CSS.Translate.toString(transform),
         left: pos.x,
-        top: pos.y
+        top: pos.y,
+        ...passedStyles
     };
 
     return (
@@ -23,7 +24,7 @@ export default function Draggable({id, disabled=false, children, className, pos=
             {...listeners} 
             {...attributes} 
             id={id} 
-            className={`${className} ${isDragging ? 'dragging' : ''}`}
+            className={`${className} ${doDragAnimation && isDragging ? 'dragging' : ''}`}
         >
             {children}
         </div>

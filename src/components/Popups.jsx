@@ -9,7 +9,7 @@ import React from 'react'
 // Popup interface
 // {id, content, button1, button2}
 
-export default function Popups({orderAnswerArr}) {
+export default function Popups({orderAnswerArr, setGameOver}) {
     const [popupIndex, setPopupIndex] = React.useState(0)
     const [currentlyPlaying, setCurrentlyPlaying] = React.useContext(LevelContext).currentlyPlaying
     const dialogueClosed = React.useRef(false)
@@ -50,6 +50,7 @@ export default function Popups({orderAnswerArr}) {
                     actions={currentPopup[popupIndex]?.actions}
                     orderAnswerArr={orderAnswerArr}
                     help={currentPopup[popupIndex]?.help}
+                    setGameOver={setGameOver}
                 />
             </div>
         </TutorialContext>

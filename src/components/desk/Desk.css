@@ -42,14 +42,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   pointer-events: none;
 }
 
 .stapler-2 > img {
   max-height: 40vh;
   width: 100%;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
   margin: 0;
+  pointer-events: auto;
+
 }
 
 .stapler-ui {
@@ -71,7 +74,6 @@
   border: 1px solid white;
   border-radius: 8px;
   z-index: 10;
-
 }
 
 .stapler-drop {
@@ -87,15 +89,14 @@
   z-index: 1;
   padding: 8px;
   margin-top: 5px;
-  border: 1px solid rgb(84, 190, 239);    
-    background-color: rgb(74, 74, 75);
+  border: 1px solid rgb(84, 190, 239);
+  background-color: rgb(74, 74, 75);
   color: white;
   cursor: pointer;
-  
 }
 
 .stapler-btn:hover {
-  border: 1px solid rgb(84, 190, 239);    
+  border: 1px solid rgb(84, 190, 239);
   background-color: rgb(121, 121, 123);
   color: white;
 }
@@ -131,12 +132,11 @@
   transform: translateX(0);
 }
 
-
 .response {
   background-image: url("/response.png");
   background-size: cover;
-  width: 29vh;
-  height: 29vh;
+  width: 18vh;
+  height: 23vh;
   padding: 20px;
 
   cursor: grab;
@@ -151,6 +151,10 @@
 .order > span {
   display: block;
   padding-bottom: 3px;
+}
+
+.active {
+  z-index: 9999;
 }
 
 .output {
@@ -258,18 +262,32 @@
 }
 
 .rule {
+  display: flex;
   border-bottom: 1px solid black;
-  padding-bottom: 3px;
+  padding-block: 6px;
+  justify-content: space-between;
+}
+
+.rule-data {
+  display: flex;
+  flex-direction: column;
+  padding-inline: 8px;
+  align-items: center;
+}
+
+.rule-arrow {
+  padding-top: 8px;
+  align-self: center;
 }
 
 .generate-button {
-  background-color: #e0cda9; 
+  background-color: #e0cda9;
   border: 1px solid #8b4513;
   border-radius: 4px;
   padding: 3px 7px;
   font-family: "Jersey 10", sans-serif;
   font-size: 16px;
-  color: #5d4037; 
+  color: #5d4037;
   cursor: pointer;
   display: block;
   margin-top: 6px;
@@ -278,15 +296,15 @@
 }
 
 .generate-button:hover {
-  background-color: #d2b48c; 
+  background-color: #d2b48c;
 }
 
 .generate-button:disabled {
-  background-color: #d1c1b1; 
-  border: 1px solid #a88d7f; 
-  color: #8d7a75; 
-  cursor: not-allowed; 
-  opacity: 0.7; 
+  background-color: #d1c1b1;
+  border: 1px solid #a88d7f;
+  color: #8d7a75;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .rule > span {
@@ -331,6 +349,7 @@
   max-height: 40vh;
   margin: 0;
   max-width: 100%;
+  transition: transform 0.2s ease-in-out;
 }
 
 .default-off {
@@ -356,6 +375,10 @@
   width: 41vh;
   min-height: 30vh;
   cursor: grab;
+}
+
+.dictionary-ui:active {
+    cursor: grabbing; 
 }
 
 .dictionary-items {
@@ -388,11 +411,18 @@
   z-index: 5;
 }
 
-.dragging {
+.dragging,
+.dragging > * > * > * > button,
+.dragging > * > button  {
   background-color: rgba(245, 245, 220, 0.6);
   border: 1px solid rgb(0, 0, 0, 0.2);
   color: rgba(0, 0, 0, 0.2);
 }
+
+body.dragging-cursor * {
+  cursor: grabbing !important;
+}
+
 
 .rules {
   all: unset;
@@ -407,6 +437,13 @@
   max-height: 40vh;
   margin: 0;
   max-width: 100%;
+  transition: transform 0.2s ease-in-out;
+}
+
+.dictionary > img.hovered,
+.rules > img.hovered,
+.stapler-2 > img.hovered {
+  transform: scale(1.1);
 }
 
 .spinner-wheel {

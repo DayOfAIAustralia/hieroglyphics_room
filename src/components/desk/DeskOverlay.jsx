@@ -1,6 +1,6 @@
 import { DndContext, useSensor, useSensors, PointerSensor, KeyboardSensor, DragOverlay, pointerWithin } from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { v4 as newId } from 'uuid';
 
 import { useWindowWidth } from '@react-hook/window-size'
@@ -13,15 +13,13 @@ import Response from './Response.jsx'
 
 import useSound from 'use-sound';
 import paperPlaceSound from '../../assets/sounds/paperPlace.wav'
-import staplerOpenSound from '../../assets/sounds/staplerOpen.wav'
 import stapleSound from '../../assets/sounds/stapler.wav'
 import binSound from '../../assets/sounds/trash.wav'
 import dingSound from '../../assets/sounds/ding.wav'
-import wrongSound from '../../assets/sounds/wrong.mp3'
+import wrongSound from '../../assets/sounds/wrong.wav'
 
-export default function DeskOverlay({orderAnswerArr, rulesList}) {
+export default function DeskOverlay({orderAnswerArr, rulesList, staplerOpen}) {
     const [playStaple] = useSound(stapleSound)
-    const [playOpenStapler] = useSound(staplerOpenSound)
     const [playPaperPlace] = useSound(paperPlaceSound)
     const [playBin] = useSound(binSound)
     const [playWrong] = useSound(wrongSound)
@@ -47,7 +45,6 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     const binImg = React.useRef(null)
     const outputSidebar = React.useRef(null)
     const staplerUIRef = React.useRef(null)
-    const [staplerOpen, setStaplerOpen] = React.useState(false)
     const [holdingOutput, setHoldingOutput] = React.useState(false)
     const [showOutput, setShowOutput] = React.useState(false)
     const [hoverDropped, setHoverDropped] = React.useState(false)
@@ -56,6 +53,8 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     const [firstOrderPickup, setFirstOrderPickup] = React.useState(false);
     const [startUpdate, setStartUpdate] = React.useContext(LevelContext).startUpdate;
 
+    const [zIndices, setZIndices] = React.useState({});
+    const globalZCounter = React.useRef(10);
 
     React.useEffect(() => {
         if (!startUpdate && tutorialState != "stapled-response") return;
@@ -85,19 +84,23 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
     }, [holdingOutput])
 
     const orderList = orderAnswer.find(container => container.id === 'orders').items.map(order => {
-        return <Order id={order.id} key={order.id} slide={order.initial}>
+        const currentZ = zIndices[order.id] || 10;
+        return <Order id={order.id} key={order.id} slide={order.initial} active={order.id === activeId} style={{zIndex: currentZ}}>
             <span className='character'>{order.text}</span>
         </Order>
     })
 
     const answerList = orderAnswer.find(container => container.id === 'answers').items.map(answer => {
-        return <Answer id={answer.id} key={answer.id}>
+        const currentZ = zIndices[answer.id] || 10;
+        return <Answer id={answer.id} key={answer.id} active={answer.id === activeId} style={{zIndex: currentZ}}>
             <span className='character'>{answer.text}</span>
         </Answer>
     })
 
     const responsesList = orderAnswer.find(container => container.id === 'responses').items.map(response => {
-        return <Response id={response.id} key={response.id}  />
+        const currentZ = zIndices[response.id] || 10;
+
+        return <Response id={response.id} key={response.id} active={response.id === activeId} style={{zIndex: currentZ}}/>
 
     })
 
@@ -170,11 +173,23 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
         })
     }
 
+    const bringNoteToFront = (id) => {
+        // Increment the global counter
+        globalZCounter.current += 1;
+        
+        // Assign this new highest number to the specific order ID
+        setZIndices(prev => ({
+            ...prev,
+            [id]: globalZCounter.current
+        }));
+    };
+
     function handleNotesDragStart({ active, over }) {
         setHoldingOutput(true)
 
         const activeId = active.id;
         setActiveId(activeId)
+        bringNoteToFront(activeId)
 
         if (!firstOrderPickup) {
             setFirstOrderPickup(true);
@@ -182,6 +197,8 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
                 setTutorialState("paper-dragged");
             }, 500);
         }
+        document.body.classList.add('dragging-cursor');
+
     }
 
     function handleNotesDragOver(event) {
@@ -351,6 +368,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
         setActiveId(null)
         setHoverDropped(false)
         setHoverDroppedItem(null)
+        document.body.classList.remove('dragging-cursor');
 
         if (orderAnswer[orderAnswerContainer.BIN].items.length > 0) {
             setTutorialState('finished-response')
@@ -403,13 +421,6 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
         })
     }
 
-    function openStapler() {
-        if (!startUpdate && tutorialState != "slip-created") return;
-
-        playOpenStapler()
-        setTutorialState('stapler-open')
-        setStaplerOpen(prev => !prev)
-    }
 
     return (
         <DndContext
@@ -448,9 +459,6 @@ export default function DeskOverlay({orderAnswerArr, rulesList}) {
                 
             </div>
             <div className='stapler'>
-                <button className='stapler'onClick={openStapler}>
-
-                </button>
                 <Droppable 
                     id='stapler' 
                     className='stapler-ui' 

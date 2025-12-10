@@ -6,13 +6,14 @@ import { v4 as newId } from 'uuid';
 import { Wheel } from 'react-custom-roulette-r19'
 
 import useSound from 'use-sound';
-import spinSound from '../../assets/sounds/spin.mp3'
+import spinSound from '../../assets/sounds/spin.wav'
 import paperRuffleSound from '../../assets/sounds/paperRuffle.wav'
 import bookOpenSound from '../../assets/sounds/bookOpen.wav'
 import bookCloseSound from '../../assets/sounds/bookClose.wav'
 import swooshSound from '../../assets/sounds/swoosh.wav'
 import tileSound from '../../assets/sounds/tile.wav'
-import hornSound from '../../assets/sounds/horn.mp3'
+import staplerOpenSound from '../../assets/sounds/staplerOpen.wav'
+import hornSound from '../../assets/sounds/confetti.wav'
 
 import DictionaryUI from './DictionaryUI.jsx'
 import PaperDroppable from './PaperDroppable.jsx';
@@ -42,6 +43,7 @@ export default function Desk({orderAnswerArr}) {
     const [playSwoosh] = useSound(swooshSound)
     const [playTile] = useSound(tileSound)
     const [playHorn] = useSound(hornSound)
+    const [playOpenStapler] = useSound(staplerOpenSound)
 
     const [ tutorialState, setTutorialState ] = React.useContext(LevelContext).tutorialState
     const [startUpdate, setStartUpdate] = React.useContext(LevelContext).startUpdate;
@@ -51,6 +53,7 @@ export default function Desk({orderAnswerArr}) {
     const [wheelData, setWheelData] = React.useState({})
     const [winningNumber, setWinningNumber] = React.useState()
     const consideredRule = React.useRef()
+    const [staplerOpen, setStaplerOpen] = React.useState(false)
     const [mustSpin, setMustSpin] = React.useState(false)
     const [orderAnswer, setOrderAnswer] = orderAnswerArr
     const [characters, setCharacters] = React.useState([
@@ -154,6 +157,9 @@ export default function Desk({orderAnswerArr}) {
     })
     const [seenRules, setSeenRules] = React.useState([])
 
+    const [dictionaryZIndex, setDictionaryZIndex] = React.useState(10);
+    const [rulebookZIndex, setRulebookZIndex] = React.useState(10);
+
     React.useEffect(() => {
         if (!startUpdate) return
         // Removes tutorial example
@@ -250,6 +256,10 @@ export default function Desk({orderAnswerArr}) {
     const dictionaryImg = React.useRef(null)
     const ruleBookUIRef = React.useRef(null)
     const ruleBookImg = React.useRef(null)
+    const staplerRef = React.useRef(null)
+    const [isDictionaryHovered, setIsDictionaryHovered] = React.useState(false);
+    const [isRuleBookHovered, setIsRuleBookHovered] = React.useState(false);
+    const [isStaplerHovered, setIsStaplerHovered] = React.useState(false);
 
     const savedCallback = React.useRef(generateNewOrder);
 
@@ -257,7 +267,7 @@ export default function Desk({orderAnswerArr}) {
         savedCallback.current = generateNewOrder;
     }, [generateNewOrder]);
 
-    const orderDelay = 15 * 1000; // 15 seconds
+    const orderDelay = 25 * 1000; // 25 seconds
 
     React.useEffect(() => {
         if (!currentlyPlaying) return;
@@ -275,6 +285,16 @@ export default function Desk({orderAnswerArr}) {
     React.useEffect(() => {
         if (level.level === 0) return;
         moveInactiveRulesToActive()
+        if (level.level === 2) {
+            // reset playing field
+            setOrderAnswer(prev => {
+                prev[orderAnswerContainer.ORDER].items = []
+                prev[orderAnswerContainer.RESPONSES].items = []
+                prev[orderAnswerContainer.STAPLER].items = []
+                prev[orderAnswerContainer.ANSWER].items = []
+                return prev;
+            })
+        }
     }, [level.level])
 
     function moveInactiveRulesToActive() {
@@ -385,6 +405,16 @@ export default function Desk({orderAnswerArr}) {
 
         }
     }
+
+    function toggleStapler() {
+        console.log(startUpdate)
+        console.log(tutorialState)
+        if (!startUpdate && tutorialState != "slip-created") return;
+
+        playOpenStapler()
+        setTutorialState('stapler-open')
+        setStaplerOpen(prev => !prev)
+    }
     
 
     function findCharacterContainerId(itemId) {
@@ -411,6 +441,12 @@ export default function Desk({orderAnswerArr}) {
 
     function handleDragStart(event) {
         setActiveId(event.active.id)
+        if (event.active.id === 'rulebook-handle') {
+            setRulebookZIndex(dictionaryZIndex + 1);
+        } else if (event.active.id === 'dictionary-handle') {
+            setDictionaryZIndex(rulebookZIndex + 1);
+        }
+        document.body.classList.add('dragging-cursor');
     }
 
     function handleDragOver(event) {
@@ -507,6 +543,7 @@ export default function Desk({orderAnswerArr}) {
     }
 
     function handleCharacterDragEnd(event) {
+        document.body.classList.remove('dragging-cursor');
         const {active, over} = event;
         if (!over) {
             setActiveId(null);
@@ -630,6 +667,80 @@ export default function Desk({orderAnswerArr}) {
         resetPaper()
     }
 
+    // Opaque pixel hover detection
+    React.useEffect(() => {
+        const setupPixelHover = (imgRef, canvasRef, setHovered) => {
+            const image = imgRef.current;
+            if (!image) return;
+
+            const handleImageLoad = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = image.naturalWidth;
+                canvas.height = image.naturalHeight;
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                ctx.drawImage(image, 0, 0);
+                canvasRef.current = canvas;
+            };
+
+            if (image.complete) {
+                handleImageLoad();
+            } else {
+                image.addEventListener('load', handleImageLoad);
+            }
+
+            const isOverOpaquePixel = (e) => {
+                const canvas = canvasRef.current;
+                if (!image || !canvas) return false;
+
+                const rect = image.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const scaleX = image.naturalWidth / rect.width;
+                const scaleY = image.naturalHeight / rect.height;
+
+                const ctx = canvas.getContext('2d');
+                const pixel = ctx.getImageData(x * scaleX, y * scaleY, 1, 1).data;
+                return pixel[3] > 0;
+            };
+
+            const handleMouseMove = (e) => {
+                if (isOverOpaquePixel(e)) {
+                    setHovered(true);
+                } else {
+                    setHovered(false);
+                }
+            };
+
+            const handleMouseLeave = () => {
+                setHovered(false);
+            };
+
+            image.addEventListener('mousemove', handleMouseMove);
+            image.addEventListener('mouseleave', handleMouseLeave);
+
+            return () => {
+                image.removeEventListener('load', handleImageLoad);
+                image.removeEventListener('mousemove', handleMouseMove);
+                image.removeEventListener('mouseleave', handleMouseLeave);
+            };
+        };
+
+        const dictionaryCanvasRef = React.createRef();
+        const ruleBookCanvasRef = React.createRef();
+        const staplerCanvasRef = React.createRef();
+
+        const cleanupDic = setupPixelHover(dictionaryImg, dictionaryCanvasRef, setIsDictionaryHovered);
+        const cleanupRule = setupPixelHover(ruleBookImg, ruleBookCanvasRef, setIsRuleBookHovered);
+        const cleanupStapler = setupPixelHover(staplerRef, staplerCanvasRef, setIsStaplerHovered);
+
+        return () => {
+            if (cleanupDic) cleanupDic();
+            if (cleanupRule) cleanupRule();
+            if (cleanupStapler) cleanupStapler();
+        };
+    }, []);
+
     return (
         <>
             {wheelPresent && wheelData.length > 0 && 
@@ -647,13 +758,14 @@ export default function Desk({orderAnswerArr}) {
                 />
                 
             </div>}
-            <DeskOverlay orderAnswerArr = {[orderAnswer, setOrderAnswer]} rulesList = {[rules, setRules]}/>
+            <DeskOverlay orderAnswerArr = {[orderAnswer, setOrderAnswer]} rulesList = {[rules, setRules]} 
+                staplerOpen = {staplerOpen}/>
 
             <section id='desk'>
                 {/* Gives space for the button which is used in overlay */}
-                <div className='stapler-2'>
-                    <img src='stapler.png' alt='stapler button'></img>
-                </div>
+                <button className='stapler-2' onClick={toggleStapler}>
+                    <img src='stapler.png' alt='stapler button' className={isStaplerHovered ? 'hovered' : ''} ref={staplerRef}></img>
+                </button>
             
             <DndContext
                 collisionDetection={closestCenter}
@@ -678,23 +790,25 @@ export default function Desk({orderAnswerArr}) {
                 </div>
 
                 <button className="dictionary" onClick={openDictionary}>
-                    <img src="dictionary.png" alt='character dictionary' ref={dictionaryImg}></img>
+                    <img src="dictionary.png" alt='character dictionary' ref={dictionaryImg} className={isDictionaryHovered ? 'hovered' : ''}></img>
                 </button>
                 <DictionaryUI 
                     dictionary={characters.find(container => container.id === "dictionary")} 
                     ref={dictionaryUIRef} 
                     disabled={parentDisabled}
                     rules={rules}
+                    zIndex={dictionaryZIndex}
                 />
                 
                 <button className="rules" onClick={openRuleBook}>
-                    <img src="rules.png" alt='rule book' ref={ruleBookImg}></img>
+                    <img src="rules.png" alt='rule book' ref={ruleBookImg} className={isRuleBookHovered ? 'hovered' : ''}></img>
                 
                 </button>
                 <RuleBook
                     ref={ruleBookUIRef}
                     rules={rules}
                     updateRule={updateRule}
+                    zIndex={rulebookZIndex}
                 />
 
                 <DragOverlay

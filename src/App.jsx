@@ -27,6 +27,8 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const [gameOver, setGameOver] = useState(false)
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -146,8 +148,8 @@ function App() {
 
       <LevelContext value={{level: [level, setLevel], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState]
       }}>
-        <Popups orderAnswerArr={[orderAnswer, setOrderAnswer]}/>
-        <ChineseRoom />
+        <Popups orderAnswerArr={[orderAnswer, setOrderAnswer]} setGameOver={setGameOver}/>
+        <ChineseRoom gameOver={gameOver}/>
         <Desk orderAnswerArr={[orderAnswer, setOrderAnswer]}/>
       </LevelContext>
 
