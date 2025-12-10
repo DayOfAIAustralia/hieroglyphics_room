@@ -10,9 +10,9 @@ import { RiMailSendLine } from "react-icons/ri";
 import { useWindowWidth, useWindowHeight } from '@react-hook/window-size'
 import Confetti from 'react-confetti'
 
-import confettiSound from '../assets/sounds/confetti.mp3'
+import confettiSound from '../assets/sounds/confetti.wav'
 
-export default function PopupItem({text, buttons, updateDialogue, actions, orderAnswerArr, help=false}) {
+export default function PopupItem({text, buttons, updateDialogue, actions, orderAnswerArr, help=false, setGameOver}) {
     const [orderAnswer, setOrderAnswer] = orderAnswerArr
     const [isTutorial, setIsTutorial] = useContext(TutorialContext)
     const [startUpdate, setStartUpdate] = useContext(LevelContext).startUpdate
@@ -211,7 +211,7 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
             flexDirection: "row",
         }
     } 
-    
+
     function changeHighlighting() {
         setKey(prev => prev + 1)
         setIsHighlighting(prev => !prev)
@@ -260,6 +260,8 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
     function updateCelebration() {
         playConfetti()
         setCelebration(true)
+        setGameOver(true)
+
     }
     
 

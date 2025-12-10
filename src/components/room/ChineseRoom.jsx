@@ -8,10 +8,12 @@ import { IoHelpCircleSharp } from "react-icons/io5";
 import useSound from 'use-sound';
 import egyptMusic from '../../assets/music/egyptMusic.wav'
 
+import celebrationMusic from '../../assets/music/victoryMusic.wav'
+
 import { useXpParticles } from './useXpParticles';
 import xpSound from '../../assets/sounds/xpPoints.mp3'
 
-export default function ChineseRoom() {
+export default function ChineseRoom({gameOver}) {
     const [levelData, setLevel] = useContext(LevelContext).level
     const [musicMuted, setMusicMuted] = useState(true)
     const [tutorialOpen, setTutorialOpen] = useState(false)
@@ -19,6 +21,7 @@ export default function ChineseRoom() {
     const xpIconRef = useRef(null);
 
     const [playXp] = useSound(xpSound)
+    const [playCelebration] = useSound(celebrationMusic)
 
     // xp particles
 
@@ -53,6 +56,13 @@ export default function ChineseRoom() {
         window.addEventListener('pointerdown', unlock, { once: true });
         return () => window.removeEventListener('pointerdown', unlock);
     }, []);
+
+    useEffect(() => {
+        if (gameOver) {
+            setMusicMuted(true)
+            playCelebration()
+        }
+    }, [gameOver])
 
     // Tutorial revisit
 

@@ -14,7 +14,7 @@ import "./components/Popup.css"
 function App() {
 
   const [level, setLevel] = useState({
-    level: 0, // can change to skip to later levels
+    level: 3, // can change to skip to later levels
     xp: 0,
     xpRequired: 90
   })
@@ -26,6 +26,8 @@ function App() {
   const [startUpdate, setStartUpdate] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const [gameOver, setGameOver] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -146,8 +148,8 @@ function App() {
 
       <LevelContext value={{level: [level, setLevel], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState]
       }}>
-        <Popups orderAnswerArr={[orderAnswer, setOrderAnswer]}/>
-        <ChineseRoom />
+        <Popups orderAnswerArr={[orderAnswer, setOrderAnswer]} setGameOver={setGameOver}/>
+        <ChineseRoom gameOver={gameOver}/>
         <Desk orderAnswerArr={[orderAnswer, setOrderAnswer]}/>
       </LevelContext>
 
