@@ -32,7 +32,7 @@
         ]
       },
       {
-        "text": "You're a new intern in the **Heiroglyph Translation Department** in the University of New South Wale's Egyptology department.\n\nYou've been sent to Egypt to help translate these ancient messages! You will receive a message written in Heiroglyphs from the outside, and your job is to use the **dictionary and rulebook** provided to create the right response, and send that back outside. \n\nMake sense?",
+        "text": "You're a new intern in the **Hieroglyph Translation Department** in the University of New South Wale's Egyptology department.\n\nYou've been sent to Egypt to help translate these ancient messages! You will receive a message written in Hieroglyphs from the outside, and your job is to use the **dictionary and rulebook** provided to create the right response, and send that back outside. \n\nMake sense?",
         "buttons": [
           {
             "id": 1,
@@ -96,7 +96,7 @@
         "actions": 3
       },
       {
-        "text": "**Step 5:** Amazing, now that your answer is ready, click the **top right corner** of the paper to complete it.",
+        "text": "**Step 5:** Amazing, now that your answer is ready, click the **right side** of the paper to turn it into an answer slip.",
         "buttons": [
           {
             "id": 1,
@@ -172,7 +172,7 @@
       },
       {
         "id": 1,
-        "text": "\n\nJust one question for you: **Do you feel like doing this is teaching you to understand Heiroglyphs?**\n\nSay that someone texted you using Heiroglyphs right now, with one of the rules in that rulebook, could you **intelligently respond**?",
+        "text": "\n\nJust one question for you: **Do you feel like doing this is teaching you to understand Hieroglyphs?**\n\nSay that someone texted you using Hieroglyphs right now, with one of the rules in that rulebook, could you **intelligently respond**?",
         "buttons": [
           {
             "id": 1,
@@ -227,7 +227,7 @@
       },
       {
         "id": 5,
-        "text": "That's right! \n\nYour rulebook is telling you exactly how to construct an output given an input, but there's nothing there that teaches you **why** a given output should occur from those inputs. Or is there? \n\n*Do you think with enough time and enough rules you would be able to fully understand Heiroglyphics?*",
+        "text": "That's right! \n\nYour rulebook is telling you exactly how to construct an output given an input, but there's nothing there that teaches you **why** a given output should occur from those inputs. Or is there? \n\n*Do you think with enough time and enough rules you would be able to fully understand Hieroglyphics?*",
         "buttons": [
           {
             "id": 1,
@@ -244,7 +244,7 @@
       },
       {
         "id": 6,
-        "text": "Not quite, that would mean you understand the **meaning** behind all the characters your placing. \n\nBut in your case you understand how to place them in the correct order, the **syntax**, but there's nothing there that teaches you 'why' you should be placing them in that order, the **semantics**. Or is there? \n\n*Do you think with enough time and enough rules you would be able to fully understand Heiroglyphics?*",
+        "text": "Not quite, that would mean you understand the **meaning** behind all the characters your placing. \n\nBut in your case you understand how to place them in the correct order, the **syntax**, but there's nothing there that teaches you 'why' you should be placing them in that order, the **semantics**. Or is there? \n\n*Do you think with enough time and enough rules you would be able to fully understand Hieroglyphics?*",
         "buttons": [
           {
             "id": 1,
@@ -289,7 +289,7 @@
     "popups": [
       {
         "id": 0,
-        "text": "Congratulations! Another level gained. The upgrade you've unlocked this stage will be revealed soon. \n\nBut first, how was that, do you understand Heiroglyphics any better now?",
+        "text": "Congratulations! Another level gained. The upgrade you've unlocked this stage will be revealed soon. \n\nBut first, how was that, do you understand Hieroglyphics any better now?",
         "buttons": [
           {
             "id": 1,
@@ -329,7 +329,7 @@
       },
       {
         "id": 3,
-        "text": "As I mentioned previously, like you right now, computers are just highly complicated **symbol manipulation machines**.\n\nAt the most basic level, they are given a series of inputs, represented as either **1** *or* **0**. Then, based on the program it's been given, it creates a new series of 1's and 0's to send back out.\n\nAt a high level, this process may be interpreted by a human observer as music, video, colour, or any number of other meaningful things. But to the computer, it's just moving around 1's and 0's, exactly the same way as you in the Heiroglyphics room, you're just moving around characters.\n\nDo you think computer brains and human brains learn differently?",
+        "text": "As I mentioned previously, like you right now, computers are just highly complicated **symbol manipulation machines**.\n\nAt the most basic level, they are given a series of inputs, represented as either **1** *or* **0**. Then, based on the program it's been given, it creates a new series of 1's and 0's to send back out.\n\nAt a high level, this process may be interpreted by a human observer as music, video, colour, or any number of other meaningful things. But to the computer, it's just moving around 1's and 0's, exactly the same way as you in the Hieroglyphics room, you're just moving around characters.\n\nDo you think computer brains and human brains learn differently?",
         "buttons": [
           {
             "id": 1,
@@ -402,7 +402,7 @@
       },
       {
         "id": 1,
-        "text": "Precisely right, each generation was just a **random series of Heiroglyphs**.\n\nBut I promise that there is a connection here to AI.",
+        "text": "Precisely right, each generation was just a **random series of Hieroglyphs**.\n\nBut I promise that there is a connection here to AI.",
         "buttons": [
           {
             "id": 1,
@@ -460,7 +460,7 @@
       },
       {
         "id": 6,
-        "text": "That's the scary thing, **we don't know**.\n\nThey do so through **Neural Networks**, which aim to mimic the brain, but the methods that they come up with to create their answers are incomprehensible even to scientists! \n\n![Neural Network Image](/neuralNetwork.png 'Neural Network')\n\nHowever, what we do know is that at the most fundamental level they are still dealing with the same **1's and 0's** that the computer running the hard-coded program is dealing with. For all their power, they cannot escape their hardware. \n\nThe same as humans are constrained to their biology. You, in the Heiroglyphics Room, cannot think yourself into understanding these symbols, the same as the computer cannot “think” itself into understanding the meaning behind its flipping of 1's and 0's.",
+        "text": "That's the scary thing, **we don't know**.\n\nThey do so through **Neural Networks**, which aim to mimic the brain, but the methods that they come up with to create their answers are incomprehensible even to scientists! \n\n![Neural Network Image](/neuralNetwork.png 'Neural Network')\n\nHowever, what we do know is that at the most fundamental level they are still dealing with the same **1's and 0's** that the computer running the hard-coded program is dealing with. For all their power, they cannot escape their hardware. \n\nThe same as humans are constrained to their biology. You, in the Hieroglyphics Room, cannot think yourself into understanding these symbols, the same as the computer cannot “think” itself into understanding the meaning behind its flipping of 1's and 0's.",
         "buttons": [
           {
             "id": 1,
