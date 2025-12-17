@@ -56,26 +56,6 @@ function App() {
     {
     id: "orders",
     items: []
-    },
-    {
-    id: "answers",
-    items: []
-    },
-    {
-    id: "stapler",
-    items: []
-    },
-    {
-    id: "responses",
-    items: []
-    },
-    {
-    id: "bin",
-    items: []
-    },
-    {
-    id: "paper-container",
-    items: []
     }
   ])
 

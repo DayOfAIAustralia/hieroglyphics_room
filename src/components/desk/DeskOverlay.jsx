@@ -24,12 +24,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
     const [playDing] = useSound(dingSound)
     
     const orderAnswerContainer = {
-    ORDER: 0,
-    ANSWER: 1,
-    STAPLER: 2,
-    RESPONSES: 3,
-    BIN: 4,
-    PAPERCONTAINER: 5
+        ORDER: 0,
     }   
     
     const windowWidth = useWindowWidth();
@@ -131,12 +126,12 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
     //     </Answer>
     // })
 
-    const responsesList = orderAnswer.find(container => container.id === 'responses').items.map(response => {
-        const currentZ = zIndices[response.id] || 10;
+    // const responsesList = orderAnswer.find(container => container.id === 'responses').items.map(response => {
+    //     const currentZ = zIndices[response.id] || 10;
 
-        return <Response id={response.id} key={response.id} active={response.id === activeId} style={{zIndex: currentZ}}/>
+    //     return <Response id={response.id} key={response.id} active={response.id === activeId} style={{zIndex: currentZ}}/>
 
-    })
+    // })
 
     // Constants to keep track of order and answer items
     // const orderItem = orderAnswer[orderAnswerContainer.STAPLER].items.find(item => item.type === 'orders')
@@ -170,14 +165,14 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
         useSensor(KeyboardSensor)
     )
 
-    function findPaperContainerId(itemId) {
-        if (orderAnswer.some(container => container.id === itemId)) {
-            return itemId
-        }
-        return orderAnswer.find(container => 
-            container.items.some((item) => item.id === itemId)
-        )?.id;
-    }
+    // function findPaperContainerId(itemId) {
+    //     if (orderAnswer.some(container => container.id === itemId)) {
+    //         return itemId
+    //     }
+    //     return orderAnswer.find(container => 
+    //         container.items.some((item) => item.id === itemId)
+    //     )?.id;
+    // }
 
     // function createResponse() {
     //     playStaple()
@@ -493,7 +488,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
 
                 {/* {answerList} */}
 
-                {responsesList}
+                {/* {responsesList} */}
             </div>
             {/* Deprecated order submission system */}
             {/* <div 

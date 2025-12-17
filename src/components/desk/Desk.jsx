@@ -29,11 +29,6 @@ const characterContainer = {
 
 const orderAnswerContainer = {
     ORDER: 0,
-    ANSWER: 1,
-    STAPLER: 2,
-    RESPONSES: 3,
-    BIN: 4,
-    PAPERCONTAINER: 5
 }   
 
 export default function Desk({orderAnswerArr}) {
@@ -196,19 +191,16 @@ export default function Desk({orderAnswerArr}) {
         // Finds all the rules that are seen and not seen and in play already
         const allIndices = rules.active.map(item => item.id);
         const seenIndices = currentSeenRules.map(item => item.id); 
-        const orderIndices = orderAnswer[orderAnswerContainer.ORDER].items.map(item => item.id); 
-        const staplerIndices = orderAnswer[orderAnswerContainer.STAPLER].items.map(item => item.id); 
+        const orderIndices = orderAnswer[orderAnswerContainer.ORDER].items.map(item => item.id);  
         
         let availableIndices = allIndices.filter(i => !seenIndices.includes(i));
         availableIndices = availableIndices.filter(i => !orderIndices.includes(i));
-        availableIndices = availableIndices.filter(i => !staplerIndices.includes(i));
 
         if (availableIndices.length === 0) {
             currentSeenRules = [];
             setSeenRules([]);
             availableIndices = allIndices; // Reset available pool and allow recents
             availableIndices = availableIndices.filter(i => !orderIndices.includes(i));
-            availableIndices = availableIndices.filter(i => !staplerIndices.includes(i));
         }
 
         const randomIndex = Math.floor(Math.random() * availableIndices.length);
@@ -292,9 +284,6 @@ export default function Desk({orderAnswerArr}) {
             // reset playing field
             setOrderAnswer(prev => {
                 prev[orderAnswerContainer.ORDER].items = []
-                prev[orderAnswerContainer.RESPONSES].items = []
-                prev[orderAnswerContainer.STAPLER].items = []
-                prev[orderAnswerContainer.ANSWER].items = []
                 return prev;
             })
         }
