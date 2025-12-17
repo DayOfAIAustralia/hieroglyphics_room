@@ -45,8 +45,7 @@ function App() {
       '/question.png',
       '/dictionaryOpen.png',
       '/rulesOpen.png',
-      '/paperFurl.png',
-      '/response.png',
+      '/staplerCursor.png',
       '/slip.png',
     ];
 

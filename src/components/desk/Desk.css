@@ -386,20 +386,9 @@
   font-size: 2em;
 }
 
-.dragged-draggable {
-  padding: 4px;
-  width: 2em;
-  text-align: center;
-  height: auto;
-  background-color: rgb(245, 245, 220);
-  border: 1px solid black;
-  cursor: grab;
-  z-index: 5;
-}
-
 .draggable {
   padding: 4px;
-  width: 1em;
+  width: 2rem;
   text-align: center;
   height: auto;
   background-color: rgb(245, 245, 220);

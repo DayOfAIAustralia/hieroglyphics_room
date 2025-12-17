@@ -819,7 +819,7 @@ export default function Desk({orderAnswerArr}) {
                     > 
                     {activeId && (getActiveItem() !== null) 
                     ? (
-                    <CharacterOverlay className='dragged-draggable'>
+                    <CharacterOverlay className='draggable'>
                         {getActiveItem()?.character}
                     </CharacterOverlay>
                     ): null}

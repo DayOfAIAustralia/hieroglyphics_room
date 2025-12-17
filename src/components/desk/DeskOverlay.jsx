@@ -48,40 +48,40 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
     const [showOutput, setShowOutput] = React.useState(false)
     const [hoverDropped, setHoverDropped] = React.useState(false)
     const [hoverDroppedItem, setHoverDroppedItem] = React.useState(null)
+    const [startUpdate, setStartUpdate] = React.useContext(LevelContext).startUpdate;
     const [activeId, setActiveId] = React.useState(null)
     const [firstOrderPickup, setFirstOrderPickup] = React.useState(false);
-    const [startUpdate, setStartUpdate] = React.useContext(LevelContext).startUpdate;
 
 
     const [zIndices, setZIndices] = React.useState({});
     const globalZCounter = React.useRef(10);
 
-    React.useEffect(() => {
-        if (!startUpdate && tutorialState != "stapled-response") return;
+    // React.useEffect(() => {
+    //     if (!startUpdate && tutorialState != "stapled-response") return;
 
-        const checkPosition = (e) => {
-            const clientX = e.clientX ?? e.touches?.[0]?.clientX;
+    //     const checkPosition = (e) => {
+    //         const clientX = e.clientX ?? e.touches?.[0]?.clientX;
 
-            if (clientX === undefined) {
-                return;
-            }
-            if (holdingOutput) {
-                if (clientX > (windowWidth * 0.6)) {
-                    setShowOutput(true)
-                } else {
-                    setShowOutput(false)
-                }
-            }
-        }
-        window.addEventListener('mousemove', checkPosition)
-        window.addEventListener('touchmove', checkPosition);
+    //         if (clientX === undefined) {
+    //             return;
+    //         }
+    //         if (holdingOutput) {
+    //             if (clientX > (windowWidth * 0.6)) {
+    //                 setShowOutput(true)
+    //             } else {
+    //                 setShowOutput(false)
+    //             }
+    //         }
+    //     }
+    //     window.addEventListener('mousemove', checkPosition)
+    //     window.addEventListener('touchmove', checkPosition);
 
-        return () => {
-            window.removeEventListener('mousemove', checkPosition)
-            window.removeEventListener('touchmove', checkPosition);
-            setShowOutput(false)
-        }
-    }, [holdingOutput])
+    //     return () => {
+    //         window.removeEventListener('mousemove', checkPosition)
+    //         window.removeEventListener('touchmove', checkPosition);
+    //         setShowOutput(false)
+    //     }
+    // }, [holdingOutput])
 
     React.useEffect(() => {
         // Changes style of the cursor
@@ -220,7 +220,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
     };
 
     function handleNotesDragStart({ active, over }) {
-        setHoldingOutput(true)
+        // setHoldingOutput(true)
 
         const activeId = active.id;
         setActiveId(activeId)
@@ -236,199 +236,200 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
 
     }
 
-    function handleNotesDragOver(event) {
-        const { active, over } = event;
+    // Now unecessary function
+    // function handleNotesDragOver(event) {
+    //     const { active, over } = event;
 
-        const activeId = active.id;
-        const activeContainerId = findPaperContainerId(activeId)
-        const activeContainerIndex = orderAnswer.findIndex(c => c.id === activeContainerId)
-        const activeObj = orderAnswer[activeContainerIndex].items.find(item => item.id === activeId)
+    //     const activeId = active.id;
+    //     const activeContainerId = findPaperContainerId(activeId)
+    //     const activeContainerIndex = orderAnswer.findIndex(c => c.id === activeContainerId)
+    //     const activeObj = orderAnswer[activeContainerIndex].items.find(item => item.id === activeId)
         
-        // Paper container is only interactable with a responses object, not an order or answer slip
-        if (over?.id === 'paper-container' && activeObj.type !== 'responses') return;
-        if (over?.id === 'stapler' && activeObj.type === 'responses') return;
+    //     // Paper container is only interactable with a responses object, not an order or answer slip
+    //     // if (over?.id === 'paper-container' && activeObj.type !== 'responses') return;
+    //     // if (over?.id === 'stapler' && activeObj.type === 'responses') return;
 
-        // remove animation from when it first appeared
-        if (activeObj.type === 'orders') activeObj.initial = false;
+    //     // remove animation from when it first appeared
+    //     if (activeObj.type === 'orders') activeObj.initial = false;
 
-        if (!over) {
-            if (hoverDropped) {
-                setOrderAnswer(prev => {
-                    return prev.map(container => {
-                        if (activeContainerId === 'stapler' && container.id === 'stapler') {
-                            const addedItem = container.items.find(item => item.id === activeId)
-                            let itemList;
-                            if (hoverDroppedItem) {
-                                itemList = 
-                                [...container.items.filter(item => item.id !== addedItem.id),
-                                hoverDroppedItem
-                                ]
-                            } else {
-                                itemList = [...container.items.filter(item => item.id !== addedItem.id)]
-                            }
+        // if (!over) {
+        //     if (hoverDropped) {
+        //         setOrderAnswer(prev => {
+        //             return prev.map(container => {
+        //                 if (activeContainerId === 'stapler' && container.id === 'stapler') {
+        //                     const addedItem = container.items.find(item => item.id === activeId)
+        //                     let itemList;
+        //                     if (hoverDroppedItem) {
+        //                         itemList = 
+        //                         [...container.items.filter(item => item.id !== addedItem.id),
+        //                         hoverDroppedItem
+        //                         ]
+        //                     } else {
+        //                         itemList = [...container.items.filter(item => item.id !== addedItem.id)]
+        //                     }
                             
-                            return  {
-                                ...container,
-                                items: itemList
-                            }
-                        } 
+        //                     return  {
+        //                         ...container,
+        //                         items: itemList
+        //                     }
+        //                 } 
 
-                        if (activeContainerId === 'bin' && container.id === 'bin') {
-                            binImg.current.style.backgroundImage = 'url(binEmpty.png)'
-                            return {
-                                ...container,
-                                items: [
-                                ]
-                            }
-                        }
+        //                 if (activeContainerId === 'bin' && container.id === 'bin') {
+        //                     binImg.current.style.backgroundImage = 'url(binEmpty.png)'
+        //                     return {
+        //                         ...container,
+        //                         items: [
+        //                         ]
+        //                     }
+        //                 }
 
 
-                        if (activeContainerId === 'paper-container' && container.id === 'paper-container') {
-                            paperContainerImg.current.style.backgroundImage = 'url(paperContainerEmpty.png)'
-                            return {
-                                ...container,
-                                items: [
-                                ]
-                            }
-                        }
+        //                 if (activeContainerId === 'paper-container' && container.id === 'paper-container') {
+        //                     paperContainerImg.current.style.backgroundImage = 'url(paperContainerEmpty.png)'
+        //                     return {
+        //                         ...container,
+        //                         items: [
+        //                         ]
+        //                     }
+        //                 }
 
-                        if (container.id === activeObj.type) {
-                            let itemList;
+        //                 if (container.id === activeObj.type) {
+        //                     let itemList;
                             
-                            if (hoverDroppedItem) {
-                                itemList = [...container.items.filter(item => item.id !== hoverDroppedItem.id), activeObj]
-                            } else {
-                                itemList = [...container.items, activeObj]
-                            }
-                            return {
-                                ...container,
-                                items: itemList
-                            }
+        //                     if (hoverDroppedItem) {
+        //                         itemList = [...container.items.filter(item => item.id !== hoverDroppedItem.id), activeObj]
+        //                     } else {
+        //                         itemList = [...container.items, activeObj]
+        //                     }
+        //                     return {
+        //                         ...container,
+        //                         items: itemList
+        //                     }
                             
-                        }
-                        return container;
-                    })
+        //                 }
+        //                 return container;
+        //             })
 
-                })
-                setHoverDropped(false)
-                setHoverDroppedItem(null)
+        //         })
+        //         setHoverDropped(false)
+        //         setHoverDroppedItem(null)
 
-            }
-            return;
+        //     }
+        //     return;
 
-        } 
+        // } 
 
-        const overId = over.id;
+        // const overId = over.id;
 
-        const overContainerId = findPaperContainerId(overId)
+        // const overContainerId = findPaperContainerId(overId)
 
-        if (!activeContainerId || !overContainerId) return;
+        // if (!activeContainerId || !overContainerId) return;
 
-        if (activeContainerId === overContainerId) return;
+        // if (activeContainerId === overContainerId) return;
 
-        let tempHoverDropped = false;
-        let tempHoverDroppedItem = null;
+        // let tempHoverDropped = false;
+        // let tempHoverDroppedItem = null;
 
 
-        setOrderAnswer(prev => {
-            return prev.map(container => {
-                if (overContainerId === 'stapler' && container.id === 'stapler') {
-                    const existingItem = container.items.find(item => item.type === activeContainerId)
-                    const itemList = existingItem ? 
-                        [...container.items.filter(item => item.id !== existingItem.id),
-                            {...activeObj, type: activeContainerId}
-                        ]
-                        : [...container.items, {...activeObj, type: activeContainerId}]
-                    tempHoverDropped=true
-                    tempHoverDroppedItem = existingItem
+        // setOrderAnswer(prev => {
+        //     return prev.map(container => {
+        //         // if (overContainerId === 'stapler' && container.id === 'stapler') {
+        //         //     const existingItem = container.items.find(item => item.type === activeContainerId)
+        //         //     const itemList = existingItem ? 
+        //         //         [...container.items.filter(item => item.id !== existingItem.id),
+        //         //             {...activeObj, type: activeContainerId}
+        //         //         ]
+        //         //         : [...container.items, {...activeObj, type: activeContainerId}]
+        //         //     tempHoverDropped=true
+        //         //     tempHoverDroppedItem = existingItem
                     
-                    return  {
-                        ...container,
-                        items: itemList
-                    }
-                } 
+        //         //     return  {
+        //         //         ...container,
+        //         //         items: itemList
+        //         //     }
+        //         // } 
 
-                if (overContainerId === 'bin' && container.id === 'bin') {
-                    binImg.current.style.backgroundImage = 'url(bin.png)'
-                    tempHoverDropped= true
-                    tempHoverDroppedItem = null
-                    return {
-                        ...container,
-                        items: [
-                            activeObj
-                        ]
-                    }
-                }
-                if (overContainerId === 'paper-container' && container.id === 'paper-container') {
-                    paperContainerImg.current.style.backgroundImage = 'url(paperContainer.png)'
-                    tempHoverDropped=true
-                    tempHoverDroppedItem = null
-                    return {
-                        ...container,
-                        items: [
-                            activeObj
-                        ]
-                    }
-                }
+        //         // if (overContainerId === 'bin' && container.id === 'bin') {
+        //         //     binImg.current.style.backgroundImage = 'url(bin.png)'
+        //         //     tempHoverDropped= true
+        //         //     tempHoverDroppedItem = null
+        //         //     return {
+        //         //         ...container,
+        //         //         items: [
+        //         //             activeObj
+        //         //         ]
+        //         //     }
+        //         // }
+        //         // if (overContainerId === 'paper-container' && container.id === 'paper-container') {
+        //         //     paperContainerImg.current.style.backgroundImage = 'url(paperContainer.png)'
+        //         //     tempHoverDropped=true
+        //         //     tempHoverDroppedItem = null
+        //         //     return {
+        //         //         ...container,
+        //         //         items: [
+        //         //             activeObj
+        //         //         ]
+        //         //     }
+        //         // }
 
-                if (container.id === activeContainerId) {
-                    let existingItem
-                    if (overContainerId === 'stapler') {
-                        existingItem = prev[orderAnswerContainer.STAPLER].items.find(item => item.type === activeContainerId)
-                    } else {
-                        existingItem = null
-                    }
+        //         if (container.id === activeContainerId) {
+        //             let existingItem
+        //             if (overContainerId === 'stapler') {
+        //                 existingItem = prev[orderAnswerContainer.STAPLER].items.find(item => item.type === activeContainerId)
+        //             } else {
+        //                 existingItem = null
+        //             }
                     
-                    const itemList = existingItem ? 
-                        [...container.items.filter(item => item.id !== activeId),
-                        existingItem
-                        ]
-                        : [...container.items.filter(item => item.id !== activeId)]
-                    return {
-                        ...container,
-                        items: itemList
-                    }
+        //             const itemList = existingItem ? 
+        //                 [...container.items.filter(item => item.id !== activeId),
+        //                 existingItem
+        //                 ]
+        //                 : [...container.items.filter(item => item.id !== activeId)]
+        //             return {
+        //                 ...container,
+        //                 items: itemList
+        //             }
                     
-                }
-                return container;
-            })
-        })
-        setHoverDropped(tempHoverDropped)
-        setHoverDroppedItem(tempHoverDroppedItem)
+        //         }
+        //         return container;
+        //     })
+        // })
+        // setHoverDropped(tempHoverDropped)
+        // setHoverDroppedItem(tempHoverDroppedItem)
+    // }
 
-    }
-
-    function handleNotesDragEnd({ active, over }) {
-        setHoldingOutput(false)
+    function handleNotesDragEnd() {
+        // setHoldingOutput(false)
         setActiveId(null)
-        setHoverDropped(false)
-        setHoverDroppedItem(null)
+        // setHoverDropped(false)
+        // setHoverDroppedItem(null)
         document.body.classList.remove('dragging-cursor');
 
-        if (orderAnswer[orderAnswerContainer.BIN].items.length > 0) {
-            setTutorialState('finished-response')
+        // Deprecated order submission system
+        // if (orderAnswer[orderAnswerContainer.BIN].items.length > 0) {
+        //     setTutorialState('finished-response')
 
-            binImg.current.style.backgroundImage = 'url(binEmpty.png)'
-            playBin()
-            setOrderAnswer(prev => {
-                return prev.map((c) => {
-                    if (c.id === 'bin') {
-                        return {id: 'bin', items: []}
-                    } else {
-                        return c
-                    }
-                })
-            })
-        }
+        //     binImg.current.style.backgroundImage = 'url(binEmpty.png)'
+        //     playBin()
+        //     setOrderAnswer(prev => {
+        //         return prev.map((c) => {
+        //             if (c.id === 'bin') {
+        //                 return {id: 'bin', items: []}
+        //             } else {
+        //                 return c
+        //             }
+        //         })
+        //     })
+        // }
 
-        if (orderAnswer[orderAnswerContainer.PAPERCONTAINER].items.length > 0) {
-            setTutorialState('finished-response')
+        // if (orderAnswer[orderAnswerContainer.PAPERCONTAINER].items.length > 0) {
+        //     setTutorialState('finished-response')
 
-            playPaperPlace()
-            processResponse()
-            paperContainerImg.current.style.backgroundImage = 'url(paperContainerEmpty.png)'
+        //     playPaperPlace()
+        //     processResponse()
+        //     paperContainerImg.current.style.backgroundImage = 'url(paperContainerEmpty.png)'
 
-        }
+        // }
 
     }
     
@@ -463,24 +464,9 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
                 return c
             })
         })
+        // removes tiles from paper
         resetPaper()
 
-    }
-
-
-    function processResponse() {
-        const receivedResponse = orderAnswer[orderAnswerContainer.PAPERCONTAINER].items[0];
-        const question = rules.active.find((rule) => rule.order === receivedResponse.order)
-        const xpGainedPerOrder = 30;
-
-        // Check if question can be found first (because of tutorial q being deleted)
-        if (question && question.answer === receivedResponse.answer) {
-            playDing()
-            updateLevel(xpGainedPerOrder)
-        } else {
-            playWrong()
-        }
-        orderAnswer[orderAnswerContainer.PAPERCONTAINER].items = []
     }
 
     function updateLevel(added_xp) {
@@ -500,7 +486,6 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
             modifiers={[restrictToWindowEdges]}  
             autoScroll={false}
             onDragStart={handleNotesDragStart}
-            onDragMove={handleNotesDragOver}
             onDragEnd={handleNotesDragEnd}
         >
             <div>
@@ -510,7 +495,8 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
 
                 {responsesList}
             </div>
-            <div 
+            {/* Deprecated order submission system */}
+            {/* <div 
                 className={`output ${showOutput ? 'output-display' : ''}`} 
                 ref={outputSidebar}
                 onTransitionEnd={() => setKey(k => k + 1)}
@@ -528,7 +514,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
                     
                 </div>
                 
-            </div>
+            </div> */}
             {/* Stapler UI is deprecated */}
             {/* <div className='stapler'>
                 <Droppable 
