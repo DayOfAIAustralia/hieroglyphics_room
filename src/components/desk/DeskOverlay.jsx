@@ -114,7 +114,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
     const orderList = orderAnswer.find(container => container.id === 'orders').items.map(order => {
         const currentZ = zIndices[order.id] || 10;
         return <Order id={order.id} key={order.id} slide={order.initial} active={order.id === activeId} style={{zIndex: currentZ}} onClick={() => handleOrderClick(order)} staplerModeOn={staplerModeOn}>
-            <span className='character'>{order.text}</span>
+            <span className='order-character'>{order.text}</span>
         </Order>
     })
 
