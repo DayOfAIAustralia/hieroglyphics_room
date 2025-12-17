@@ -85,7 +85,7 @@
         "actions": 2
       },
       {
-        "text": "**Step 4:** Using the rule stated in the rulebook, drag the characters from the dictionary onto the paper in the **right order**.\n\n Alternatively, if you're using a trackpad, it would be easier to click on the dictionary and hit tab until you find the tile you want. Then, press spacebar and use the arrow keys to move it to the paper and space again when its in the right spot.",
+        "text": "**Step 4:** Using the rule stated in the rulebook, drag the characters from the dictionary onto the paper in the **right order**.\n\n Alternatively, if you're using a trackpad, it would be easier to click on the dictionary and hit **tab** until you find the tile you want. Then, press **spacebar** and use the **arrow keys** to move it to the paper and **space** again when its in the right spot.",
         "buttons": [
           {
             "id": 1,

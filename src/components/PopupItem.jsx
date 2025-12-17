@@ -105,7 +105,7 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
         } else if (actions === 3) {
             setShowTutorialArrow(false)
             
-            setPosition({top: "30%", left: "auto", right: "30%", bottom: "auto"})
+            setPosition({top: "10%", left: "auto", right: "40%", bottom: "auto"})
         } else if (actions === 4) {
             setShowTutorialArrow(true)
             setArrowLocation({top: "auto", left: "60%", right: "auto", bottom: "38%"})
