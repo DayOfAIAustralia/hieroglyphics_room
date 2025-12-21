@@ -7,12 +7,10 @@ import { Wheel } from 'react-custom-roulette-r19'
 
 import useSound from 'use-sound';
 import spinSound from '../../assets/sounds/spin.wav'
-import paperRuffleSound from '../../assets/sounds/paperRuffle.wav'
 import bookOpenSound from '../../assets/sounds/bookOpen.wav'
 import bookCloseSound from '../../assets/sounds/bookClose.wav'
 import swooshSound from '../../assets/sounds/swoosh.wav'
 import tileSound from '../../assets/sounds/tile.wav'
-import stapleSound from '../../assets/sounds/stapler.wav'
 import staplerOpenSound from '../../assets/sounds/staplerOpen.wav'
 import hornSound from '../../assets/sounds/confetti.wav'
 
@@ -33,7 +31,6 @@ const orderAnswerContainer = {
 
 export default function Desk({orderAnswerArr}) {
     const [playSpin] = useSound(spinSound)
-    const [playRuffle] = useSound(paperRuffleSound)
     const [playBookOpen] = useSound(bookOpenSound)
     const [playBookClose] = useSound(bookCloseSound)
     const [playSwoosh] = useSound(swooshSound)
@@ -467,6 +464,9 @@ export default function Desk({orderAnswerArr}) {
             })
             
         })
+        if (characters[characterContainer.PAPER].items.length == 2) {
+            setTutorialState('filled-paper')
+        }
     }
 
     function handleDragStart(event) {
@@ -653,30 +653,6 @@ export default function Desk({orderAnswerArr}) {
             </div>
         )
     }
-
-    // function createAnswer() {
-    //     if (characters[characterContainer.PAPER].items.length === 0) return;
-    //     playRuffle()
-    //     setTutorialState('slip-created')
-    //     setOrderAnswer(prev => {
-    //         return prev.map(container => {
-    //             if (container.id !== 'answers') return container
-    //             return {
-    //                 ...container,
-    //                 items: [
-    //                     ...container.items,
-    //                     {
-    //                         id: newId(),
-    //                         text: collectCharacters(characters[characterContainer.PAPER].items),
-    //                         type: "answers"
-    //                     }
-    //                 ]
-    //             }
-    //         })
-
-    //     })
-    //     resetPaper()
-    // }
 
     // Opaque pixel hover detection
     React.useEffect(() => {
