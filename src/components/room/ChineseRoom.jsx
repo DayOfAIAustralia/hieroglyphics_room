@@ -19,6 +19,7 @@ export default function ChineseRoom({gameOver}) {
     const [tutorialOpen, setTutorialOpen] = useState(false)
     const { burst, Overlay } = useXpParticles();
     const xpIconRef = useRef(null);
+    const [isLoadingTutorial, setIsLoadingTutorial] = useState(true);
 
     const [playXp] = useSound(xpSound)
     const [playCelebration] = useSound(celebrationMusic)
@@ -72,10 +73,31 @@ export default function ChineseRoom({gameOver}) {
         <div className='popup'>
             <div className='popup-data'>
                 <div className="popup-text" style={{fontSize: 24, fontWeight: "bold"}}>How To Play:</div>
-                <video width="600" autoPlay loop muted playsInLine>
+                <div style={{ position: 'relative', width: '600px', minHeight: '337px' }}>
+                {/* Loading Text */}
+                {isLoadingTutorial && (
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}>
+                    Loading tutorial video...
+                </div>
+                )}
+
+                <video
+                width="600"
+                autoPlay
+                loop
+                muted
+                playsInline
+                onLoadedData={() => setIsLoadingTutorial(false)} // Hides the text when video data is ready
+                style={{ display: isLoadingTutorial ? 'none' : 'block' }} // Keeps layout stable
+                >
                     <source src="/tutorialVideo.mp4" type="video/mp4" />
-                    <img src="/tutorialGif.gif" alt="backup gif for tutorial"></img>
                 </video>
+            </div>
             </div>
         </div>
     </div>
