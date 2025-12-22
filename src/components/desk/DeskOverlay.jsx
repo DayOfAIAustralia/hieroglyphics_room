@@ -171,7 +171,8 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
         useSensor(KeyboardSensor),
         useSensor(TouchSensor, {
             activationConstraint: {
-                distance: 8
+                delay: 250, // Time in ms
+                tolerance: 5, // Allow slight wobble while pressing
             }
         })
     )

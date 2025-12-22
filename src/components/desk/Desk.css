@@ -16,6 +16,10 @@
   position: relative;
 }
 
+.touchable {
+    touch-action: none; /* Prevents the browser from scrolling when you touch the order */
+    user-select: none;  /* Prevents text selection highlighting on long-press */
+}
 
 .stapler {
   all: unset;

@@ -24,7 +24,7 @@ export default function Draggable({id, disabled=false, children, className, pos=
             {...listeners} 
             {...attributes} 
             id={id} 
-            className={`${className} ${doDragAnimation && isDragging ? 'dragging' : ''}`}
+            className={`touchable ${className} ${doDragAnimation && isDragging ? 'dragging' : ''}`}
         >
             {children}
         </div>
