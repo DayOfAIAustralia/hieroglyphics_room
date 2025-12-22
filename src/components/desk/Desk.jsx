@@ -1,4 +1,4 @@
-import { closestCenter, DndContext, useSensor, useSensors, PointerSensor, KeyboardSensor, DragOverlay } from '@dnd-kit/core'
+import { closestCenter, DndContext, useSensor, useSensors, PointerSensor, KeyboardSensor, TouchSensor, DragOverlay } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import React from 'react'
@@ -752,7 +752,12 @@ export default function Desk({orderAnswerArr}) {
                 distance: 8
             }
         }),
-        useSensor(KeyboardSensor)
+        useSensor(KeyboardSensor),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                distance: 8
+            }
+        }),
     )
 
     return (

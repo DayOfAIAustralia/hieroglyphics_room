@@ -1,4 +1,4 @@
-import { DndContext, useSensor, useSensors, PointerSensor, KeyboardSensor, DragOverlay, pointerWithin } from '@dnd-kit/core'
+import { DndContext, useSensor, useSensors, PointerSensor, KeyboardSensor, TouchSensor, pointerWithin } from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import React, { useEffect } from 'react'
 import { v4 as newId } from 'uuid';
@@ -168,7 +168,12 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
                 distance: 8
             }
         }),
-        useSensor(KeyboardSensor)
+        useSensor(KeyboardSensor),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                distance: 8
+            }
+        })
     )
 
     return (
