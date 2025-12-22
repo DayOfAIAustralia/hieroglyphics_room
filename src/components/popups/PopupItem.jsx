@@ -12,8 +12,8 @@ import Confetti from 'react-confetti'
 import swooshSound from '../../assets/sounds/swoosh.wav'
 import confettiSound from '../../assets/sounds/confetti.wav'
 
-export default function PopupItem({text, buttons, updateDialogue, actions, orderAnswerArr, help=false, setGameOver}) {
-    const [orderAnswer, setOrderAnswer] = orderAnswerArr
+export default function PopupItem({text, buttons, updateDialogue, actions, ordersObj, help=false, setGameOver}) {
+    const [orders, setOrders] = ordersObj
     const [isTutorial, setIsTutorial] = useContext(TutorialContext)
     const [startUpdate, setStartUpdate] = useContext(LevelContext).startUpdate
     const [position, setPosition] = useState({})
@@ -71,21 +71,11 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
                 type: 'orders',
                 initial: true
             }
-            setOrderAnswer(prev => {
-                return prev.map((c) => {
-                    if (c.id === 'orders') {
-                        return {
-                            ...c,
-                            items: [
-                                ...c.items,
-                                newOrder
-                            ]
-                        }
-                    } else {
-                        return c
-                    }
-                })
-            })
+            setOrders(prev => [
+                ...prev,
+                newOrder
+            ])
+            
             setPosition({top: "30%", left: "5%", right: "auto", bottom: "auto"})
             setArrowLocation({top: "30%", left: "0%", right: "auto", bottom: "auto"})
             setArrowRotation(90)

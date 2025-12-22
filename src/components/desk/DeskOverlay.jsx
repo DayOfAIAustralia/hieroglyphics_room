@@ -10,14 +10,14 @@ import useSound from 'use-sound';
 import dingSound from '../../assets/sounds/ding.wav'
 import wrongSound from '../../assets/sounds/wrong.wav'
 
-export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr, resetPaper, paperString}) {
+export default function DeskOverlay({ordersObj, rulesList, staplerModeOnArr, resetPaper, paperString}) {
     const [playWrong] = useSound(wrongSound)
     const [playDing] = useSound(dingSound)
 
     const [ tutorialState, setTutorialState ] = useContext(LevelContext).tutorialState
     const [xpStartLocation, setXpStartLocation] = useContext(LevelContext).xpStartLocation
     
-    const [ orderAnswer, setOrderAnswer ] = orderAnswerArr;
+    const [ orders, setOrders ] = ordersObj;
     const [ staplerModeOn, setStaplerModeOn ] = staplerModeOnArr;
     const [ rules, setRules ] = rulesList
     const [ level, setLevel ] = useContext(LevelContext).level
@@ -84,16 +84,8 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
         }
 
         // Removes selected order from orders items array
-        setOrderAnswer(prev => {
-            return prev.map(c => {
-                if (c.id === 'orders') {
-                    return {
-                        ...c,
-                        items: c.items.filter(item => item.text != order.text)
-                    }
-                }
-                return c
-            })
+        setOrders(prev => {
+            return prev.filter(item => item.text != order.text)
         })
 
         // Removes tiles from paper
@@ -103,7 +95,7 @@ export default function DeskOverlay({orderAnswerArr, rulesList, staplerModeOnArr
     // END STAPLER FUNCTIONS ----------------------------------------------------
 
     // Creates elements of order slips for all the existing orders
-    const orderList = orderAnswer.find(container => container.id === 'orders').items.map(order => {
+    const orderList = orders.map(order => {
         const currentZ = zIndices[order.id] || 10;
         return <Order id={order.id} key={order.id} slide={order.initial} active={order.id === activeId} style={{zIndex: currentZ}} onClick={(e) => handleOrderClick(e, order)} staplerModeOn={staplerModeOn}>
             <span className='order-character'>{order.text}</span>

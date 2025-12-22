@@ -8,7 +8,7 @@ import React, {useEffect, useState, useContext, useRef} from 'react'
 // Popup interface
 // {id, content, button1, button2}
 
-export default function Popups({orderAnswerArr, setGameOver}) {
+export default function Popups({orders, setGameOver}) {
     const [popupIndex, setPopupIndex] = useState(0)
     const [currentlyPlaying, setCurrentlyPlaying] = useContext(LevelContext).currentlyPlaying
     const dialogueClosed = useRef(false)
@@ -50,7 +50,7 @@ export default function Popups({orderAnswerArr, setGameOver}) {
                     buttons={currentPopup[popupIndex].buttons}
                     updateDialogue={updateDialogue}
                     actions={currentPopup[popupIndex]?.actions}
-                    orderAnswerArr={orderAnswerArr}
+                    ordersObj={orders}
                     help={currentPopup[popupIndex]?.help}
                     setGameOver={setGameOver}
                 />

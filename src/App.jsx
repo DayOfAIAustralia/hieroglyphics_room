@@ -56,15 +56,7 @@ function App() {
   }, []);
 
   // Contains the orders that are added throughout the game
-  // Note: there is no good reason for this to be an array of objects anymore
-  // but is a relic of the original game system, just index the array from 0 to access
-  // the order object
-  const [orderAnswer, setOrderAnswer] = useState([
-    {
-    id: "orders",
-    items: []
-    }
-  ])
+  const [orders, setOrders] = useState([])
 
 
   return (
@@ -138,9 +130,9 @@ function App() {
       {/* Game context and components */}
       <LevelContext value={{level: [level, setLevel], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState], xpStartLocation: [xpStartLocation, setXpStartLocation]
       }}>
-        <Popups orderAnswerArr={[orderAnswer, setOrderAnswer]} setGameOver={setGameOver}/>
+        <Popups orders={[orders, setOrders]} setGameOver={setGameOver}/>
         <ChineseRoom gameOver={gameOver}/>
-        <Desk orderAnswerArr={[orderAnswer, setOrderAnswer]}/>
+        <Desk ordersObj={[orders, setOrders]}/>
       </LevelContext>
 
     </>

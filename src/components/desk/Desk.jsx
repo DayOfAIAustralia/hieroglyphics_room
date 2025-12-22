@@ -25,11 +25,7 @@ const characterContainer = {
     PAPER: 1
 }
 
-const orderAnswerContainer = {
-    ORDER: 0,
-}   
-
-export default function Desk({orderAnswerArr}) {
+export default function Desk({ordersObj}) {
     const [playSpin] = useSound(spinSound)
     const [playBookOpen] = useSound(bookOpenSound)
     const [playBookClose] = useSound(bookCloseSound)
@@ -62,7 +58,7 @@ export default function Desk({orderAnswerArr}) {
     const [isStaplerHovered, setIsStaplerHovered] = useState(false);
 
     const [mustSpin, setMustSpin] = useState(false)
-    const [orderAnswer, setOrderAnswer] = orderAnswerArr
+    const [orders, setOrders] = ordersObj
 
     // Dictionary comes preloaded with all potential values
     const [characters, setCharacters] = useState([
@@ -195,7 +191,7 @@ export default function Desk({orderAnswerArr}) {
     const generateNewOrder = useCallback(() => {
         if (!rules.active?.length) return;
 
-        const currentOrders = orderAnswer[orderAnswerContainer.ORDER].items;
+        const currentOrders = orders
         if (currentOrders.length >= 3) return;
 
         let currentSeenRules = seenRules;
@@ -208,7 +204,7 @@ export default function Desk({orderAnswerArr}) {
         // Finds all the rules that are seen and not seen and in play already
         const allIndices = rules.active.map(item => item.id);
         const seenIndices = currentSeenRules.map(item => item.id); 
-        const orderIndices = orderAnswer[orderAnswerContainer.ORDER].items.map(item => item.id);  
+        const orderIndices = orders.map(item => item.id);  
         
         let availableIndices = allIndices.filter(i => !seenIndices.includes(i));
         availableIndices = availableIndices.filter(i => !orderIndices.includes(i));
@@ -232,11 +228,10 @@ export default function Desk({orderAnswerArr}) {
 
         playSwoosh();
 
-        setOrderAnswer(prev => {
-            if (prev[orderAnswerContainer.ORDER].items.length >= 3) {
+        setOrders(prev => {
+            if (prev.length >= 3) {
                 return prev;
             }
-
 
             const newOrder = {
                 id: selectedRule.id,
@@ -245,11 +240,7 @@ export default function Desk({orderAnswerArr}) {
                 initial: true
             };
 
-            return prev.map(c =>
-                c.id === 'orders'
-                    ? { ...c, items: [...c.items, newOrder] }
-                    : c
-            );
+            return  [...prev, newOrder] 
         });
 
         // Update Seen Rules
@@ -260,7 +251,7 @@ export default function Desk({orderAnswerArr}) {
             return [...prev, selectedRule];
         });
 
-    }, [rules.active, orderAnswer, seenRules]); 
+    }, [rules.active, orders, seenRules]); 
 
     
     const savedCallback = useRef(generateNewOrder);
@@ -293,10 +284,7 @@ export default function Desk({orderAnswerArr}) {
         moveInactiveRulesToActive()
         if (level.level === 2) {
             // reset playing field
-            setOrderAnswer(prev => {
-                prev[orderAnswerContainer.ORDER].items = []
-                return prev;
-            })
+            setOrders([])
         }
     }, [level.level])
 
@@ -782,8 +770,13 @@ export default function Desk({orderAnswerArr}) {
             </div>}
 
             {/* Desk overlay component for order slips */}
-            <DeskOverlay orderAnswerArr = {[orderAnswer, setOrderAnswer]} rulesList = {[rules, setRules]} 
-                staplerModeOnArr = {[staplerModeOn, setStaplerModeOn]} resetPaper={resetPaper} paperString= {collectCharacters(characters[characterContainer.PAPER].items)}/>
+            <DeskOverlay 
+                ordersObj = {ordersObj} 
+                rulesList = {[rules, setRules]} 
+                staplerModeOnArr = {[staplerModeOn, setStaplerModeOn]} 
+                resetPaper={resetPaper} 
+                paperString= {collectCharacters(characters[characterContainer.PAPER].items)}
+            />
 
             {/* Desk for stapler, paper, and dictionary buttons */}
             <section id='desk'>
