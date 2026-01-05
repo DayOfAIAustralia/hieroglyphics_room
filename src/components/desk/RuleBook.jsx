@@ -10,6 +10,8 @@ import ruleMoveSound from '../../assets/sounds/ruleMove.wav'
 export default function RuleBook({ref, rules, updateRule=null, zIndex}) {
     const [playRuleMove] = useSound(ruleMoveSound)
     const [level, setLevel] = useContext(LevelContext).level
+    const [currentlyPlaying, setCurrentlyPlaying] = useContext(LevelContext).currentlyPlaying
+    
     const [disabled, setDisabled] = useState(false)
 
     const [currPage, setCurrPage] = useState(1);
@@ -22,6 +24,9 @@ export default function RuleBook({ref, rules, updateRule=null, zIndex}) {
 
     // Sets page to 1 whenever rules are updated
     useEffect(() => {
+        // Prevents reseting page after spinwheel
+        if (currentlyPlaying) return
+
         setCurrPage(1)
         setDisabled(false)
     }, [rules])

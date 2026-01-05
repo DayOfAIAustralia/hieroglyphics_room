@@ -447,6 +447,9 @@ export default function Desk({ordersObj}) {
             // 1. Create a shallow copy of the container to avoid mutation
             if (type === 'dictionary') {
                 if (c.id === 'paper') {
+                    if (c.items.length >= 1) {
+                        setTutorialState('filled-paper')
+                    }
                     return {
                         ...c,
                         items: [...c.items, { id: id, character: character }]
@@ -473,9 +476,6 @@ export default function Desk({ordersObj}) {
             }
             return c;
         }));
-        if (characters[characterContainer.PAPER].items.length == 2) {
-            setTutorialState('filled-paper')
-        }
     }
 
     // DnD KIT DRAG FUNCTIONALITY --------------------------------------------------
