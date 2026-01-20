@@ -1,6 +1,6 @@
 # DoAI: The Pyramid Puzzle
 
-A web game created to help teach high school students about how AI understands the world, inspired by John Searle’s Chinese Room Argument. The project frames a classic pyramid puzzle within a UI that illustrates the gap between syntax and semantics, and how computers interpret symbols without understanding their meaning.
+A web game created to help teach high school students about how AI understands the world, inspired by John Searle’s Chinese Room Argument. The project frames a pyramid puzzle within a UI that illustrates the gap between syntax and semantics, and how computers interpret symbols without understanding their meaning.
 
 ## Running in Development
 
