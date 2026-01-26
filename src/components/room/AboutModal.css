@@ -10,7 +10,7 @@
   color: #3d2b1f;
   border-color: #8b7355;
   max-width: 50vw;
-  height: 70vh;
+  height: 75vh;
   padding: 70px 100px;
   box-sizing: border-box;
 }
@@ -46,13 +46,15 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin: 16px 0;
+  margin: 16px 4px;
+  font-size: large;
 }
 
 .about-logos {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding-top: 20px;
 }
 
 .about-logos-row {

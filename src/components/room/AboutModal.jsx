@@ -25,19 +25,25 @@ export default function AboutModal() {
               className="about-text"
               style={{
                 borderBottom: "solid #8b7355 1px",
-                paddingBottom: "24px",
+                paddingBottom: "20px",
               }}
             >
               The Pyramid Puzzle is an educational game inspired by John
-              Searle's Chinese Room thought experiment. You play as an intern in
-              the Hieroglyph Translation Department, following rules to
-              translate Egyptian hieroglyphics (without understanding their
-              meaning). Throughout the game, you'll explore the difference
-              between syntax (following rules) and semantics (true
-              understanding), and discover how this relates to how AI and Large
-              Language Models work.
+              Searle's{" "}
+              <a
+                href="http://en.wikipedia.org/wiki/Chinese_room"
+                target="blank"
+              >
+                Chinese Room
+              </a>{" "}
+              thought experiment. You play as an intern in the Hieroglyph
+              Translation Department, following rules to translate Egyptian
+              hieroglyphics (without understanding their meaning). Throughout
+              the game, you'll explore the difference between syntax (following
+              rules) and semantics (true understanding), and discover how this
+              relates to how AI and Large Language Models work.
             </div>
-            <div>
+            <div className="about-credits">
               The Pyramid Puzzle was created by Day of AI Australia in
               partnership with UNSW Sydney and with the support of Google.org
             </div>
@@ -55,23 +61,41 @@ export default function AboutModal() {
             </div>
             <div className="about-logos">
               <div className="about-logos-row">
-                <img
-                  className="about-logo-square"
-                  src="/logos/doai-logo.png"
-                  alt="Logo Day of AI Australia"
-                />
-                <img
-                  className="about-logo-square"
-                  src="/logos/unsw.png"
-                  alt="Logo UNSW Sydney"
-                />
+                <a
+                  href="https://dayofaiaustralia.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    className="about-logo-square"
+                    src="/logos/doai-logo.png"
+                    alt="Logo Day of AI Australia"
+                  />
+                </a>
+                <a
+                  href="https://www.unsw.edu.au/engineering/our-schools/computer-science-and-engineering"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    className="about-logo-square"
+                    src="/logos/unsw.png"
+                    alt="Logo UNSW Sydney"
+                  />
+                </a>
               </div>
               <div className="about-logos-row">
-                <img
-                  className="about-logo-rect"
-                  src="/logos/googleorg.png"
-                  alt="Logo Google.org"
-                />
+                <a
+                  href="https://www.google.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    className="about-logo-rect"
+                    src="/logos/googleorg.png"
+                    alt="Logo Google.org"
+                  />
+                </a>
               </div>
             </div>
           </div>
