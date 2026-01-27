@@ -15,12 +15,7 @@ export default function AboutModal() {
           </button>
 
           <div className="about-logos-container">
-            <div
-              className="about-text"
-              style={{ fontSize: 36, fontWeight: "bold" }}
-            >
-              About This Game
-            </div>
+            <div className="about-text about-title">About This Game</div>
             <div
               className="about-text"
               style={{

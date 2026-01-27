@@ -11,8 +11,15 @@
   border-color: #8b7355;
   max-width: 50vw;
   height: 75vh;
+  max-height: 85vh;
   padding: 70px 100px;
   box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.about-title {
+  font-size: 36px;
+  font-weight: bold;
 }
 
 .about-close-btn {
@@ -81,4 +88,64 @@
 .about-text {
   margin: 6px;
   font-size: large;
+}
+
+/* Tablet and below */
+@media (max-width: 768px) {
+  .about-modal {
+    max-width: 90vw;
+    height: auto;
+    max-height: 85vh;
+    padding: 50px 40px;
+    overflow-y: auto;
+  }
+
+  .about-title {
+    font-size: 32px;
+  }
+
+  .about-logo-square {
+    width: 80px;
+    height: 80px;
+  }
+
+  .about-logo-rect {
+    width: 180px;
+    height: 65px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .about-modal {
+    max-width: 95vw;
+    padding: 40px 24px;
+  }
+
+  .about-close-btn {
+    top: 15px;
+    right: 20px;
+  }
+
+  .about-title {
+    font-size: 24px;
+  }
+
+  .about-logo-square {
+    width: 70px;
+    height: 70px;
+  }
+
+  .about-logo-rect {
+    width: 150px;
+    height: 55px;
+  }
+
+  .about-text {
+    font-size: medium;
+  }
+
+  .about-credits {
+    font-size: medium;
+  }
 }
