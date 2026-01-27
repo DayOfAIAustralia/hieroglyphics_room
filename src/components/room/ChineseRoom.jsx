@@ -4,6 +4,7 @@ import { LevelContext } from '../Context'
 import { MdMusicNote } from "react-icons/md";
 import { MdMusicOff } from "react-icons/md";
 import { IoHelpCircleSharp } from "react-icons/io5";
+import AboutModal from './AboutModal'
 
 import useSound from 'use-sound';
 import egyptMusic from '../../assets/music/egyptMusic.wav'
@@ -16,7 +17,10 @@ import xpSound from '../../assets/sounds/xpPoints.wav'
 export default function ChineseRoom({gameOver}) {
     const [levelData, setLevel] = useContext(LevelContext).level
     const [xpStartLocation, setXpStartLocation] = useContext(LevelContext).xpStartLocation
-    const [musicMuted, setMusicMuted] = useState(false)
+    const [musicMuted, setMusicMuted] = useState(() => {
+        const saved = localStorage.getItem('musicMuted')
+        return saved === 'true'
+    })
     const [tutorialOpen, setTutorialOpen] = useState(false)
     const { burst, Overlay } = useXpParticles();
     const xpIconRef = useRef(null);
@@ -42,6 +46,10 @@ export default function ChineseRoom({gameOver}) {
     const [playMusic, { pause, stop }] = useSound(egyptMusic, {
         loop: true,
     });
+
+    useEffect(() => {
+        localStorage.setItem('musicMuted', musicMuted)
+    }, [musicMuted])
 
     useEffect(() => { musicMuted ? pause() : playMusic(); }, [musicMuted, pause, playMusic]);
 
@@ -148,6 +156,7 @@ export default function ChineseRoom({gameOver}) {
                 <div className='overlay-btn-container'>
                     {tutorialButton}
                     {musicButton}
+                    <AboutModal />
                 </div>                
                 
                 <Overlay />

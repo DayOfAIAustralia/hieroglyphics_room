@@ -1,0 +1,151 @@
+/* About Modal Styles */
+
+.about-modal {
+  font-family: "Karla", sans-serif;
+  position: relative;
+  background-image: url("/paper.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #3d2b1f;
+  border-color: #8b7355;
+  max-width: 50vw;
+  height: 75vh;
+  max-height: 85vh;
+  padding: 70px 100px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.about-title {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.about-close-btn {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  background: transparent;
+  border: none;
+  color: #3d2b1f;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease-in-out;
+}
+
+.about-close-btn:hover {
+  color: #8b7355;
+}
+
+.about-logos-container {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.about-credits {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 4px;
+  font-size: large;
+}
+
+.about-logos {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 20px;
+}
+
+.about-logos-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.about-logo-square {
+  width: 100px;
+  height: 100px;
+  padding: 8px;
+  object-fit: contain;
+}
+
+.about-logo-rect {
+  width: 220px;
+  height: 80px;
+  padding: 8px 16px;
+  object-fit: contain;
+}
+
+.about-text {
+  margin: 6px;
+  font-size: large;
+}
+
+/* Tablet and below */
+@media (max-width: 768px) {
+  .about-modal {
+    max-width: 90vw;
+    height: auto;
+    max-height: 85vh;
+    padding: 50px 40px;
+    overflow-y: auto;
+  }
+
+  .about-title {
+    font-size: 32px;
+  }
+
+  .about-logo-square {
+    width: 80px;
+    height: 80px;
+  }
+
+  .about-logo-rect {
+    width: 180px;
+    height: 65px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .about-modal {
+    max-width: 95vw;
+    padding: 40px 24px;
+  }
+
+  .about-close-btn {
+    top: 15px;
+    right: 20px;
+  }
+
+  .about-title {
+    font-size: 24px;
+  }
+
+  .about-logo-square {
+    width: 70px;
+    height: 70px;
+  }
+
+  .about-logo-rect {
+    width: 150px;
+    height: 55px;
+  }
+
+  .about-text {
+    font-size: medium;
+  }
+
+  .about-credits {
+    font-size: medium;
+  }
+}

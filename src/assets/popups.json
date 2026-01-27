@@ -2,7 +2,7 @@
   {
     "popups": [
       {
-        "text": "## Welcome to **The Pyramid Puzzles!** 🏜️",
+        "text": "## Welcome to **The Pyramid Puzzle!** 🏜️",
         "buttons": [
           {
             "id": 1,
@@ -453,7 +453,7 @@
       {
         "id": 7,
         "text": "This leaves us with the notion that AI as we know it likely won't become **'conscious'**.\n\nIt doesn't discount the idea of new forms of intelligence forming, but just that computers as we've built them today are constrained in this way. \n\nBut this doesn't discount the importance that emerging AI systems will have in **changing the way we live, work, and learn**. Just that, maybe, we should be careful how much we trust a system that literally doesn't know what it is talking about. \n\n**That's the end for now, thanks for playing!** 🥳🎉",
-        "buttons": [ 
+        "buttons": [
           {
             "id": 1,
             "text": "Celebrate! 🎉",
