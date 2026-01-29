@@ -1,0 +1,115 @@
+import { SortableContext } from "@dnd-kit/sortable"
+import { motion, AnimatePresence } from 'framer-motion'
+import Droppable from "../base_dnd/Droppable"
+import SortableDraggable from "../base_dnd/SortableDraggable"
+
+export default function SplitPaper({
+    questionTiles,
+    answerContainer,
+    handleTileClick,
+    onSubmit,
+    orderAnimationPhase,
+    activeOrder,
+    canSubmit
+}) {
+    const answerItems = answerContainer.items;
+
+    // Render the answer tiles (draggable)
+    const answerTiles = answerItems.map((word) => {
+        return (
+            <SortableDraggable
+                layoutId={`tile-${word.character}-${word.id}`}
+                key={word.id}
+                id={word.id}
+                className='character'
+                type='character'
+                onClick={() => handleTileClick(word.id, word.character, "paper")}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+                {word.character}
+            </SortableDraggable>
+        )
+    })
+
+    // Render the question tiles (non-draggable, displayed in question zone)
+    const questionTileElements = questionTiles.map((tile, index) => (
+        <motion.div
+            key={`question-${index}`}
+            className="question-tile"
+            initial={{ opacity: 0, scale: 0.5, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{
+                delay: index * 0.15,
+                type: "spring",
+                stiffness: 300,
+                damping: 25
+            }}
+        >
+            <span className="character">{tile}</span>
+        </motion.div>
+    ))
+
+    return (
+        <div className="split-paper">
+            {/* Order slip animation */}
+            <AnimatePresence>
+                {(orderAnimationPhase === 'sliding-in' || orderAnimationPhase === 'placing-tiles') && activeOrder && (
+                    <motion.div
+                        className="order-slip-incoming"
+                        initial={{ x: '-120%', opacity: 1 }}
+                        animate={{
+                            x: orderAnimationPhase === 'sliding-in' ? '10%' : '10%',
+                            opacity: orderAnimationPhase === 'placing-tiles' ? 0 : 1
+                        }}
+                        exit={{ opacity: 0 }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 100,
+                            damping: 15,
+                            opacity: { duration: 0.3 }
+                        }}
+                    >
+                        <div className="slip-content">
+                            <span className="slip-label">New Order:</span>
+                            <span className="order-character">{activeOrder.text}</span>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Question Zone - Top half */}
+            <div className="paper-question-zone">
+                <span className="zone-label">Order:</span>
+                <div className="question-tiles-container">
+                    <AnimatePresence>
+                        {orderAnimationPhase === 'ready' && questionTileElements}
+                    </AnimatePresence>
+                </div>
+            </div>
+
+            {/* Divider */}
+            <div className="zone-divider"></div>
+
+            {/* Answer Zone - Bottom half */}
+            <Droppable id={answerContainer.id} className='paper-answer-zone'>
+                <span className="zone-label">Your Answer:</span>
+                <SortableContext items={answerItems.map(item => item.id)}>
+                    <div className="answer-tiles-container">
+                        {answerTiles}
+                    </div>
+                </SortableContext>
+            </Droppable>
+
+            {/* Submit Button */}
+            <button
+                className="paper-submit-btn"
+                onClick={onSubmit}
+                disabled={!canSubmit}
+            >
+                Submit
+            </button>
+        </div>
+    )
+}

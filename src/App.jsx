@@ -32,6 +32,8 @@ function App() {
 
   const [xpStartLocation, setXpStartLocation] = useState({x: 0, y: 0})
 
+  const [isTutorial, setIsTutorial] = useState(false)
+
   // Preloading work
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -128,11 +130,11 @@ function App() {
       </AnimatePresence>
 
       {/* Game context and components */}
-      <LevelContext value={{level: [level, setLevel], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState], xpStartLocation: [xpStartLocation, setXpStartLocation]
+      <LevelContext value={{level: [level, setLevel], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState], xpStartLocation: [xpStartLocation, setXpStartLocation], isTutorial: [isTutorial, setIsTutorial]
       }}>
         <Popups orders={[orders, setOrders]} setGameOver={setGameOver}/>
         <ChineseRoom gameOver={gameOver}/>
-        <Desk ordersObj={[orders, setOrders]}/>
+        <Desk />
       </LevelContext>
 
     </>

@@ -21,6 +21,10 @@
     user-select: none;  /* Prevents text selection highlighting on long-press */
 }
 
+.stapler-space {
+  grid-area: stapler;
+}
+
 .stapler {
   all: unset;
   grid-area: stapler;
@@ -441,4 +445,116 @@ body.stapler-cursor * {
   border-bottom: 1px solid black;
   padding: 6px;
   padding-bottom: 4px;
+}
+
+/* Split Paper Styles */
+.split-paper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.paper-question-zone {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  min-height: 40%;
+}
+
+.paper-answer-zone {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  min-height: 40%;
+}
+
+.zone-label {
+  font-family: "Jersey 10", sans-serif;
+  font-size: 14px;
+  color: #5d4037;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.question-tiles-container,
+.answer-tiles-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+  align-content: flex-start;
+}
+
+.zone-divider {
+  border-top: 2px dashed #8b4513;
+  margin: 4px 0;
+  opacity: 0.6;
+}
+
+.question-tile {
+  padding: 4px;
+  width: 2.5rem;
+  text-align: center;
+  height: auto;
+  background-color: rgb(235, 225, 200);
+  border: 1px solid #8b4513;
+  opacity: 0.9;
+}
+
+.paper-submit-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 6px 14px;
+  background-color: #4a7c59;
+  color: white;
+  border: 2px solid #2d5a3a;
+  border-radius: 6px;
+  font-family: "Jersey 10", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.paper-submit-btn:hover:not(:disabled) {
+  background-color: #5a9c69;
+  transform: scale(1.05);
+}
+
+.paper-submit-btn:disabled {
+  background-color: #a0a0a0;
+  border-color: #808080;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Order Slip Animation */
+.order-slip-incoming {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  background-image: url("/slip.png");
+  background-size: 100% 100%;
+  padding: 15px;
+  width: 25vh;
+  min-height: 80px;
+}
+
+.slip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.slip-label {
+  font-family: "Jersey 10", sans-serif;
+  font-size: 14px;
+  color: #333;
 }

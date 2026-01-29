@@ -179,7 +179,7 @@ button.btn-disabled {
 }
 
 .tutorial-arrow {
-  pointer-events: none;
+  pointer-events: auto;
   position: absolute;
   width: 12vw;
   height: auto;

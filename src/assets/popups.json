@@ -52,7 +52,7 @@
         ]
       },
       {
-        "text": "**Step 1:** You receive a message from the outside.\n\nLook, one's just come in below! Try dragging it around.",
+        "text": "**Step 1:** You receive a message from the outside.\n\nLook, one's just appeared on the paper! This is the order you need to respond to.",
         "buttons": [
           {
             "id": 1,
@@ -96,22 +96,22 @@
         "actions": 3
       },
       {
-        "text": "**Step 5:** Great! Now both of those paper slips are ready to combine. Click on the **stapler** to activate **stapler mode**.",
+        "text": "**Step 5:** Great! Now click the **Submit** button on the paper to send your response.",
         "buttons": [
           {
             "id": 1,
-            "text": "They're stapled.",
-            "goto": 9
+            "text": "Done!",
+            "goto": 10
           }
         ],
         "actions": 5
       },
       {
-        "text": "**Step 6:** Fantastic, now you can click the highlighted order to complete the response and submit the order!",
+        "text": "**Step 6:** Fantastic! Your answer has been submitted. Keep going to complete more orders!",
         "buttons": [
           {
             "id": 1,
-            "text": "They're stapled.",
+            "text": "Great!",
             "goto": 10
           }
         ],

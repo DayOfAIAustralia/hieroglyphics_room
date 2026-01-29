@@ -1,5 +1,5 @@
 import { useEffect, useContext, useState } from 'react'
-import { TutorialContext, LevelContext } from '../Context'
+import { LevelContext } from '../Context'
 import axios from "axios"
 import useSound from 'use-sound';
 import Markdown from 'react-markdown'
@@ -14,7 +14,7 @@ import confettiSound from '../../assets/sounds/confetti.wav'
 
 export default function PopupItem({text, buttons, updateDialogue, actions, ordersObj, help=false, setGameOver}) {
     const [orders, setOrders] = ordersObj
-    const [isTutorial, setIsTutorial] = useContext(TutorialContext)
+    const [isTutorial, setIsTutorial] = useContext(LevelContext).isTutorial
     const [startUpdate, setStartUpdate] = useContext(LevelContext).startUpdate
     const [position, setPosition] = useState({})
     const [helpVisible, setHelpVisible] = useState(false)
@@ -38,48 +38,35 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
 
     // Non button progression for tutorial
     useEffect(() => {
-        if (actions === 0 && tutorialState === 'paper-dragged') {
+        if (actions === 1 && tutorialState === 'rulebook-open') {
             updateDialogue(buttons[0].goto)
 
-        } else if (actions === 1 && tutorialState === 'rulebook-open') {
-            updateDialogue(buttons[0].goto)
-        
         } else if (actions === 2 && tutorialState === 'dictionary-open') {
             updateDialogue(buttons[0].goto)
 
         } else if (actions === 3 && tutorialState === 'filled-paper') {
             updateDialogue(buttons[0].goto)
-        } else if (actions === 5 && tutorialState === 'stapler-open') {
+        } else if (actions === 5 && tutorialState === 'stapled-response') {
+            // User submitted their answer - advance to Tutorial Complete
             updateDialogue(buttons[0].goto)
-        } else if (actions === 7 && tutorialState === 'stapled-response') {
-            updateDialogue(buttons[0].goto)
-        } 
-    }, [tutorialState])
+        }
+    }, [tutorialState, actions])
 
     // Button progression
     useEffect(() => {
         if (actions === 0) {
             setIsTutorial(true)
             setUseButton(false)
-            
+
             setShowTutorialArrow(true)
             playSwoosh()
-            // create tutorial order
-            const newOrder = {
-                id: 0,
-                text: "𓊽𓉐𓉐",
-                type: 'orders',
-                initial: true
-            }
-            setOrders(prev => [
-                ...prev,
-                newOrder
-            ])
-            
+            // Order is now created automatically by Desk.jsx
+
             setPosition({top: "30%", left: "5%", right: "auto", bottom: "auto"})
-            setArrowLocation({top: "30%", left: "0%", right: "auto", bottom: "auto"})
-            setArrowRotation(90)
-            setArrowMoveDirection('vertical')
+            // Arrow positioned to left of paper, pointing right at the tiles
+            setArrowLocation({top: "auto", left: "18%", right: "auto", bottom: "45%"})
+            setArrowRotation(0)
+            setArrowMoveDirection('horizontal')
         } else if (actions === 1) {
             setPosition({top: "30%", left: "auto", right: "0", bottom: "auto"})
             setArrowLocation({top: "auto", left: "auto", right: "16%", bottom: "20%"})
@@ -156,12 +143,20 @@ export default function PopupItem({text, buttons, updateDialogue, actions, order
             movementKeyframes = {};
     }
 
+    // Handle arrow click for Step 1 (actions === 0)
+    const handleArrowClick = () => {
+        if (actions === 0) {
+            updateDialogue(buttons[0].goto)
+        }
+    }
+
     const arrow = <motion.img
         src='/arrow.png'
         key={arrowRotation}
         alt="glowing arrow"
-        style={arrowLocation}
+        style={{...arrowLocation, cursor: actions === 0 ? 'pointer' : 'default'}}
         className='tutorial-arrow'
+        onClick={handleArrowClick}
         initial={{
             rotate: arrowRotation
         }}
