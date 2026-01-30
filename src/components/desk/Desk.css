@@ -1,9 +1,7 @@
 #desk {
   height: 50%;
-  background-image: url("/desk.jpg");
   margin: 0;
   padding: 0;
-  background-size: contain;
 
   display: grid;
   grid-template-columns: 20% 20% 20% 20% 20%;

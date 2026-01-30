@@ -64,7 +64,7 @@ function App() {
   return (
     <>
       {/* Warning to use landscape mode */}
-      <div className="popups rotate-device-overlay" style={{backgroundImage: 'url("/desk.jpg")', zIndex: 9999}}>
+      <div className="popups rotate-device-overlay" style={{zIndex: 9999, backgroundColor: '#5C3A1E', backgroundImage: 'linear-gradient(180deg, transparent 25%, rgba(139,90,43,0.30) 30%, rgba(139,90,43,0.10) 35%, transparent 40%), linear-gradient(180deg, rgba(120,70,30,0.15) 0%, transparent 20%, rgba(100,60,25,0.12) 50%, transparent 70%, rgba(80,45,15,0.18) 100%), repeating-linear-gradient(180deg, transparent 0px, rgba(0,0,0,0.06) 2px, transparent 4px), repeating-linear-gradient(180deg, transparent 0px, rgba(255,220,180,0.04) 6px, transparent 12px), linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 30%, rgba(0,0,0,0.03) 70%, transparent 100%)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat'}}>
           <div className="popup">
           <section className="popup-data" style={{fontSize: "30px"}}>
               <div className="popup-text" style={{textAlign: "center"}}>
