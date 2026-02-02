@@ -4,8 +4,8 @@
   padding: 0;
 
   display: grid;
-  grid-template-columns: 20% 20% 20% 20% 20%;
-  grid-template-areas: "orders stapler workspace dictionary rules";
+  grid-template-columns: 5% 35% 20% 35% 5%;
+  grid-template-areas: "orders rules workspace dictionary empty";
 
   width: 100%;
 }
@@ -15,74 +15,8 @@
 }
 
 .touchable {
-    touch-action: none; /* Prevents the browser from scrolling when you touch the order */
-    user-select: none;  /* Prevents text selection highlighting on long-press */
-}
-
-.stapler-space {
-  grid-area: stapler;
-}
-
-.stapler {
-  all: unset;
-  grid-area: stapler;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.stapler > img {
-  max-height: 40vh;
-  width: 100%;
-  transition: transform 0.2s ease-in-out;
-  cursor: pointer;
-  margin: 0;
-}
-
-.stapler-ui {
-  position: absolute;
-  top: 50%;
-  left: 20%;
-  width: 60%;
-  position: absolute;
-  max-height: 25vh;
-
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  justify-content: center;
-  align-items: center;
-
-  padding: 12px;
-  background-color: rgba(111, 182, 220, 0.6);
-  border: 1px solid white;
-  border-radius: 8px;
-  z-index: 10;
-}
-
-.stapler-drop {
-  padding: 6px;
-  border: 3px dotted black;
-  box-sizing: border-box;
-  width: 100%;
-  text-align: center;
-}
-
-.stapler-btn {
-  cursor: pointer;
-  z-index: 1;
-  padding: 8px;
-  margin-top: 5px;
-  border: 1px solid rgb(84, 190, 239);
-  background-color: rgb(74, 74, 75);
-  color: white;
-  cursor: pointer;
-}
-
-.stapler-btn:hover {
-  border: 1px solid rgb(84, 190, 239);
-  background-color: rgb(121, 121, 123);
-  color: white;
+  touch-action: none; /* Prevents the browser from scrolling when you touch the order */
+  user-select: none; /* Prevents text selection highlighting on long-press */
 }
 
 .orders {
@@ -362,21 +296,20 @@
 }
 
 .dictionary-ui:active {
-    cursor: grabbing; 
+  cursor: grabbing;
 }
 
 .dictionary-items {
   padding: 6px;
 }
 
-
 .character {
-  font-family: 'Noto Sans Egyptian Hieroglyphs', sans-serif;
+  font-family: "Noto Sans Egyptian Hieroglyphs", sans-serif;
   font-size: 1.5rem;
 }
 
 .order-character {
-  font-family: 'Noto Sans Egyptian Hieroglyphs', sans-serif;
+  font-family: "Noto Sans Egyptian Hieroglyphs", sans-serif;
   font-size: 2rem;
 }
 
@@ -393,7 +326,7 @@
 
 .dragging,
 .dragging > * > * > * > button,
-.dragging > * > button  {
+.dragging > * > button {
   background-color: rgba(245, 245, 220, 0.6);
   border: 1px solid rgb(0, 0, 0, 0.2);
   color: rgba(0, 0, 0, 0.2);

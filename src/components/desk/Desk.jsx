@@ -905,9 +905,6 @@ export default function Desk() {
 
       {/* Desk for paper, and dictionary buttons */}
       <section id="desk">
-        {/* Empty space where stapler used to be */}
-        <div className="stapler-space"></div>
-
         <DndContext
           collisionDetection={closestCenter}
           sensors={sensors}
@@ -927,6 +924,22 @@ export default function Desk() {
         >
           {/* Empty Space where orders used to slide in */}
           <div className="orders"></div>
+
+          {/* Rulebook Space */}
+          <button className="rules" onClick={openRuleBook}>
+            <img
+              src="rules.png"
+              alt="rule book"
+              ref={ruleBookImg}
+              className={isRuleBookHovered ? "hovered" : ""}
+            ></img>
+          </button>
+          <RuleBook
+            ref={ruleBookUIRef}
+            rules={rules}
+            updateRule={updateRule}
+            zIndex={rulebookZIndex}
+          />
 
           {/* Paper Space - Split into question and answer zones */}
           <div className="workspace">
@@ -964,22 +977,6 @@ export default function Desk() {
             rules={rules}
             zIndex={dictionaryZIndex}
             handleTileClick={handleTileClick}
-          />
-
-          {/* Rulebook Space */}
-          <button className="rules" onClick={openRuleBook}>
-            <img
-              src="rules.png"
-              alt="rule book"
-              ref={ruleBookImg}
-              className={isRuleBookHovered ? "hovered" : ""}
-            ></img>
-          </button>
-          <RuleBook
-            ref={ruleBookUIRef}
-            rules={rules}
-            updateRule={updateRule}
-            zIndex={rulebookZIndex}
           />
 
           {/* Handles what is seen in users hand and on tile droppable locations */}
