@@ -159,18 +159,16 @@
 }
 
 .rulebook-ui {
-  background-color: aliceblue;
-  border: 1px solid black;
-  position: fixed;
+  position: absolute;
   z-index: 10;
+  visibility: hidden;
 
-  min-width: 42vh;
+  min-width: 35vh;
   min-height: 345px;
-  cursor: grab;
 
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .rules-content {
@@ -191,11 +189,6 @@
   flex-direction: column;
   padding-inline: 8px;
   align-items: center;
-}
-
-.rule-arrow {
-  padding-top: 8px;
-  align-self: center;
 }
 
 .generate-button {
@@ -261,12 +254,12 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  position: relative;
 }
 
 .dictionary > img {
-  max-height: 40vh;
   margin: 0;
-  max-width: 100%;
+  min-width: 100%;
   transition: transform 0.2s ease-in-out;
 }
 
@@ -274,24 +267,13 @@
   visibility: hidden;
 }
 
-.container {
-  display: flex;
-  width: 100%;
-  gap: 6px;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding-right: 12px;
-  align-content: flex-start;
-}
-
 .dictionary-ui {
-  background-color: aliceblue;
-  border: 1px solid black;
-  position: fixed;
+  position: absolute;
   z-index: 10;
+  visibility: hidden;
 
-  width: 41vh;
-  min-height: 30vh;
+  width: 38vh;
+  min-height: 28vh;
   cursor: grab;
 }
 
@@ -300,7 +282,17 @@
 }
 
 .dictionary-items {
-  padding: 6px;
+  display: flex;
+  gap: 18px;
+  padding: 8px;
+}
+
+.dictionary-column {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 6px;
+  flex: 1;
+  align-content: start;
 }
 
 .character {
@@ -347,19 +339,13 @@ body.stapler-cursor * {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .rules > img {
-  max-height: 40vh;
   margin: 0;
-  max-width: 100%;
+  min-width: 100%;
   transition: transform 0.2s ease-in-out;
-}
-
-.dictionary > img.hovered,
-.rules > img.hovered,
-.stapler > img.hovered {
-  transform: scale(1.1);
 }
 
 .spinner-wheel {
@@ -370,12 +356,37 @@ body.stapler-cursor * {
 .book-tab {
   text-align: center;
   font-family: "Jersey 10", sans-serif;
-  font-size: 20px;
-  letter-spacing: 0.7px;
-  background-color: #c2b280;
-  border-bottom: 1px solid black;
+  font-size: 1em;
+  letter-spacing: 1px;
+  border-radius: 4px;
   padding: 6px;
   padding-bottom: 4px;
+  width: 42%;
+}
+
+.rulebook-ui .book-tab {
+  margin-top: 32px;
+}
+
+.book-close-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #5d4037;
+  padding: 2px;
+  line-height: 1;
+  z-index: 1;
+}
+
+.rulebook-ui .book-close-btn {
+  top: 40px;
+}
+
+.book-close-btn:hover {
+  color: #000;
 }
 
 /* Split Paper Styles */

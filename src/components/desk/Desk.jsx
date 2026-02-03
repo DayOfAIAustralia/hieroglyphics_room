@@ -458,6 +458,18 @@ export default function Desk() {
   }
   // END SPIN WHEEL FUNCTIONS ---------------------------------------------------
 
+  function closeDictionary() {
+    playBookClose();
+    dictionaryUIRef.current.style.visibility = "hidden";
+    dictionaryImg.current.src = "dictionary.png";
+  }
+
+  function closeRuleBook() {
+    playBookClose();
+    ruleBookUIRef.current.style.visibility = "hidden";
+    ruleBookImg.current.src = "rules.png";
+  }
+
   function openDictionary() {
     if (!startUpdate && tutorialState != "rulebook-open") return;
     const dictionaryEl = dictionaryUIRef.current;
@@ -470,10 +482,6 @@ export default function Desk() {
       playBookOpen();
       dictionaryEl.style.visibility = "visible";
       dictionaryImg.current.src = "dictionaryOpen.png";
-    } else {
-      playBookClose();
-      dictionaryEl.style.visibility = "hidden";
-      dictionaryImg.current.src = "dictionary.png";
     }
   }
 
@@ -491,10 +499,6 @@ export default function Desk() {
       playBookOpen();
       ruleBookEl.style.visibility = "visible";
       ruleBookImg.current.src = "rulesOpen.png";
-    } else {
-      playBookClose();
-      ruleBookEl.style.visibility = "hidden";
-      ruleBookImg.current.src = "rules.png";
     }
   }
 
@@ -933,13 +937,14 @@ export default function Desk() {
               ref={ruleBookImg}
               className={isRuleBookHovered ? "hovered" : ""}
             ></img>
+            <RuleBook
+              ref={ruleBookUIRef}
+              rules={rules}
+              updateRule={updateRule}
+              zIndex={rulebookZIndex}
+              onClose={closeRuleBook}
+            />
           </button>
-          <RuleBook
-            ref={ruleBookUIRef}
-            rules={rules}
-            updateRule={updateRule}
-            zIndex={rulebookZIndex}
-          />
 
           {/* Paper Space - Split into question and answer zones */}
           <div className="workspace">
@@ -967,17 +972,17 @@ export default function Desk() {
               ref={dictionaryImg}
               className={isDictionaryHovered ? "hovered" : ""}
             ></img>
+            <DictionaryUI
+              dictionary={characters.find(
+                (container) => container.id === "dictionary",
+              )}
+              ref={dictionaryUIRef}
+              rules={rules}
+              zIndex={dictionaryZIndex}
+              handleTileClick={handleTileClick}
+              onClose={closeDictionary}
+            />
           </button>
-          <DictionaryUI
-            dictionary={characters.find(
-              (container) => container.id === "dictionary",
-            )}
-            ref={dictionaryUIRef}
-            disabled={parentDisabled}
-            rules={rules}
-            zIndex={dictionaryZIndex}
-            handleTileClick={handleTileClick}
-          />
 
           {/* Handles what is seen in users hand and on tile droppable locations */}
           <DragOverlay
