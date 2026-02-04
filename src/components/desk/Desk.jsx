@@ -34,6 +34,7 @@ import DictionaryUI from "./DictionaryUI.jsx";
 import SplitPaper from "./SplitPaper.jsx";
 import RuleBook from "./RuleBook.jsx";
 import { LevelContext } from "../Context.jsx";
+import { motion, AnimatePresence } from "framer-motion";
 
 import dingSound from "../../assets/sounds/ding.wav";
 import wrongSound from "../../assets/sounds/wrong.wav";
@@ -74,6 +75,8 @@ export default function Desk() {
   const [orderAnimationPhase, setOrderAnimationPhase] = useState("idle");
   // Phases: 'idle' | 'sliding-in' | 'placing-tiles' | 'ready' | 'submitting'
   const [questionTiles, setQuestionTiles] = useState([]);
+  const [orderQueue, setOrderQueue] = useState([]);
+  const orderQueueRef = useRef([]);
 
   const dictionaryUIRef = useRef(null);
   const dictionaryImg = useRef(null);
@@ -181,21 +184,22 @@ export default function Desk() {
     ],
     active: [{ id: 6, order: "𓊽𓉐𓉐", answer: "𓃾𓆓" }],
   });
-  const [seenRules, setSeenRules] = useState([]);
-
   const [dictionaryZIndex, setDictionaryZIndex] = useState(10);
   const [rulebookZIndex, setRulebookZIndex] = useState(10);
 
   // ORDER FUNCTIONS -----------------------------------------------------
 
+  function populateQueue(activeRules) {
+    const shuffled = [...activeRules].sort(() => Math.random() - 0.5);
+    orderQueueRef.current = shuffled;
+    setOrderQueue(shuffled);
+    setLevel((prev) => ({ ...prev, xpRequired: activeRules.length * 30 }));
+  }
+
   // Fills the rulebook with new rules once the tutorial ends
   useEffect(() => {
     if (!startUpdate) return;
-    // Removes tutorial example
-    setRules((prev) => {
-      return { inactive: prev.inactive, active: [] };
-    });
-    moveInactiveRulesToActive();
+    moveInactiveRulesToActive(true);
   }, [startUpdate]);
 
   // Instantly creates an order after a new level starts
@@ -205,44 +209,14 @@ export default function Desk() {
     }
   }, [currentlyPlaying]);
 
-  // Creates the order slips the user interacts with, ensures no duplicate orders will be generated
-  // until all options are exhausted
+  // Shifts the next order off the queue and starts the slip animation
   const generateNewOrder = useCallback(() => {
-    if (!rules.active?.length) return;
-
-    // Only generate if no active order exists
+    if (orderQueueRef.current.length === 0) return;
     if (activeOrder !== null) return;
 
-    let currentSeenRules = seenRules;
-
-    if (seenRules.length >= rules.active.length) {
-      currentSeenRules = [];
-      setSeenRules([]); // Schedule the UI update for the reset
-    }
-
-    // Finds all the rules that are seen and not seen
-    const allIndices = rules.active.map((item) => item.id);
-    const seenIndices = currentSeenRules.map((item) => item.id);
-
-    let availableIndices = allIndices.filter((i) => !seenIndices.includes(i));
-
-    if (availableIndices.length === 0) {
-      currentSeenRules = [];
-      setSeenRules([]);
-      availableIndices = allIndices; // Reset available pool
-    }
-
-    const randomIndex = Math.floor(Math.random() * availableIndices.length);
-    const selectedRuleId = availableIndices[randomIndex];
-    const selectedRule = rules.active.find(
-      (elem) => elem.id === selectedRuleId,
-    );
-
-    // safety to prevent crash
-    if (!selectedRule) {
-      console.error("Could not find rule with ID:", selectedRuleId);
-      return;
-    }
+    const selectedRule = orderQueueRef.current[0];
+    orderQueueRef.current = orderQueueRef.current.slice(1);
+    setOrderQueue([...orderQueueRef.current]);
 
     playSwoosh();
 
@@ -276,15 +250,7 @@ export default function Desk() {
         tiles.length * 150 + 300,
       ); // Wait for all tile animations
     }, 800); // Time for slip to slide in
-
-    // Update Seen Rules
-    setSeenRules((prev) => {
-      if (currentSeenRules.length === 0) {
-        return [selectedRule];
-      }
-      return [...prev, selectedRule];
-    });
-  }, [rules.active, activeOrder, seenRules]);
+  }, [activeOrder]);
 
   // Generate initial tutorial order when isTutorial becomes true (Step 1)
   useEffect(() => {
@@ -295,6 +261,8 @@ export default function Desk() {
       activeOrder === null &&
       rules.active?.length > 0
     ) {
+      // Populate queue ref with tutorial rule so generateNewOrder can shift it
+      orderQueueRef.current = [...rules.active];
       generateNewOrder();
     }
   }, [isTutorial, startUpdate, activeOrder, rules.active, generateNewOrder]);
@@ -388,26 +356,23 @@ export default function Desk() {
     }
   }, [level.level]);
 
-  function moveInactiveRulesToActive() {
-    setRules((prev) => {
-      const count = Math.min(4, prev.inactive.length);
-      const take = prev.inactive.slice(0, count);
-      const rest = prev.inactive.slice(count);
-      if (level.level < 2) {
-        return {
-          active: [...prev.active, ...take],
-          inactive: rest,
-        };
-      } else if (level.level >= 2) {
-        const emptyTake = take.map((rule) => {
-          return { id: rule.id, order: rule.order, answer: "???" };
-        });
-        return {
-          inactive: rest,
-          active: [...emptyTake],
-        };
-      }
-    });
+  function moveInactiveRulesToActive(clearExisting = false) {
+    const count = Math.min(4, rules.inactive.length);
+    const take = rules.inactive.slice(0, count);
+    const rest = rules.inactive.slice(count);
+    const existingActive = clearExisting ? [] : rules.active;
+    let newActive;
+    if (level.level < 2) {
+      newActive = [...existingActive, ...take];
+    } else {
+      newActive = take.map((rule) => ({
+        id: rule.id,
+        order: rule.order,
+        answer: "???",
+      }));
+    }
+    setRules({ active: newActive, inactive: rest });
+    populateQueue(newActive);
   }
 
   // END RULE FUNCTIONS -----------------------------------------------------
@@ -926,8 +891,34 @@ export default function Desk() {
             handleCharacterDragEnd({ active, over });
           }}
         >
-          {/* Empty Space where orders used to slide in */}
-          <div className="orders"></div>
+          {/* Order stack */}
+          <div className="orders">
+            {startUpdate && (
+              <div className="order-stack">
+                <AnimatePresence>
+                  {orderQueue.map((rule, i) => (
+                    <motion.div
+                      key={rule.id}
+                      className="order-stack-slip"
+                      style={{
+                        bottom: `${i * 5}px`,
+                        left: `${i * 2}px`,
+                      }}
+                      initial={{ opacity: 1, x: 0 }}
+                      exit={{ x: 200, opacity: 0 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 100,
+                        damping: 15,
+                      }}
+                    >
+                      <span className="character">{rule.order}</span>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            )}
+          </div>
 
           {/* Rulebook Space */}
           <button className="rules" onClick={openRuleBook}>
