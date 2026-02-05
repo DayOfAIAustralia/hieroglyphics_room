@@ -3,8 +3,8 @@ import "../popups/Popup.css";
 
 export default function ScoreSummary({
   visible,
-  ordersCompleted,
-  totalOrders,
+  ordersCorrect,
+  ordersAttempted,
   points,
   onContinue,
 }) {
@@ -26,16 +26,16 @@ export default function ScoreSummary({
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.25 }}
             >
-              <h2 className="score-title">Time's Up!</h2>
+              <h2 className="score-title">All Orders Complete!</h2>
               <div className="score-stats">
                 <div className="score-stat">
-                  <span className="score-label">Orders Completed</span>
+                  <span className="score-label">Orders Correct</span>
                   <span className="score-value">
-                    {ordersCompleted} / {totalOrders}
+                    {ordersCorrect} / {ordersAttempted}
                   </span>
                 </div>
                 <div className="score-stat">
-                  <span className="score-label">Points Earned</span>
+                  <span className="score-label">Final Score</span>
                   <span className="score-value score-points">{points}</span>
                 </div>
               </div>

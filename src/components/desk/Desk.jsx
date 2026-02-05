@@ -8,7 +8,6 @@ import {
   TouchSensor,
   DragOverlay,
 } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
 import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 import React, {
   useState,
@@ -17,47 +16,27 @@ import React, {
   useCallback,
   useContext,
   useLayoutEffect,
-  createRef,
 } from "react";
-import { v4 as newId } from "uuid";
 import { Wheel } from "react-custom-roulette-r19";
-
-import useSound from "use-sound";
-import spinSound from "../../assets/sounds/spin.wav";
-import bookOpenSound from "../../assets/sounds/bookOpen.wav";
-import bookCloseSound from "../../assets/sounds/bookClose.wav";
-import swooshSound from "../../assets/sounds/swoosh.wav";
-import tileSound from "../../assets/sounds/tile.wav";
-import hornSound from "../../assets/sounds/confetti.wav";
 
 import DictionaryUI from "./DictionaryUI.jsx";
 import SplitPaper from "./SplitPaper.jsx";
 import RuleBook from "./RuleBook.jsx";
 import ScoreSummary from "./ScoreSummary.jsx";
+import TimerDisplay from "./TimerDisplay.jsx";
+import OrderStack from "./OrderStack.jsx";
 import { LevelContext } from "../Context.jsx";
-import { motion, AnimatePresence } from "framer-motion";
 
-import dingSound from "../../assets/sounds/ding.wav";
-import wrongSound from "../../assets/sounds/wrong.wav";
-
-function getTimerDuration(level) {
-  return Math.max(60, 150 - (level - 1) * 30);
-}
-
-const characterContainer = {
-  DICTIONARY: 0,
-  PAPER: 1,
-};
+import useSoundEffects from "./hooks/useSoundEffects.jsx";
+import usePixelHover from "./hooks/usePixelHover.jsx";
+import useScoring from "./hooks/useScoring.jsx";
+import useCharacterDragDrop, {
+  characterContainer,
+} from "./hooks/useCharacterDragDrop.jsx";
+import useSpinWheel from "./hooks/useSpinWheel.jsx";
 
 export default function Desk() {
-  const [playSpin] = useSound(spinSound);
-  const [playBookOpen] = useSound(bookOpenSound);
-  const [playBookClose] = useSound(bookCloseSound);
-  const [playSwoosh] = useSound(swooshSound);
-  const [playTile] = useSound(tileSound);
-  const [playHorn] = useSound(hornSound);
-  const [playDing] = useSound(dingSound);
-  const [playWrong] = useSound(wrongSound);
+  const sounds = useSoundEffects();
 
   const [tutorialState, setTutorialState] =
     useContext(LevelContext).tutorialState;
@@ -69,12 +48,6 @@ export default function Desk() {
     useContext(LevelContext).xpStartLocation;
   const [isTutorial] = useContext(LevelContext).isTutorial;
 
-  const [wheelPresent, setWheelPresent] = useState(false);
-  const [wheelData, setWheelData] = useState({});
-  const [winningNumber, setWinningNumber] = useState();
-  const [activeId, setActiveId] = useState(null);
-  const [parentDisabled, setParentDisabled] = useState(false);
-
   // New state for split paper order system
   const [activeOrder, setActiveOrder] = useState(null);
   const [orderAnimationPhase, setOrderAnimationPhase] = useState("idle");
@@ -82,98 +55,6 @@ export default function Desk() {
   const [questionTiles, setQuestionTiles] = useState([]);
   const [orderQueue, setOrderQueue] = useState([]);
   const orderQueueRef = useRef([]);
-
-  // Timer and scoring state
-  const [timeRemaining, setTimeRemaining] = useState(null);
-  const [timerActive, setTimerActive] = useState(false);
-  const [roundPoints, setRoundPoints] = useState(0);
-  const [roundOrdersCompleted, setRoundOrdersCompleted] = useState(0);
-  const [totalOrders, setTotalOrders] = useState(0);
-  const [showScoreSummary, setShowScoreSummary] = useState(false);
-
-  const dictionaryUIRef = useRef(null);
-  const dictionaryImg = useRef(null);
-  const ruleBookUIRef = useRef(null);
-  const ruleBookImg = useRef(null);
-  const consideredRule = useRef();
-
-  const [isDictionaryHovered, setIsDictionaryHovered] = useState(false);
-  const [isRuleBookHovered, setIsRuleBookHovered] = useState(false);
-
-  const [mustSpin, setMustSpin] = useState(false);
-
-  // Dictionary comes preloaded with all potential values
-  const [characters, setCharacters] = useState([
-    {
-      id: "dictionary",
-      items: [
-        { id: "1", character: "𓀀" },
-        { id: "2", character: "𓁹" },
-        { id: "3", character: "𓂀" },
-        { id: "4", character: "𓂝" },
-        { id: "5", character: "𓂧" },
-        { id: "6", character: "𓂻" },
-        { id: "7", character: "𓃭" },
-        { id: "8", character: "𓃹" },
-        { id: "9", character: "𓃾" },
-        { id: "10", character: "𓃒" },
-        { id: "11", character: "𓅃" },
-        { id: "12", character: "𓅓" },
-        { id: "13", character: "𓅱" },
-        { id: "14", character: "𓅨" },
-        { id: "15", character: "𓆓" },
-        { id: "16", character: "𓆤" },
-        { id: "17", character: "𓆣" },
-        { id: "18", character: "𓆛" },
-        { id: "19", character: "𓆰" },
-        { id: "20", character: "𓆼" },
-        { id: "21", character: "𓇋" },
-        { id: "22", character: "𓇳" },
-        { id: "23", character: "𓇼" },
-        { id: "24", character: "𓈖" },
-        { id: "25", character: "𓈗" },
-        { id: "26", character: "𓈟" },
-        { id: "27", character: "𓉐" },
-        { id: "28", character: "𓊖" },
-        { id: "29", character: "𓊏" },
-        { id: "30", character: "𓊪" },
-        { id: "31", character: "𓋹" },
-        { id: "32", character: "𓊽" },
-        { id: "33", character: "𓎼" },
-        { id: "34", character: "𓌟" },
-        { id: "35", character: "𓍿" },
-        { id: "36", character: "𓌳" },
-        { id: "37", character: "𓌰" },
-        { id: "38", character: "𓋴" },
-        { id: "39", character: "𓎛" },
-        { id: "40", character: "𓏏" },
-        { id: "41", character: "𓏠" },
-        { id: "42", character: "𓏲" },
-        { id: "43", character: "𓏛" },
-        { id: "44", character: "𓀭" },
-        { id: "45", character: "𓁐" },
-        { id: "46", character: "𓄿" },
-        { id: "47", character: "𓅆" },
-        { id: "48", character: "𓅨" },
-        { id: "49", character: "𓆙" },
-        { id: "50", character: "𓆟" },
-        { id: "51", character: "𓇯" },
-        { id: "52", character: "𓈌" },
-        { id: "53", character: "𓉻" },
-        { id: "54", character: "𓊃" },
-        { id: "55", character: "𓋔" },
-        { id: "56", character: "𓌄" },
-        { id: "57", character: "𓊽" },
-        { id: "58", character: "𓎛" },
-        { id: "59", character: "𓏐" },
-        { id: "60", character: "𓐍" },
-      ],
-    },
-    {
-      id: "paper",
-      items: [],
-    },
-  ]);
 
   // All potential rules for the first few levels are predefined
   const [rules, setRules] = useState({
@@ -200,6 +81,59 @@ export default function Desk() {
   const [dictionaryZIndex, setDictionaryZIndex] = useState(10);
   const [rulebookZIndex, setRulebookZIndex] = useState(10);
 
+  const dictionaryUIRef = useRef(null);
+  const dictionaryImg = useRef(null);
+  const ruleBookUIRef = useRef(null);
+  const ruleBookImg = useRef(null);
+
+  // --- Hook wiring ---
+
+  const { isDictionaryHovered, isRuleBookHovered } = usePixelHover(
+    dictionaryImg,
+    ruleBookImg,
+  );
+
+  const dragDrop = useCharacterDragDrop({
+    sounds,
+    setTutorialState,
+    dictionaryZIndex,
+    rulebookZIndex,
+    setDictionaryZIndex,
+    setRulebookZIndex,
+  });
+
+  // Called by useScoring when the per-order timer reaches 0
+  const handleTimerExpired = () => {
+    if (!activeOrder) return;
+    scoring.addSkippedOrder();
+    setTimeout(() => {
+      setActiveOrder(null);
+      setQuestionTiles([]);
+      setOrderAnimationPhase("idle");
+      dragDrop.resetPaper();
+    }, 500);
+  };
+
+  const scoring = useScoring({
+    currentlyPlaying,
+    onTimerExpired: handleTimerExpired,
+  });
+
+  const handleSpinComplete = useCallback((order, newAnswer) => {
+    setRules((prev) => ({
+      ...prev,
+      active: prev.active.map((rule) =>
+        rule.order === order ? { ...rule, answer: newAnswer } : rule,
+      ),
+    }));
+  }, []);
+
+  const spinWheel = useSpinWheel({
+    dictionaryItems: dragDrop.characters[characterContainer.DICTIONARY].items,
+    sounds,
+    onSpinComplete: handleSpinComplete,
+  });
+
   // ORDER FUNCTIONS -----------------------------------------------------
 
   function populateQueue(activeRules) {
@@ -214,39 +148,6 @@ export default function Desk() {
     if (!startUpdate) return;
     moveInactiveRulesToActive(true);
   }, [startUpdate]);
-
-  // Timer initialization - start timer when playing begins (non-tutorial)
-  useEffect(() => {
-    if (currentlyPlaying === true && startUpdate && !isTutorial) {
-      setTimeRemaining(getTimerDuration(level.level));
-      setTimerActive(true);
-      setRoundPoints(0);
-      setRoundOrdersCompleted(0);
-      setTotalOrders(orderQueueRef.current.length);
-    }
-    if (currentlyPlaying === false) {
-      setTimerActive(false);
-    }
-  }, [currentlyPlaying]);
-
-  // Countdown interval
-  useEffect(() => {
-    if (!timerActive || timeRemaining === null || timeRemaining <= 0) return;
-
-    const interval = setInterval(() => {
-      setTimeRemaining((prev) => {
-        if (prev <= 1) {
-          setTimerActive(false);
-          setShowScoreSummary(true);
-          setCurrentlyPlaying(false);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [timerActive, timeRemaining]);
 
   // Instantly creates an order after a new level starts
   useEffect(() => {
@@ -264,7 +165,7 @@ export default function Desk() {
     orderQueueRef.current = orderQueueRef.current.slice(1);
     setOrderQueue([...orderQueueRef.current]);
 
-    playSwoosh();
+    sounds.playSwoosh();
 
     const newOrder = {
       id: selectedRule.id,
@@ -292,11 +193,15 @@ export default function Desk() {
           if (tutorialState === null) {
             setTutorialState("order-received");
           }
+          // Start per-order timer (non-tutorial only)
+          if (startUpdate && !isTutorial) {
+            scoring.startTimer(level.level);
+          }
         },
         tiles.length * 150 + 300,
       ); // Wait for all tile animations
     }, 800); // Time for slip to slide in
-  }, [activeOrder]);
+  }, [activeOrder, startUpdate, isTutorial, level.level]);
 
   // Generate initial tutorial order when isTutorial becomes true (Step 1)
   useEffect(() => {
@@ -319,16 +224,13 @@ export default function Desk() {
     savedCallback.current = generateNewOrder;
   }, [generateNewOrder]);
 
-  // ORDER DELAY TIMER - only trigger when no active order
-  const orderDelay = 3 * 1000; // 3 seconds
-
   // Handle submit button click
   const handleSubmit = useCallback(
     (e) => {
       if (!activeOrder || orderAnimationPhase !== "ready") return;
 
-      const paperString = collectCharacters(
-        characters[characterContainer.PAPER].items,
+      const paperString = dragDrop.collectCharacters(
+        dragDrop.characters[characterContainer.PAPER].items,
       );
       if (!paperString) return;
 
@@ -341,7 +243,7 @@ export default function Desk() {
 
       // Check if answer is correct
       if (question && question.answer === paperString) {
-        playDing();
+        sounds.playDing();
         if (e) {
           setXpStartLocation({ x: e.clientX, y: e.clientY });
         }
@@ -349,63 +251,68 @@ export default function Desk() {
           ...prev,
           xp: prev.xp + xpGainedPerOrder,
         }));
-        setRoundPoints((prev) => prev + 100);
-        setRoundOrdersCompleted((prev) => prev + 1);
+        scoring.addCorrectOrder(
+          scoring.timeRemaining,
+          scoring.orderTimerDurationRef.current || 1,
+        );
 
         // Clear order and reset for next one
         setTimeout(() => {
           setActiveOrder(null);
           setQuestionTiles([]);
           setOrderAnimationPhase("idle");
-          resetPaper();
+          dragDrop.resetPaper();
         }, 500);
       } else {
-        playWrong();
+        sounds.playWrong();
         // Wrong answer - just clear the paper, keep the order
         setTimeout(() => {
-          resetPaper();
+          dragDrop.resetPaper();
           setOrderAnimationPhase("ready");
         }, 500);
       }
 
       setTutorialState("stapled-response");
     },
-    [activeOrder, orderAnimationPhase, characters, rules.active],
+    [activeOrder, orderAnimationPhase, dragDrop.characters, rules.active, scoring.timeRemaining],
   );
 
   // END ORDER FUNCTIONS -----------------------------------------------------
 
   // RULE FUNCTIONS -----------------------------------------------------
 
+  // ORDER DELAY TIMER - only trigger when no active order
+  const orderDelay = 1.5 * 1000;
+
   useEffect(() => {
     if (!currentlyPlaying) return;
-    // Only run timer when no active order
     if (activeOrder !== null) return;
 
-    // Repopulate queue if empty and timer is still active
-    if (orderQueueRef.current.length === 0 && timerActive) {
-      populateQueue(rules.active);
+    if (orderQueueRef.current.length === 0) {
+      if (rules.inactive.length > 0) {
+        moveInactiveRulesToActive();
+      } else {
+        // All rules exhausted — game over
+        scoring.endGame();
+        setCurrentlyPlaying(false);
+        return;
+      }
     }
 
-    // This function wrapper calls whatever is currently in the ref
     const tick = () => {
       savedCallback.current();
     };
-
     const interval = setInterval(tick, orderDelay);
-
     return () => clearInterval(interval);
-  }, [currentlyPlaying, orderDelay, activeOrder]);
+  }, [currentlyPlaying, orderDelay, activeOrder, rules.inactive.length]);
 
   useEffect(() => {
     if (level.level === 0) return;
-    moveInactiveRulesToActive();
     if (level.level === 2) {
-      // reset playing field for new level
       setActiveOrder(null);
       setQuestionTiles([]);
       setOrderAnimationPhase("idle");
-      resetPaper();
+      dragDrop.resetPaper();
     }
   }, [level.level]);
 
@@ -430,60 +337,16 @@ export default function Desk() {
 
   // END RULE FUNCTIONS -----------------------------------------------------
 
-  // SPIN WHEEL FUNCTIONS ---------------------------------------------------
-  function finishSpinning() {
-    playHorn();
-    setTimeout(() => {
-      setMustSpin(false);
-      setWheelPresent(false);
-      setRules((prev) => {
-        return {
-          ...prev,
-          active: prev.active.map((rule) => {
-            if (rule.order === consideredRule.current) {
-              return { ...rule, answer: wheelData[winningNumber].option };
-            } else return rule;
-          }),
-        };
-      });
-    }, 2 * 1000);
-  }
-
-  function updateRule(order) {
-    let data = [];
-    for (let i = 0; i < 10; i++) {
-      let prizeChars = [];
-      for (let j = 0; j < 3; j++) {
-        const randInd = Math.floor(
-          Math.random() *
-            characters[characterContainer.DICTIONARY].items.length,
-        );
-        prizeChars.push(
-          characters[characterContainer.DICTIONARY].items[randInd].character,
-        );
-      }
-      data.push({ option: prizeChars.join("") });
-    }
-    consideredRule.current = order;
-    setWheelData(data);
-    setWinningNumber(Math.floor(Math.random() * data.length));
-    setWheelPresent(true);
-    playSpin();
-
-    requestAnimationFrame(() => {
-      setMustSpin(true);
-    });
-  }
-  // END SPIN WHEEL FUNCTIONS ---------------------------------------------------
+  // DESK OBJECT INTERACTIONS ---------------------------------------------------
 
   function closeDictionary() {
-    playBookClose();
+    sounds.playBookClose();
     dictionaryUIRef.current.style.visibility = "hidden";
     dictionaryImg.current.src = "dictionary.png";
   }
 
   function closeRuleBook() {
-    playBookClose();
+    sounds.playBookClose();
     ruleBookUIRef.current.style.visibility = "hidden";
     ruleBookImg.current.src = "rules.png";
   }
@@ -497,13 +360,12 @@ export default function Desk() {
     ) {
       setTutorialState("dictionary-open");
 
-      playBookOpen();
+      sounds.playBookOpen();
       dictionaryEl.style.visibility = "visible";
       dictionaryImg.current.src = "dictionaryOpen.png";
     }
   }
 
-  // DESK OBJECT INTERACTIONS ---------------------------------------------------
   function openRuleBook() {
     if (!startUpdate && tutorialState != "order-received") return;
 
@@ -514,380 +376,13 @@ export default function Desk() {
     ) {
       setTutorialState("rulebook-open");
 
-      playBookOpen();
+      sounds.playBookOpen();
       ruleBookEl.style.visibility = "visible";
       ruleBookImg.current.src = "rulesOpen.png";
     }
   }
 
-  function findCharacterContainerId(itemId) {
-    if (characters.some((container) => container.id === itemId)) {
-      return itemId;
-    }
-    return characters.find((container) =>
-      container.items.some((item) => item.id === itemId),
-    )?.id;
-  }
-
   // END DESK OBJECT INTERACTIONS ---------------------------------------------------
-
-  // Gets currently held object by user
-  const getActiveItem = () => {
-    let item;
-    for (const container of characters) {
-      item = container.items.find((item) => item.id === activeId);
-      if (item) return item;
-    }
-    return null;
-  };
-
-  // Removes all tiles from the paper
-  function resetPaper() {
-    setCharacters((containers) => {
-      return containers.map((container) => {
-        if (container.id === "paper") {
-          return {
-            id: "paper",
-            items: [],
-          };
-        } else return container;
-      });
-    });
-  }
-
-  // Helper function to turn paper tiles into a readable string
-  function collectCharacters(items) {
-    const charList = items.map((item) => item.character);
-    return charList.join("");
-  }
-
-  // Non drag method for moving tiles between dictionary and paper
-  const handleTileClick = (id = NULL, character, type) => {
-    type === "dictionary" ? playTile() : playSwoosh();
-
-    setCharacters((prev) =>
-      prev.map((c) => {
-        // 1. Create a shallow copy of the container to avoid mutation
-        if (type === "dictionary") {
-          if (c.id === "paper") {
-            if (c.items.length >= 1) {
-              setTutorialState("filled-paper");
-            }
-            return {
-              ...c,
-              items: [...c.items, { id: id, character: character }],
-            };
-          } else {
-            const oldCharIndex = c.items.findIndex((char) => char.id === id);
-            if (oldCharIndex === -1) return c; // Guard clause
-            const newDic = {
-              ...c,
-              items: [
-                ...c.items.slice(0, oldCharIndex),
-                { id: newId(), character: character }, // Use new ID to make a clone
-                ...c.items.slice(oldCharIndex + 1),
-              ],
-            };
-            return normaliseDictionary(newDic);
-          }
-        } else {
-          if (c.id === "paper") {
-            return {
-              ...c,
-              items: c.items.filter((tile) => tile.id !== id),
-            };
-          }
-        }
-        return c;
-      }),
-    );
-  };
-
-  // DnD KIT DRAG FUNCTIONALITY --------------------------------------------------
-
-  function handleDragStart(event) {
-    setActiveId(event.active.id);
-    if (event.active.id === "rulebook-handle") {
-      setRulebookZIndex(dictionaryZIndex + 1);
-    } else if (event.active.id === "dictionary-handle") {
-      setDictionaryZIndex(rulebookZIndex + 1);
-    }
-    document.body.classList.add("dragging-cursor");
-  }
-
-  function handleDragOver(event) {
-    const { active, over } = event;
-
-    // If the user has the object in empty space
-    if (!over) return;
-
-    const activeId = active.id;
-    const overId = over.id;
-
-    // No drag over events for dictionary or rulebook (only tiles)
-    if (active.id === "dictionary-handle" || active.id === "rulebook-handle")
-      return;
-
-    const activeContainerId = findCharacterContainerId(activeId);
-    const overContainerId = findCharacterContainerId(overId);
-    const activeContainerIndex = characters.findIndex(
-      (c) => c.id === activeContainerId,
-    );
-
-    const activeObj = characters[activeContainerIndex].items.find(
-      (item) => item.id === activeId,
-    );
-
-    if (!activeContainerId || !overContainerId) return;
-
-    if (activeContainerId === overContainerId) return;
-
-    setCharacters((prev) => {
-      const activeContainer = prev.find((c) => c.id === activeContainerId);
-      if (!activeContainer) return prev;
-
-      const activeItem = activeContainer.items.find(
-        (item) => item.id === activeId,
-      );
-      if (!activeItem) return prev;
-
-      const newContainers = prev.map((container) => {
-        if (container.id === activeContainerId) {
-          if (container.id === "dictionary") {
-            const currItemIndex = container.items.findIndex(
-              (item) => item.id === activeId,
-            );
-            if (currItemIndex === -1) return container;
-
-            const newDic = {
-              ...container,
-              items: [
-                ...container.items.slice(0, currItemIndex),
-                { ...activeObj, id: newId() },
-                ...container.items.slice(currItemIndex + 1),
-              ],
-            };
-            return newDic;
-          } else {
-            return {
-              ...container,
-              items: container.items.filter((item) => item.id !== activeId),
-            };
-          }
-        }
-        if (container.id === overContainerId) {
-          if (overContainerId === "dictionary") {
-            const newDic = {
-              ...container,
-              items: [
-                ...container.items.filter(
-                  (char) => char.character !== activeObj.character,
-                ),
-                activeObj,
-              ],
-            };
-            return newDic;
-          }
-          if (overId === overContainerId) {
-            return {
-              ...container,
-              items: [...container.items, activeItem],
-            };
-          }
-        }
-
-        const overItemIndex = container.items.findIndex(
-          (item) => item.id === overId,
-        );
-        if (overItemIndex !== -1) {
-          return {
-            ...container,
-            items: [
-              ...container.items.slice(0, overItemIndex + 1),
-              activeItem,
-              ...container.items.slice(overItemIndex + 1),
-            ],
-          };
-        }
-
-        return container;
-      });
-      return newContainers;
-    });
-  }
-
-  function handleCharacterDragEnd(event) {
-    document.body.classList.remove("dragging-cursor");
-    const { active, over } = event;
-    if (!over) {
-      setActiveId(null);
-      return;
-    }
-
-    const prevContainer = findCharacterContainerId(active.id);
-    const newContainer = findCharacterContainerId(over.id);
-    if (!prevContainer || !newContainer) return;
-
-    playTile();
-
-    if (prevContainer === newContainer && active.id !== over.id) {
-      const containerIndex = characters.findIndex(
-        (c) => c.id === prevContainer,
-      );
-
-      if (containerIndex === -1) {
-        setActiveId(null);
-        return;
-      }
-      const container = characters[containerIndex];
-      const activeIndex = container.items.findIndex(
-        (item) => item.id === active.id,
-      );
-      const overIndex = container.items.findIndex(
-        (item) => item.id === over.id,
-      );
-
-      if (activeIndex !== -1 && overIndex !== -1) {
-        const newItems = arrayMove(container.items, activeIndex, overIndex);
-
-        setCharacters((container) => {
-          return container.map((c, i) => {
-            if (i === containerIndex) {
-              return { ...c, items: newItems };
-            } else {
-              return c;
-            }
-          });
-        });
-      }
-    }
-
-    if (newContainer === "dictionary") {
-      setCharacters((prev) => {
-        return prev.map((c) => {
-          if (c.id === "dictionary") {
-            return normaliseDictionary(c);
-          } else {
-            return c;
-          }
-        });
-      });
-    }
-    setActiveId(null);
-
-    if (characters[characterContainer.PAPER].items.length == 2) {
-      setTutorialState("filled-paper");
-    }
-  }
-
-  // END DnD KIT DRAG FUNCTIONALITY --------------------------------------------------
-
-  // Removes duplicate tiles in a dictionary that may be obtained by returning tiles
-  // from the paper
-  function normaliseDictionary(c) {
-    const seen = new Set();
-    const charsSet = c.items.filter((char) => {
-      if (!seen.has(char.character)) {
-        seen.add(char.character);
-        return true;
-      } else {
-        return false;
-      }
-    });
-    return {
-      ...c,
-      items: charsSet,
-    };
-  }
-
-  // Overlay for what is shown while holding a tile
-  function CharacterOverlay({ children, className }) {
-    return (
-      <div className={className}>
-        <span className="character">{children}</span>
-      </div>
-    );
-  }
-
-  // Opaque pixel hover detection - Ensures that buttons can only be clicked where the visible
-  // pixels are, rather than the whole box the image takes up
-  useEffect(() => {
-    const setupPixelHover = (imgRef, canvasRef, setHovered) => {
-      const image = imgRef.current;
-      if (!image) return;
-
-      const handleImageLoad = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = image.naturalWidth;
-        canvas.height = image.naturalHeight;
-        const ctx = canvas.getContext("2d", { willReadFrequently: true });
-        ctx.drawImage(image, 0, 0);
-        canvasRef.current = canvas;
-      };
-
-      if (image.complete) {
-        handleImageLoad();
-      } else {
-        image.addEventListener("load", handleImageLoad);
-      }
-
-      const isOverOpaquePixel = (e) => {
-        const canvas = canvasRef.current;
-        if (!image || !canvas) return false;
-
-        const rect = image.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const scaleX = image.naturalWidth / rect.width;
-        const scaleY = image.naturalHeight / rect.height;
-
-        const ctx = canvas.getContext("2d");
-        const pixel = ctx.getImageData(x * scaleX, y * scaleY, 1, 1).data;
-        return pixel[3] > 0;
-      };
-
-      const handleMouseMove = (e) => {
-        if (isOverOpaquePixel(e)) {
-          setHovered(true);
-        } else {
-          setHovered(false);
-        }
-      };
-
-      const handleMouseLeave = () => {
-        setHovered(false);
-      };
-
-      image.addEventListener("mousemove", handleMouseMove);
-      image.addEventListener("mouseleave", handleMouseLeave);
-
-      return () => {
-        image.removeEventListener("load", handleImageLoad);
-        image.removeEventListener("mousemove", handleMouseMove);
-        image.removeEventListener("mouseleave", handleMouseLeave);
-      };
-    };
-
-    const dictionaryCanvasRef = createRef();
-    const ruleBookCanvasRef = createRef();
-
-    const cleanupDic = setupPixelHover(
-      dictionaryImg,
-      dictionaryCanvasRef,
-      setIsDictionaryHovered,
-    );
-    const cleanupRule = setupPixelHover(
-      ruleBookImg,
-      ruleBookCanvasRef,
-      setIsRuleBookHovered,
-    );
-
-    return () => {
-      if (cleanupDic) cleanupDic();
-      if (cleanupRule) cleanupRule();
-    };
-  }, []);
 
   // Sensor used with DnD Kit to allow picking up tiles, dictionary, and rulebook
   const sensors = useSensors(
@@ -907,16 +402,16 @@ export default function Desk() {
   return (
     <>
       {/* Spinwheel for final level */}
-      {wheelPresent && wheelData.length > 0 && (
+      {spinWheel.wheelPresent && spinWheel.wheelData.length > 0 && (
         <div className="spinner-wheel">
           <Wheel
-            mustStartSpinning={mustSpin}
-            prizeNumber={winningNumber}
-            data={wheelData}
+            mustStartSpinning={spinWheel.mustSpin}
+            prizeNumber={spinWheel.winningNumber}
+            data={spinWheel.wheelData}
             fontSize={24}
             backgroundColors={["#4bc1f5", "#f6cb69"]}
             textColors={["#000000ff"]}
-            onStopSpinning={finishSpinning}
+            onStopSpinning={spinWheel.finishSpinning}
             spinDuration={0.45}
             disableInitialAnimation={true}
           />
@@ -932,60 +427,19 @@ export default function Desk() {
           sensors={sensors}
           autoScroll={false}
           modifiers={[restrictToWindowEdges]}
-          onDragStart={(event) => {
-            event.active.data.current.type === "character"
-              ? setParentDisabled(true)
-              : null;
-            handleDragStart(event);
-          }}
-          onDragOver={handleDragOver}
-          onDragEnd={({ active, over }) => {
-            setParentDisabled(false);
-            handleCharacterDragEnd({ active, over });
-          }}
+          onDragStart={dragDrop.handleDragStart}
+          onDragOver={dragDrop.handleDragOver}
+          onDragEnd={dragDrop.handleCharacterDragEnd}
         >
           {/* Order stack */}
           <div className="orders">
-            {timerActive && timeRemaining !== null && (
-              <div className="level-timer">
-                <div
-                  className={`timer-display${timeRemaining <= 10 ? " timer-critical" : ""}`}
-                >
-                  <span>
-                    {Math.floor(timeRemaining / 60)}:
-                    {String(timeRemaining % 60).padStart(2, "0")}
-                  </span>
-                </div>
-                <div className="points-display">
-                  <span>{roundPoints} pts</span>
-                </div>
-              </div>
-            )}
-            {startUpdate && (
-              <div className="order-stack">
-                <AnimatePresence>
-                  {orderQueue.map((rule, i) => (
-                    <motion.div
-                      key={rule.id}
-                      className="order-stack-slip"
-                      style={{
-                        bottom: `${i * 8}px`,
-                        left: `${i * 3}px`,
-                      }}
-                      initial={{ opacity: 1, x: 0 }}
-                      exit={{ x: 200, opacity: 0 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 100,
-                        damping: 15,
-                      }}
-                    >
-                      <span className="character">{rule.order}</span>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            )}
+            <TimerDisplay
+              timerActive={scoring.timerActive}
+              timeRemaining={scoring.timeRemaining}
+              totalPoints={scoring.totalPoints}
+              visible={startUpdate && !isTutorial}
+            />
+            <OrderStack orderQueue={orderQueue} visible={startUpdate} />
           </div>
 
           {/* Rulebook Space */}
@@ -999,7 +453,7 @@ export default function Desk() {
             <RuleBook
               ref={ruleBookUIRef}
               rules={rules}
-              updateRule={updateRule}
+              updateRule={spinWheel.updateRule}
               zIndex={rulebookZIndex}
               onClose={closeRuleBook}
             />
@@ -1009,16 +463,16 @@ export default function Desk() {
           <div className="workspace">
             <SplitPaper
               questionTiles={questionTiles}
-              answerContainer={characters.find(
+              answerContainer={dragDrop.characters.find(
                 (container) => container.id === "paper",
               )}
-              handleTileClick={handleTileClick}
+              handleTileClick={dragDrop.handleTileClick}
               onSubmit={handleSubmit}
               orderAnimationPhase={orderAnimationPhase}
               activeOrder={activeOrder}
               canSubmit={
                 orderAnimationPhase === "ready" &&
-                characters[characterContainer.PAPER].items.length > 0
+                dragDrop.characters[characterContainer.PAPER].items.length > 0
               }
             />
           </div>
@@ -1032,13 +486,13 @@ export default function Desk() {
               className={isDictionaryHovered ? "hovered" : ""}
             ></img>
             <DictionaryUI
-              dictionary={characters.find(
+              dictionary={dragDrop.characters.find(
                 (container) => container.id === "dictionary",
               )}
               ref={dictionaryUIRef}
               rules={rules}
               zIndex={dictionaryZIndex}
-              handleTileClick={handleTileClick}
+              handleTileClick={dragDrop.handleTileClick}
               onClose={closeDictionary}
             />
           </button>
@@ -1050,24 +504,21 @@ export default function Desk() {
               easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
             }}
           >
-            {activeId && getActiveItem() !== null ? (
-              <CharacterOverlay className="draggable">
-                {getActiveItem()?.character}
-              </CharacterOverlay>
+            {dragDrop.activeId && dragDrop.getActiveItem() !== null ? (
+              <dragDrop.CharacterOverlay className="draggable">
+                {dragDrop.getActiveItem()?.character}
+              </dragDrop.CharacterOverlay>
             ) : null}
           </DragOverlay>
         </DndContext>
       </section>
 
       <ScoreSummary
-        visible={showScoreSummary}
-        ordersCompleted={roundOrdersCompleted}
-        totalOrders={totalOrders}
-        points={roundPoints}
-        onContinue={() => {
-          setShowScoreSummary(false);
-          setCurrentlyPlaying(true);
-        }}
+        visible={scoring.showFinalScore}
+        ordersCorrect={scoring.totalOrdersCorrect}
+        ordersAttempted={scoring.totalOrdersAttempted}
+        points={scoring.totalPoints}
+        onContinue={scoring.dismissScore}
       />
     </>
   );
