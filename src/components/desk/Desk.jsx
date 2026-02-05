@@ -33,11 +33,16 @@ import hornSound from "../../assets/sounds/confetti.wav";
 import DictionaryUI from "./DictionaryUI.jsx";
 import SplitPaper from "./SplitPaper.jsx";
 import RuleBook from "./RuleBook.jsx";
+import ScoreSummary from "./ScoreSummary.jsx";
 import { LevelContext } from "../Context.jsx";
 import { motion, AnimatePresence } from "framer-motion";
 
 import dingSound from "../../assets/sounds/ding.wav";
 import wrongSound from "../../assets/sounds/wrong.wav";
+
+function getTimerDuration(level) {
+  return Math.max(60, 150 - (level - 1) * 30);
+}
 
 const characterContainer = {
   DICTIONARY: 0,
@@ -77,6 +82,14 @@ export default function Desk() {
   const [questionTiles, setQuestionTiles] = useState([]);
   const [orderQueue, setOrderQueue] = useState([]);
   const orderQueueRef = useRef([]);
+
+  // Timer and scoring state
+  const [timeRemaining, setTimeRemaining] = useState(null);
+  const [timerActive, setTimerActive] = useState(false);
+  const [roundPoints, setRoundPoints] = useState(0);
+  const [roundOrdersCompleted, setRoundOrdersCompleted] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [showScoreSummary, setShowScoreSummary] = useState(false);
 
   const dictionaryUIRef = useRef(null);
   const dictionaryImg = useRef(null);
@@ -202,6 +215,39 @@ export default function Desk() {
     moveInactiveRulesToActive(true);
   }, [startUpdate]);
 
+  // Timer initialization - start timer when playing begins (non-tutorial)
+  useEffect(() => {
+    if (currentlyPlaying === true && startUpdate && !isTutorial) {
+      setTimeRemaining(getTimerDuration(level.level));
+      setTimerActive(true);
+      setRoundPoints(0);
+      setRoundOrdersCompleted(0);
+      setTotalOrders(orderQueueRef.current.length);
+    }
+    if (currentlyPlaying === false) {
+      setTimerActive(false);
+    }
+  }, [currentlyPlaying]);
+
+  // Countdown interval
+  useEffect(() => {
+    if (!timerActive || timeRemaining === null || timeRemaining <= 0) return;
+
+    const interval = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev <= 1) {
+          setTimerActive(false);
+          setShowScoreSummary(true);
+          setCurrentlyPlaying(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timerActive, timeRemaining]);
+
   // Instantly creates an order after a new level starts
   useEffect(() => {
     if (currentlyPlaying === true) {
@@ -303,6 +349,8 @@ export default function Desk() {
           ...prev,
           xp: prev.xp + xpGainedPerOrder,
         }));
+        setRoundPoints((prev) => prev + 100);
+        setRoundOrdersCompleted((prev) => prev + 1);
 
         // Clear order and reset for next one
         setTimeout(() => {
@@ -333,6 +381,11 @@ export default function Desk() {
     if (!currentlyPlaying) return;
     // Only run timer when no active order
     if (activeOrder !== null) return;
+
+    // Repopulate queue if empty and timer is still active
+    if (orderQueueRef.current.length === 0 && timerActive) {
+      populateQueue(rules.active);
+    }
 
     // This function wrapper calls whatever is currently in the ref
     const tick = () => {
@@ -893,6 +946,21 @@ export default function Desk() {
         >
           {/* Order stack */}
           <div className="orders">
+            {timerActive && timeRemaining !== null && (
+              <div className="level-timer">
+                <div
+                  className={`timer-display${timeRemaining <= 10 ? " timer-critical" : ""}`}
+                >
+                  <span>
+                    {Math.floor(timeRemaining / 60)}:
+                    {String(timeRemaining % 60).padStart(2, "0")}
+                  </span>
+                </div>
+                <div className="points-display">
+                  <span>{roundPoints} pts</span>
+                </div>
+              </div>
+            )}
             {startUpdate && (
               <div className="order-stack">
                 <AnimatePresence>
@@ -901,8 +969,8 @@ export default function Desk() {
                       key={rule.id}
                       className="order-stack-slip"
                       style={{
-                        bottom: `${i * 5}px`,
-                        left: `${i * 2}px`,
+                        bottom: `${i * 8}px`,
+                        left: `${i * 3}px`,
                       }}
                       initial={{ opacity: 1, x: 0 }}
                       exit={{ x: 200, opacity: 0 }}
@@ -990,6 +1058,17 @@ export default function Desk() {
           </DragOverlay>
         </DndContext>
       </section>
+
+      <ScoreSummary
+        visible={showScoreSummary}
+        ordersCompleted={roundOrdersCompleted}
+        totalOrders={totalOrders}
+        points={roundPoints}
+        onContinue={() => {
+          setShowScoreSummary(false);
+          setCurrentlyPlaying(true);
+        }}
+      />
     </>
   );
 }

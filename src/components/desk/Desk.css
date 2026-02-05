@@ -4,7 +4,7 @@
   padding: 0;
 
   display: grid;
-  grid-template-columns: 5% 35% 20% 35% 5%;
+  grid-template-columns: 10% 30% 20% 35% 5%;
   grid-template-areas: "orders rules workspace dictionary empty";
 
   width: 100%;
@@ -26,27 +26,27 @@
   overflow: visible;
 }
 
-.order-stack {
+. {
   position: absolute;
   bottom: 12px;
   left: 4px;
-  width: 10vh;
+  width: 14vh;
 }
 
 .order-stack-slip {
   position: absolute;
   background-image: url("/slip.png");
   background-size: 100% 100%;
-  width: 10vh;
-  min-height: 5vh;
-  padding: 4px 6px;
+  width: 14vh;
+  min-height: 7vh;
+  padding: 8px 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .order-stack-slip .character {
-  font-size: 0.8rem;
+  font-size: 1.1rem;
 }
 
 .paper-ui {
@@ -283,7 +283,7 @@
 
 .dictionary > img {
   margin: 0;
-  width: 30vw;
+  width: 550px;
   transition: transform 0.2s ease-in-out;
 }
 
@@ -368,7 +368,7 @@ body.stapler-cursor * {
 
 .rules > img {
   margin: 0;
-  width: 30vw;
+  width: 550px;
   transition: transform 0.2s ease-in-out;
 }
 
@@ -523,4 +523,96 @@ body.stapler-cursor * {
   font-family: "Jersey 10", sans-serif;
   font-size: 14px;
   color: #333;
+}
+
+/* Level Timer */
+.level-timer {
+  position: absolute;
+  top: 8px;
+  left: 4px;
+  width: 14vh;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 5;
+}
+
+.timer-display,
+.points-display {
+  background-image: url("/slip.png");
+  background-size: 100% 100%;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Jersey 10", sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+}
+
+.timer-display span {
+  color: #333;
+}
+
+.timer-critical span {
+  color: #c0392b;
+  animation: timer-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.08);
+  }
+}
+
+.points-display span {
+  color: #27ae60;
+}
+
+/* Score Summary */
+.score-summary {
+  max-width: 400px;
+}
+
+.score-title {
+  font-family: "Jersey 10", sans-serif;
+  font-size: 2rem;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.score-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 12px 0;
+}
+
+.score-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.score-label {
+  font-family: "Jersey 10", sans-serif;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.score-value {
+  font-family: "Jersey 10", sans-serif;
+  font-size: 1.5rem;
+}
+
+.score-points {
+  color: #27ae60;
 }
