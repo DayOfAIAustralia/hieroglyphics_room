@@ -78,6 +78,7 @@ export default function Desk() {
     ],
     active: [{ id: 6, order: "𓊽𓉐𓉐", answer: "𓃾𓆓" }],
   });
+  const [timerPaused, setTimerPaused] = useState(false);
   const [dictionaryZIndex, setDictionaryZIndex] = useState(10);
   const [rulebookZIndex, setRulebookZIndex] = useState(10);
 
@@ -105,6 +106,7 @@ export default function Desk() {
   // Called by useScoring when the per-order timer reaches 0
   const handleTimerExpired = () => {
     if (!activeOrder) return;
+    sounds.playWrong();
     scoring.addSkippedOrder();
     setTimeout(() => {
       setActiveOrder(null);
@@ -117,6 +119,7 @@ export default function Desk() {
   const scoring = useScoring({
     currentlyPlaying,
     onTimerExpired: handleTimerExpired,
+    paused: timerPaused,
   });
 
   const handleSpinComplete = useCallback((order, newAnswer) => {
@@ -133,6 +136,10 @@ export default function Desk() {
     sounds,
     onSpinComplete: handleSpinComplete,
   });
+
+  useEffect(() => {
+    setTimerPaused(spinWheel.wheelPresent);
+  }, [spinWheel.wheelPresent]);
 
   // ORDER FUNCTIONS -----------------------------------------------------
 

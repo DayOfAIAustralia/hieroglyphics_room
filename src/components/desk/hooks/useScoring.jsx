@@ -4,7 +4,7 @@ function getOrderTimerDuration(level) {
   return Math.max(10, 20 - (level - 1) * 5);
 }
 
-export default function useScoring({ currentlyPlaying, onTimerExpired }) {
+export default function useScoring({ currentlyPlaying, onTimerExpired, paused }) {
   const [timeRemaining, setTimeRemaining] = useState(null);
   const [timerActive, setTimerActive] = useState(false);
   const orderTimerDurationRef = useRef(null);
@@ -29,7 +29,7 @@ export default function useScoring({ currentlyPlaying, onTimerExpired }) {
 
   // Countdown interval
   useEffect(() => {
-    if (!timerActive || timeRemaining === null || timeRemaining <= 0) return;
+    if (!timerActive || timeRemaining === null || timeRemaining <= 0 || paused) return;
     const interval = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev <= 1) {
@@ -40,7 +40,7 @@ export default function useScoring({ currentlyPlaying, onTimerExpired }) {
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [timerActive, timeRemaining]);
+  }, [timerActive, timeRemaining, paused]);
 
   // Timeout handler: notify Desk when timer reaches 0
   useEffect(() => {
