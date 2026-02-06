@@ -55,6 +55,7 @@ export default function Desk() {
   const [questionTiles, setQuestionTiles] = useState([]);
   const [orderQueue, setOrderQueue] = useState([]);
   const orderQueueRef = useRef([]);
+  const completedOrderIdsRef = useRef(new Set());
 
   // All potential rules for the first few levels are predefined
   const [rules, setRules] = useState({
@@ -144,10 +145,16 @@ export default function Desk() {
   // ORDER FUNCTIONS -----------------------------------------------------
 
   function populateQueue(activeRules) {
-    const shuffled = [...activeRules].sort(() => Math.random() - 0.5);
+    // Filter out already-completed orders
+    const pending = activeRules.filter((r) => !completedOrderIdsRef.current.has(r.id));
+    const shuffled = [...pending].sort(() => Math.random() - 0.5);
     orderQueueRef.current = shuffled;
     setOrderQueue(shuffled);
-    setLevel((prev) => ({ ...prev, xpRequired: activeRules.length * 30 }));
+    // For Level 0, preserve initial xpRequired (90) which includes the tutorial order
+    // For other levels, calculate based on active rules
+    if (level.level !== 0) {
+      setLevel((prev) => ({ ...prev, xpRequired: activeRules.length * 30 }));
+    }
   }
 
   // Fills the rulebook with new rules once the tutorial ends
@@ -263,6 +270,9 @@ export default function Desk() {
           scoring.orderTimerDurationRef.current || 1,
         );
 
+        // Mark order as completed so it won't reappear in queue
+        completedOrderIdsRef.current.add(question.id);
+
         // Clear order and reset for next one
         setTimeout(() => {
           setActiveOrder(null);
@@ -293,6 +303,7 @@ export default function Desk() {
 
   useEffect(() => {
     if (!currentlyPlaying) return;
+    if (!startUpdate) return;  // Don't run during tutorial
     if (activeOrder !== null) return;
 
     if (orderQueueRef.current.length === 0) {
@@ -315,6 +326,9 @@ export default function Desk() {
 
   useEffect(() => {
     if (level.level === 0) return;
+    // Clear existing orders and start fresh with correct count for new level
+    completedOrderIdsRef.current = new Set();
+    moveInactiveRulesToActive(true);
     if (level.level === 2) {
       setActiveOrder(null);
       setQuestionTiles([]);
@@ -324,7 +338,7 @@ export default function Desk() {
   }, [level.level]);
 
   function moveInactiveRulesToActive(clearExisting = false) {
-    const count = Math.min(4, rules.inactive.length);
+    const count = Math.min(level.level === 0 ? 2 : 5, rules.inactive.length);
     const take = rules.inactive.slice(0, count);
     const rest = rules.inactive.slice(count);
     const existingActive = clearExisting ? [] : rules.active;
