@@ -34,7 +34,7 @@ export default function ChineseRoom({gameOver}) {
     const grantXp = (originEl) => {
         burst(
             originEl || { x: window.innerWidth - 40, y: window.innerHeight - 40 }, // from
-            xpIconRef.current || { x: 12, y: 12 },                              // to
+            ".points-display",                                                   // to
             { count: 42, scatter: 120, color: "limegreen", size: 8 }
         );
     };

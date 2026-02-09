@@ -109,6 +109,10 @@ export default function Desk() {
     if (!activeOrder) return;
     sounds.playWrong();
     scoring.addSkippedOrder();
+
+    // Mark order as completed so it won't regenerate
+    completedOrderIdsRef.current.add(activeOrder.id);
+
     setTimeout(() => {
       setActiveOrder(null);
       setQuestionTiles([]);
@@ -146,7 +150,9 @@ export default function Desk() {
 
   function populateQueue(activeRules) {
     // Filter out already-completed orders
-    const pending = activeRules.filter((r) => !completedOrderIdsRef.current.has(r.id));
+    const pending = activeRules.filter(
+      (r) => !completedOrderIdsRef.current.has(r.id),
+    );
     const shuffled = [...pending].sort(() => Math.random() - 0.5);
     orderQueueRef.current = shuffled;
     setOrderQueue(shuffled);
@@ -291,7 +297,13 @@ export default function Desk() {
 
       setTutorialState("stapled-response");
     },
-    [activeOrder, orderAnimationPhase, dragDrop.characters, rules.active, scoring.timeRemaining],
+    [
+      activeOrder,
+      orderAnimationPhase,
+      dragDrop.characters,
+      rules.active,
+      scoring.timeRemaining,
+    ],
   );
 
   // END ORDER FUNCTIONS -----------------------------------------------------
@@ -303,7 +315,7 @@ export default function Desk() {
 
   useEffect(() => {
     if (!currentlyPlaying) return;
-    if (!startUpdate) return;  // Don't run during tutorial
+    if (!startUpdate) return; // Don't run during tutorial
     if (activeOrder !== null) return;
 
     if (orderQueueRef.current.length === 0) {
