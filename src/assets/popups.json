@@ -63,7 +63,7 @@
         "actions": 0
       },
       {
-        "text": "**Step 2:** Open your **rulebook** to find out how to respond.\n\nYou can drag the popup around as needed. After the tutorial, if you want to close it, just click the book again.",
+        "text": "**Step 2:** Open your **rulebook** to find out how to respond.\n\n",
         "buttons": [
           {
             "id": 1,
@@ -74,7 +74,7 @@
         "actions": 1
       },
       {
-        "text": "**Step 3:** To make your response, click the **dictionary** below to access your available characters.\n\nYou can drag the popout dictionary around too!",
+        "text": "**Step 3:** To make your response, click the **dictionary** below to access your available characters.\n\n",
         "buttons": [
           {
             "id": 1,
@@ -85,7 +85,7 @@
         "actions": 2
       },
       {
-        "text": "**Step 4:** Using the rule stated in the rulebook, drag the characters from the dictionary onto the paper in the **right order**.\n\n Alternatively, you can also just click the tiles on the dictionary or paper to instantaneously transfer symbols onto or off of the paper!",
+        "text": "**Step 4:** Using the rule stated in the rulebook, click or drag the characters from the dictionary onto the paper in the **right order**.\n\nYou can click on the tiles already placed on the paper if you make a mistake",
         "buttons": [
           {
             "id": 1,
@@ -118,7 +118,7 @@
         "actions": 7
       },
       {
-        "text": "### 🎉 Tutorial Complete!\n\nI think you're ready to do this for real.\n\nKeep a look out on the top left to keep track of how you're progressing. Check out the rulebook popout to see all the new rules, pay attention to the bottom of it which lets you swap pages.\n\n We'll be explaining the meaning of all this labour soon. Good luck!\n\n*P.S. If you ever forget how to play, you can click the help button in the top right for a quick reminder.*",
+        "text": "### 🎉 Tutorial Complete!\n\nI think you're ready to do this for real.\n\nKeep a look out on the top left to keep track of how you're progressing. You must complete each order with the time limit shown on the left. You get more points for finishing orders faster! Check out the rulebook popout to see all the new rules, pay attention to the bottom of it which lets you swap pages.\n\n We'll be explaining the meaning of all this labour soon. Good luck!\n\n*P.S. If you ever forget how to play, you can click the help button in the top right for a quick reminder.*",
         "buttons": [
           {
             "id": 1,
