@@ -181,8 +181,8 @@ export default function Desk() {
     if (orderQueueRef.current.length === 0) return;
     if (activeOrder !== null) return;
 
-    const selectedRule = orderQueueRef.current[0];
-    orderQueueRef.current = orderQueueRef.current.slice(1);
+    const selectedRule = orderQueueRef.current[orderQueueRef.current.length - 1];
+    orderQueueRef.current = orderQueueRef.current.slice(0, -1);
     setOrderQueue([...orderQueueRef.current]);
 
     sounds.playSwoosh();
