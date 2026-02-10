@@ -28,6 +28,10 @@ export default function RuleBook({ ref, rules, updateRule = null, zIndex, onClos
     if (currentlyPlaying) return;
 
     setCurrPage(1);
+  }, [rules]);
+
+  // Re-enable generate button after rules update (spin complete)
+  useEffect(() => {
     setDisabled(false);
   }, [rules]);
 
