@@ -11,6 +11,7 @@ export default function SplitPaper({
   orderAnimationPhase,
   activeOrder,
   canSubmit,
+  incorrectShake,
 }) {
   const answerItems = answerContainer.items;
 
@@ -52,7 +53,7 @@ export default function SplitPaper({
   ));
 
   return (
-    <div className="split-paper">
+    <div className={`split-paper ${incorrectShake ? "paper-shake" : ""}`}>
       {/* Order slip animation */}
       <AnimatePresence>
         {(orderAnimationPhase === "sliding-in" ||
@@ -111,6 +112,20 @@ export default function SplitPaper({
       >
         Submit
       </button>
+
+      <AnimatePresence>
+        {incorrectShake && (
+          <motion.div
+            className="incorrect-feedback"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+          >
+            Try again!
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

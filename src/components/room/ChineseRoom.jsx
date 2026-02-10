@@ -39,7 +39,7 @@ export default function ChineseRoom({gameOver}) {
         );
     };
 
-    const { level, prestige, xp, xpRequired } = levelData
+    const { level, prestige, xp, xpRequired, ordersCompleted, ordersTotal } = levelData
     
     // Music
 
@@ -113,22 +113,27 @@ export default function ChineseRoom({gameOver}) {
 
     // Level-up
 
-    const levelProgress = (xp / xpRequired) * 100;
+    const levelProgress = ordersTotal > 0 ? (ordersCompleted / ordersTotal) * 100 : 0;
 
     const levelProgressStyle = {
         width: `${levelProgress}%`,
         height: '100%',
     }
 
+    // XP particle animation (fires only on correct answers)
     useEffect(() => {
         if (xp !== 0) {
             grantXp(xpStartLocation)
             playXp()
         }
-        if (xp >= xpRequired) {
+    }, [xp])
+
+    // Level-up check (fires on any order completion)
+    useEffect(() => {
+        if (ordersCompleted > 0 && ordersCompleted >= ordersTotal) {
             executeLevelUp()
         }
-    }, [xp])
+    }, [ordersCompleted])
 
     function executeLevelUp() {
         setLevel(prev => {
@@ -136,6 +141,7 @@ export default function ChineseRoom({gameOver}) {
                 ...prev,
                 level: prev.level + 1,
                 xp: prev.xp - prev.xpRequired,
+                ordersCompleted: 0,
             }
         })
     }

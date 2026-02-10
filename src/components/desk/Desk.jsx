@@ -54,6 +54,7 @@ export default function Desk() {
   // Phases: 'idle' | 'sliding-in' | 'placing-tiles' | 'ready' | 'submitting'
   const [questionTiles, setQuestionTiles] = useState([]);
   const [orderQueue, setOrderQueue] = useState([]);
+  const [incorrectShake, setIncorrectShake] = useState(false);
   const orderQueueRef = useRef([]);
   const completedOrderIdsRef = useRef(new Set());
 
@@ -112,6 +113,10 @@ export default function Desk() {
 
     // Mark order as completed so it won't regenerate
     completedOrderIdsRef.current.add(activeOrder.id);
+    setLevel((prev) => ({
+      ...prev,
+      ordersCompleted: prev.ordersCompleted + 1,
+    }));
 
     setTimeout(() => {
       setActiveOrder(null);
@@ -159,7 +164,11 @@ export default function Desk() {
     // For Level 0, preserve initial xpRequired (90) which includes the tutorial order
     // For other levels, calculate based on active rules
     if (level.level !== 0) {
-      setLevel((prev) => ({ ...prev, xpRequired: activeRules.length * 30 }));
+      setLevel((prev) => ({
+        ...prev,
+        xpRequired: activeRules.length * 30,
+        ordersTotal: activeRules.length,
+      }));
     }
   }
 
@@ -270,6 +279,7 @@ export default function Desk() {
         setLevel((prev) => ({
           ...prev,
           xp: prev.xp + xpGainedPerOrder,
+          ordersCompleted: prev.ordersCompleted + 1,
         }));
         scoring.addCorrectOrder(
           scoring.timeRemaining,
@@ -278,6 +288,8 @@ export default function Desk() {
 
         // Mark order as completed so it won't reappear in queue
         completedOrderIdsRef.current.add(question.id);
+
+        setTutorialState("stapled-response");
 
         // Clear order and reset for next one
         setTimeout(() => {
@@ -288,14 +300,15 @@ export default function Desk() {
         }, 500);
       } else {
         sounds.playWrong();
-        // Wrong answer - just clear the paper, keep the order
+        setIncorrectShake(true);
+
+        // Wrong answer - shake and let the player retry
         setTimeout(() => {
+          setIncorrectShake(false);
           dragDrop.resetPaper();
           setOrderAnimationPhase("ready");
-        }, 500);
+        }, 1000);
       }
-
-      setTutorialState("stapled-response");
     },
     [
       activeOrder,
@@ -507,6 +520,7 @@ export default function Desk() {
                 orderAnimationPhase === "ready" &&
                 dragDrop.characters[characterContainer.PAPER].items.length > 0
               }
+              incorrectShake={incorrectShake}
             />
           </div>
 

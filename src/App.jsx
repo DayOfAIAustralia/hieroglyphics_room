@@ -16,7 +16,9 @@ function App() {
   const [level, setLevel] = useState({
     level: 0, // can change to skip to later levels
     xp: 0,
-    xpRequired: 90
+    xpRequired: 90,
+    ordersCompleted: 0,
+    ordersTotal: 3,
   })
 
   // Global context values needed across components

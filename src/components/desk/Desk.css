@@ -624,3 +624,33 @@ body.stapler-cursor * {
 .score-points {
   color: #27ae60;
 }
+
+@keyframes paper-shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-6px); }
+  30% { transform: translateX(6px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+  90% { transform: translateX(2px); }
+}
+
+.paper-shake {
+  animation: paper-shake 0.5s ease-in-out;
+}
+
+.incorrect-feedback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(192, 57, 43, 0.9);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-family: "Jersey 10", sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  z-index: 10;
+  pointer-events: none;
+}
