@@ -220,7 +220,7 @@ export default function Desk() {
           setOrderAnimationPhase("ready");
           // Trigger tutorial state when first order is displayed
           if (tutorialState === null) {
-            setTutorialState("order-received");
+            setTutorialState("order-appearing");
           }
           // Start per-order timer (non-tutorial only)
           if (startUpdate && !isTutorial) {

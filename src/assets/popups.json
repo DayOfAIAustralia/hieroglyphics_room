@@ -56,7 +56,7 @@
         "buttons": [
           {
             "id": 1,
-            "text": "Cool",
+            "text": "Got it!",
             "goto": 5
           }
         ],

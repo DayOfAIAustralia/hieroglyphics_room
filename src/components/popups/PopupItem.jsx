@@ -63,14 +63,13 @@ export default function PopupItem({
   useEffect(() => {
     if (actions === 0) {
       setIsTutorial(true);
-      setUseButton(false);
+      setUseButton(true);
 
       setShowTutorialArrow(true);
       playSwoosh();
       // Order is now created automatically by Desk.jsx
 
-      setPosition({ top: "30%", left: "10%", right: "auto", bottom: "auto" });
-      // Arrow positioned to left of paper, pointing right at the tiles
+      setPosition({ top: "25%", left: "10%", right: "auto", bottom: "auto" });
       setArrowLocation({
         top: "auto",
         left: "28%",
@@ -80,14 +79,16 @@ export default function PopupItem({
       setArrowRotation(0);
       setArrowMoveDirection("horizontal");
     } else if (actions === 1) {
-      setPosition({ top: "30%", left: "0", right: "auto", bottom: "auto" });
+      setTutorialState("order-received");
+      setUseButton(false);
+      setPosition({ top: "35%", left: "0", right: "auto", bottom: "auto" });
       setArrowLocation({
-        top: "45%",
-        left: "15%",
-        right: "16%",
-        bottom: "20%",
+        top: "50%",
+        left: "5%",
+        right: "auto",
+        bottom: "auto",
       });
-      setArrowRotation(90);
+      setArrowRotation(0);
       setArrowMoveDirection("horizontal");
     } else if (actions === 2) {
       setPosition({ top: "30%", left: "auto", right: "0", bottom: "auto" });
@@ -177,12 +178,7 @@ export default function PopupItem({
       movementKeyframes = {};
   }
 
-  // Handle arrow click for Step 1 (actions === 0)
-  const handleArrowClick = () => {
-    if (actions === 0) {
-      updateDialogue(buttons[0].goto);
-    }
-  };
+  const handleArrowClick = () => {};
 
   const arrow = (
     <motion.img
@@ -191,7 +187,7 @@ export default function PopupItem({
       alt="glowing arrow"
       style={{
         ...arrowLocation,
-        cursor: actions === 0 ? "pointer" : "default",
+        cursor: "default",
       }}
       className="tutorial-arrow"
       onClick={handleArrowClick}
@@ -219,7 +215,6 @@ export default function PopupItem({
   let dataStyle;
   let btnClass = "popup-btns-bottom";
   if (actions !== undefined && actions < 7) {
-    btnClass = "popup-btns-side";
     popupStyle = {
       position: "absolute",
       width: "auto",
@@ -229,10 +224,13 @@ export default function PopupItem({
       right: position.right,
       bottom: position.bottom,
     };
-    dataStyle = {
-      display: "flex",
-      flexDirection: "row",
-    };
+    if (actions > 0) {
+      btnClass = "popup-btns-side";
+      dataStyle = {
+        display: "flex",
+        flexDirection: "row",
+      };
+    }
   }
 
   // Requesting AI Help functions
