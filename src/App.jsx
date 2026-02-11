@@ -18,6 +18,7 @@ function App() {
     xp: 0,
     xpRequired: 90,
     ordersCompleted: 0,
+    orderResults: [],
     ordersTotal: 3,
   })
 
@@ -35,6 +36,8 @@ function App() {
   const [xpStartLocation, setXpStartLocation] = useState({x: 0, y: 0})
 
   const [isTutorial, setIsTutorial] = useState(false)
+
+  const [totalPoints, setTotalPoints] = useState(0)
 
   // Preloading work
   useEffect(() => {
@@ -132,7 +135,7 @@ function App() {
       </AnimatePresence>
 
       {/* Game context and components */}
-      <LevelContext value={{level: [level, setLevel], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState], xpStartLocation: [xpStartLocation, setXpStartLocation], isTutorial: [isTutorial, setIsTutorial]
+      <LevelContext value={{level: [level, setLevel], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState], xpStartLocation: [xpStartLocation, setXpStartLocation], isTutorial: [isTutorial, setIsTutorial], totalPoints: [totalPoints, setTotalPoints]
       }}>
         <Popups orders={[orders, setOrders]} setGameOver={setGameOver}/>
         <ChineseRoom gameOver={gameOver}/>

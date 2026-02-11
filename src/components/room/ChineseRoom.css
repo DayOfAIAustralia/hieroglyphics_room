@@ -14,7 +14,7 @@
   position: absolute;
 }
 
-.level-data {
+.level-container {
   height: 40%;
   width: 30%;
   position: absolute;
@@ -25,21 +25,45 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 8px;
+}
+
+.level-data {
+  background: url("/slip.png") center/100% 100% no-repeat;
+  padding: 20px;
+  min-width: fit-content;
 }
 
 .level-bar {
-  border-radius: 10px;
-  width: 80%;
-  height: 30%;
-
-  background-color: rgba(133, 149, 173, 0.75);
-  border: 1px solid blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: nowrap;
 }
 
-.level-progress {
+.progress-dot {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid black;
+  background: transparent;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+.dot-correct {
   background-color: rgb(47, 190, 47);
-  transition: width 0.5s;
-  border-radius: 10px;
+  border-color: rgb(37, 160, 37);
+}
+
+.dot-skipped {
+  background-color: rgb(220, 60, 60);
+  border-color: rgb(180, 40, 40);
 }
 
 .level-number > span {
@@ -47,6 +71,14 @@
   font-weight: 400;
   font-style: normal;
   font-size: 32px;
+}
+
+.level-points > span {
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+  color: #27ae60;
 }
 
 .overlay-btn-container {

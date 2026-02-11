@@ -21,9 +21,9 @@ import { Wheel } from "react-custom-roulette-r19";
 
 import DictionaryUI from "./DictionaryUI.jsx";
 import SplitPaper from "./SplitPaper.jsx";
+import TimerDisplay from "./TimerDisplay.jsx";
 import RuleBook from "./RuleBook.jsx";
 import ScoreSummary from "./ScoreSummary.jsx";
-import TimerDisplay from "./TimerDisplay.jsx";
 import OrderStack from "./OrderStack.jsx";
 import { LevelContext } from "../Context.jsx";
 
@@ -47,6 +47,15 @@ export default function Desk() {
   const [xpStartLocation, setXpStartLocation] =
     useContext(LevelContext).xpStartLocation;
   const [isTutorial] = useContext(LevelContext).isTutorial;
+  const [, setTotalPoints] = useContext(LevelContext).totalPoints;
+
+  const TUTORIAL_STATE_ORDER = [
+    null, "order-appearing", "order-received",
+    "rulebook-open", "dictionary-open", "filled-paper", "stapled-response",
+  ];
+  function tutorialStateAtLeast(required) {
+    return TUTORIAL_STATE_ORDER.indexOf(tutorialState) >= TUTORIAL_STATE_ORDER.indexOf(required);
+  }
 
   // New state for split paper order system
   const [activeOrder, setActiveOrder] = useState(null);
@@ -116,6 +125,7 @@ export default function Desk() {
     setLevel((prev) => ({
       ...prev,
       ordersCompleted: prev.ordersCompleted + 1,
+      orderResults: [...prev.orderResults, 'skipped'],
     }));
 
     setTimeout(() => {
@@ -150,6 +160,10 @@ export default function Desk() {
   useEffect(() => {
     setTimerPaused(spinWheel.wheelPresent);
   }, [spinWheel.wheelPresent]);
+
+  useEffect(() => {
+    setTotalPoints(scoring.totalPoints);
+  }, [scoring.totalPoints]);
 
   // ORDER FUNCTIONS -----------------------------------------------------
 
@@ -280,6 +294,7 @@ export default function Desk() {
           ...prev,
           xp: prev.xp + xpGainedPerOrder,
           ordersCompleted: prev.ordersCompleted + 1,
+          orderResults: [...prev.orderResults, 'correct'],
         }));
         scoring.addCorrectOrder(
           scoring.timeRemaining,
@@ -398,13 +413,13 @@ export default function Desk() {
   }
 
   function openDictionary() {
-    if (!startUpdate && tutorialState != "rulebook-open") return;
+    if (!startUpdate && !tutorialStateAtLeast("rulebook-open")) return;
     const dictionaryEl = dictionaryUIRef.current;
     if (
       !dictionaryEl.style.visibility ||
       dictionaryEl.style.visibility === "hidden"
     ) {
-      setTutorialState("dictionary-open");
+      if (tutorialState === "rulebook-open") setTutorialState("dictionary-open");
 
       sounds.playBookOpen();
       dictionaryEl.style.visibility = "visible";
@@ -413,14 +428,14 @@ export default function Desk() {
   }
 
   function openRuleBook() {
-    if (!startUpdate && tutorialState != "order-received") return;
+    if (!startUpdate && !tutorialStateAtLeast("order-received")) return;
 
     const ruleBookEl = ruleBookUIRef.current;
     if (
       !ruleBookEl.style.visibility ||
       ruleBookEl.style.visibility === "hidden"
     ) {
-      setTutorialState("rulebook-open");
+      if (tutorialState === "order-received") setTutorialState("rulebook-open");
 
       sounds.playBookOpen();
       ruleBookEl.style.visibility = "visible";
@@ -479,13 +494,13 @@ export default function Desk() {
         >
           {/* Order stack */}
           <div className="orders">
+            <OrderStack orderQueue={orderQueue} visible={startUpdate} />
             <TimerDisplay
-              timerActive={scoring.timerActive}
-              timeRemaining={scoring.timeRemaining}
               totalPoints={scoring.totalPoints}
               visible={startUpdate && !isTutorial}
+              showTimer={false}
+              showPoints={false}
             />
-            <OrderStack orderQueue={orderQueue} visible={startUpdate} />
           </div>
 
           {/* Rulebook Space */}
@@ -521,6 +536,9 @@ export default function Desk() {
                 dragDrop.characters[characterContainer.PAPER].items.length > 0
               }
               incorrectShake={incorrectShake}
+              timerActive={scoring.timerActive}
+              timeRemaining={scoring.timeRemaining}
+              timerVisible={startUpdate && !isTutorial}
             />
           </div>
 

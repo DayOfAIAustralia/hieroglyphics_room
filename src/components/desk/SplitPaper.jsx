@@ -2,6 +2,7 @@ import { SortableContext } from "@dnd-kit/sortable";
 import { motion, AnimatePresence } from "framer-motion";
 import Droppable from "../base_dnd/Droppable";
 import SortableDraggable from "../base_dnd/SortableDraggable";
+import TimerDisplay from "./TimerDisplay.jsx";
 
 export default function SplitPaper({
   questionTiles,
@@ -12,6 +13,9 @@ export default function SplitPaper({
   activeOrder,
   canSubmit,
   incorrectShake,
+  timerActive,
+  timeRemaining,
+  timerVisible,
 }) {
   const answerItems = answerContainer.items;
 
@@ -91,6 +95,16 @@ export default function SplitPaper({
             {orderAnimationPhase === "ready" && questionTileElements}
           </AnimatePresence>
         </div>
+      </div>
+
+      {/* Timer - just above divider */}
+      <div className="paper-timer">
+        <TimerDisplay
+          timerActive={timerActive}
+          timeRemaining={timeRemaining}
+          visible={timerVisible}
+          showPoints={false}
+        />
       </div>
 
       {/* Divider */}

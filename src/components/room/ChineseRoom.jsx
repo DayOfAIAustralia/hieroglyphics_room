@@ -1,173 +1,217 @@
-import { useContext, useEffect, useState, useRef } from 'react'
-import { LevelContext } from '../Context'
+import { useContext, useEffect, useState, useRef } from "react";
+import { LevelContext } from "../Context";
 
 import { MdMusicNote } from "react-icons/md";
 import { MdMusicOff } from "react-icons/md";
 import { IoHelpCircleSharp } from "react-icons/io5";
-import AboutModal from './AboutModal'
+import AboutModal from "./AboutModal";
 
-import useSound from 'use-sound';
-import egyptMusic from '../../assets/music/egyptMusic.wav'
+import useSound from "use-sound";
+import egyptMusic from "../../assets/music/egyptMusic.wav";
 
-import celebrationMusic from '../../assets/music/victoryMusic.wav'
+import celebrationMusic from "../../assets/music/victoryMusic.wav";
 
-import { useXpParticles } from './useXpParticles';
-import xpSound from '../../assets/sounds/xpPoints.wav'
+import { useXpParticles } from "./useXpParticles";
+import xpSound from "../../assets/sounds/xpPoints.wav";
 
-export default function ChineseRoom({gameOver}) {
-    const [levelData, setLevel] = useContext(LevelContext).level
-    const [xpStartLocation, setXpStartLocation] = useContext(LevelContext).xpStartLocation
-    const [musicMuted, setMusicMuted] = useState(() => {
-        const saved = localStorage.getItem('musicMuted')
-        return saved === 'true'
-    })
-    const [tutorialOpen, setTutorialOpen] = useState(false)
-    const { burst, Overlay } = useXpParticles();
-    const xpIconRef = useRef(null);
-    const [isLoadingTutorial, setIsLoadingTutorial] = useState(true);
+export default function ChineseRoom({ gameOver }) {
+  const [levelData, setLevel] = useContext(LevelContext).level;
+  const [xpStartLocation, setXpStartLocation] =
+    useContext(LevelContext).xpStartLocation;
+  const [totalPoints] = useContext(LevelContext).totalPoints;
+  const [musicMuted, setMusicMuted] = useState(() => {
+    const saved = localStorage.getItem("musicMuted");
+    return saved === "true";
+  });
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const { burst, Overlay } = useXpParticles();
+  const xpIconRef = useRef(null);
+  const [isLoadingTutorial, setIsLoadingTutorial] = useState(true);
 
-    const [playXp] = useSound(xpSound)
-    const [playCelebration] = useSound(celebrationMusic)
+  const [playXp] = useSound(xpSound);
+  const [playCelebration] = useSound(celebrationMusic);
 
-    // Xp particles
+  // Xp particles
 
-    const grantXp = (originEl) => {
-        burst(
-            originEl || { x: window.innerWidth - 40, y: window.innerHeight - 40 }, // from
-            ".points-display",                                                   // to
-            { count: 42, scatter: 120, color: "limegreen", size: 8 }
-        );
+  const grantXp = (originEl) => {
+    burst(
+      originEl || { x: window.innerWidth - 40, y: window.innerHeight - 40 }, // from
+      ".points-display", // to
+      { count: 42, scatter: 120, color: "limegreen", size: 8 },
+    );
+  };
+
+  const {
+    level,
+    prestige,
+    xp,
+    xpRequired,
+    ordersCompleted,
+    orderResults,
+    ordersTotal,
+  } = levelData;
+
+  // Music
+
+  const [playMusic, { pause, stop }] = useSound(egyptMusic, {
+    loop: true,
+  });
+
+  useEffect(() => {
+    localStorage.setItem("musicMuted", musicMuted);
+  }, [musicMuted]);
+
+  useEffect(() => {
+    musicMuted ? pause() : playMusic();
+  }, [musicMuted, pause, playMusic]);
+
+  const toggleMusic = () => setMusicMuted((m) => !m);
+
+  const musicButton = (
+    <button className="overlay-btn" onClick={toggleMusic}>
+      {musicMuted ? <MdMusicOff size="3em" /> : <MdMusicNote size="3em" />}
+    </button>
+  );
+
+  useEffect(() => {
+    // Wait for first user gesture to satisfy autoplay policy
+    const unlock = () => {
+      playMusic(); // start playback once
+      window.removeEventListener("pointerdown", unlock);
     };
+    window.addEventListener("pointerdown", unlock, { once: true });
+    return () => window.removeEventListener("pointerdown", unlock);
+  }, []);
 
-    const { level, prestige, xp, xpRequired, ordersCompleted, ordersTotal } = levelData
-    
-    // Music
+  useEffect(() => {
+    if (gameOver) {
+      setMusicMuted(true);
+      playCelebration();
+    }
+  }, [gameOver]);
 
-    const [playMusic, { pause, stop }] = useSound(egyptMusic, {
-        loop: true,
-    });
+  // Tutorial revisit
 
-    useEffect(() => {
-        localStorage.setItem('musicMuted', musicMuted)
-    }, [musicMuted])
+  const tutorialButton = (
+    <button
+      className="overlay-btn"
+      onClick={() => setTutorialOpen((prev) => !prev)}
+    >
+      {tutorialOpen ? (
+        <IoHelpCircleSharp color="white" size="3em" />
+      ) : (
+        <IoHelpCircleSharp size="3em" />
+      )}
+    </button>
+  );
 
-    useEffect(() => { musicMuted ? pause() : playMusic(); }, [musicMuted, pause, playMusic]);
+  const tutorialInfo = (
+    <div className="popups">
+      <div className="popup">
+        <div className="popup-data">
+          <div
+            className="popup-text"
+            style={{ fontSize: 24, fontWeight: "bold" }}
+          >
+            How To Play:
+          </div>
+          <div
+            style={{ position: "relative", width: "600px", minHeight: "337px" }}
+          >
+            {/* Loading Text */}
+            {isLoadingTutorial && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                Loading tutorial video...
+              </div>
+            )}
 
-    const toggleMusic = () => setMusicMuted(m => !m);
-
-    const musicButton = <button className="overlay-btn" onClick={toggleMusic}>{musicMuted ? <MdMusicOff size="3em"/> : <MdMusicNote size="3em"/>}</button>
-
-    useEffect(() => {
-        // Wait for first user gesture to satisfy autoplay policy
-        const unlock = () => {
-            playMusic();                 // start playback once
-            window.removeEventListener('pointerdown', unlock);
-        };
-        window.addEventListener('pointerdown', unlock, { once: true });
-        return () => window.removeEventListener('pointerdown', unlock);
-    }, []);
-
-    useEffect(() => {
-        if (gameOver) {
-            setMusicMuted(true)
-            playCelebration()
-        }
-    }, [gameOver])
-
-    // Tutorial revisit
-
-    const tutorialButton = <button className="overlay-btn" onClick={() => setTutorialOpen(prev => !prev)}>{tutorialOpen ? <IoHelpCircleSharp color="white" size="3em"/> : <IoHelpCircleSharp size="3em"/>}</button>
-
-    const tutorialInfo = <div className='popups'>
-        <div className='popup'>
-            <div className='popup-data'>
-                <div className="popup-text" style={{fontSize: 24, fontWeight: "bold"}}>How To Play:</div>
-                <div style={{ position: 'relative', width: '600px', minHeight: '337px' }}>
-                {/* Loading Text */}
-                {isLoadingTutorial && (
-                <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)'
-                }}>
-                    Loading tutorial video...
-                </div>
-                )}
-
-                <video
-                width="600"
-                autoPlay
-                loop
-                muted
-                playsInline
-                onLoadedData={() => setIsLoadingTutorial(false)} // Hides the text when video data is ready
-                style={{ display: isLoadingTutorial ? 'none' : 'block' }} // Keeps layout stable
-                >
-                    <source src="/tutorialVideo.mp4" type="video/mp4" />
-                </video>
-            </div>
-            </div>
+            <video
+              width="600"
+              autoPlay
+              loop
+              muted
+              playsInline
+              onLoadedData={() => setIsLoadingTutorial(false)} // Hides the text when video data is ready
+              style={{ display: isLoadingTutorial ? "none" : "block" }} // Keeps layout stable
+            >
+              <source src="/tutorialVideo.mp4" type="video/mp4" />
+            </video>
+          </div>
         </div>
+      </div>
     </div>
+  );
 
-    // Level-up
+  // Level-up
 
-    const levelProgress = ordersTotal > 0 ? (ordersCompleted / ordersTotal) * 100 : 0;
-
-    const levelProgressStyle = {
-        width: `${levelProgress}%`,
-        height: '100%',
+  // XP particle animation (fires only on correct answers)
+  useEffect(() => {
+    if (xp !== 0) {
+      grantXp(xpStartLocation);
+      playXp();
     }
+  }, [xp]);
 
-    // XP particle animation (fires only on correct answers)
-    useEffect(() => {
-        if (xp !== 0) {
-            grantXp(xpStartLocation)
-            playXp()
-        }
-    }, [xp])
-
-    // Level-up check (fires on any order completion)
-    useEffect(() => {
-        if (ordersCompleted > 0 && ordersCompleted >= ordersTotal) {
-            executeLevelUp()
-        }
-    }, [ordersCompleted])
-
-    function executeLevelUp() {
-        setLevel(prev => {
-            return {
-                ...prev,
-                level: prev.level + 1,
-                xp: prev.xp - prev.xpRequired,
-                ordersCompleted: 0,
-            }
-        })
+  // Level-up check (fires on any order completion)
+  useEffect(() => {
+    if (ordersCompleted > 0 && ordersCompleted >= ordersTotal) {
+      executeLevelUp();
     }
+  }, [ordersCompleted]);
 
-    return (
-        <>
-            <section id='chinese-room'>
-                <div className='level-data'>
-                    <div className='level-number'>
-                        <span>Level {level}</span>
-                    </div>
-                    <div className='level-bar' ref={xpIconRef}>
-                        <div className='level-progress' style={levelProgressStyle}>
+  function executeLevelUp() {
+    setLevel((prev) => {
+      return {
+        ...prev,
+        level: prev.level + 1,
+        xp: prev.xp - prev.xpRequired,
+        ordersCompleted: 0,
+        orderResults: [],
+      };
+    });
+  }
 
-                        </div>
-                    </div>
-                </div>
-                <div className='overlay-btn-container'>
-                    {tutorialButton}
-                    {musicButton}
-                    <AboutModal />
-                </div>                
-                
-                <Overlay />
-            </section>
-            {tutorialOpen && tutorialInfo}
-        </>
-    )
+  return (
+    <>
+      <section id="chinese-room">
+        <div className="level-container">
+          <div className="level-data">
+            <div className="level-number">
+              <span>Level {level}</span>
+            </div>
+            <div className="level-bar" ref={xpIconRef}>
+              {Array.from({ length: ordersTotal }).map((_, i) => {
+                const result = orderResults[i];
+                const cls =
+                  result === "correct"
+                    ? "progress-dot dot-correct"
+                    : result === "skipped"
+                      ? "progress-dot dot-skipped"
+                      : "progress-dot";
+                return <div key={i} className={cls} />;
+              })}
+            </div>
+            <div className="level-points">
+              <span>{totalPoints} pts</span>
+            </div>
+          </div>
+        </div>
+        <div className="overlay-btn-container">
+          {tutorialButton}
+          {musicButton}
+          <AboutModal />
+        </div>
+
+        <Overlay />
+      </section>
+      {tutorialOpen && tutorialInfo}
+    </>
+  );
 }

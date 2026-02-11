@@ -545,6 +545,17 @@ body.stapler-cursor * {
   z-index: 5;
 }
 
+.paper-timer {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 4px;
+}
+
+.paper-timer .level-timer {
+  position: static;
+  width: auto;
+}
+
 .timer-display,
 .points-display {
   background-image: url("/slip.png");
