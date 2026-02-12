@@ -139,7 +139,7 @@
     "popups": [
       {
         "id": 0,
-        "text": "Congratulations, you've now unlocked an AI companion who will help you with anything we talk about here!\n\n A **question mark** will now appear in the top right hand corner of this dialogue box for more complicated stages. Just tap it to activate and then you can highlight text to send it off, or tap the question mark again if you change your mind.",
+        "text": "Great work completing the tutorial! Now let's dig into the deeper meaning behind what you've been doing.",
         "buttons": [
           {
             "id": 1,
@@ -167,7 +167,7 @@
       },
       {
         "id": 2,
-        "text": "I'm going to have to disagree with you there, I'll explain why.\n\n And don't forget to call your new AI assistant if anything is confusing!",
+        "text": "I'm going to have to disagree with you there, I'll explain why.",
         "buttons": [
           {
             "id": 1,
@@ -178,7 +178,7 @@
       },
       {
         "id": 3,
-        "text": "You are right there. But let's explore **why**.\n\n And don't forget to call your new AI assistant if anything is confusing!",
+        "text": "You are right there. But let's explore **why**.",
         "buttons": [
           {
             "id": 1,
@@ -201,8 +201,7 @@
             "text": "Semantics",
             "goto": 6
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 5,
@@ -218,8 +217,7 @@
             "text": "No",
             "goto": 7
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 6,
@@ -235,8 +233,7 @@
             "text": "No",
             "goto": 7
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 7,
@@ -247,8 +244,7 @@
             "text": "I see, what does this all mean",
             "goto": 8
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 8,
@@ -259,8 +255,7 @@
             "text": "Let's do it",
             "goto": null
           }
-        ],
-        "help": true
+        ]
       }
     ]
   },
@@ -291,8 +286,7 @@
             "text": "Ok",
             "goto": 3
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 2,
@@ -303,8 +297,7 @@
             "text": "Ok",
             "goto": 3
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 3,
@@ -320,8 +313,7 @@
             "text": "They are different",
             "goto": 4
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 4,
@@ -332,8 +324,7 @@
             "text": "How do those work?",
             "goto": 6
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 5,
@@ -344,8 +335,7 @@
             "text": "How do those work?",
             "goto": 6
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 6,
@@ -356,8 +346,7 @@
             "text": "Okay",
             "goto": null
           }
-        ],
-        "help": true
+        ]
       }
     ]
   },
@@ -411,8 +400,7 @@
             "text": "So how do we make it make sense",
             "goto": 4
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 4,
@@ -423,8 +411,7 @@
             "text": "But why go through this extra effort",
             "goto": 5
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 5,
@@ -435,8 +422,7 @@
             "text": "How does it do that?",
             "goto": 6
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 6,
@@ -447,8 +433,7 @@
             "text": "So where does that leave us",
             "goto": 7
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 7,
@@ -459,8 +444,7 @@
             "text": "Celebrate! 🎉",
             "goto": 8
           }
-        ],
-        "help": true
+        ]
       },
       {
         "id": 8,

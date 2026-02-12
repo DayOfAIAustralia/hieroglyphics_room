@@ -52,7 +52,6 @@ function App() {
   useEffect(() => {
     const imagesToPreload = [
       '/arrow.png',
-      '/question.png',
       '/dictionaryOpen.png',
       '/rulesOpen.png',
       '/staplerCursor.png',

@@ -1,11 +1,8 @@
 import { useEffect, useContext, useState } from "react";
 import { LevelContext } from "../Context";
-import axios from "axios";
 import useSound from "use-sound";
 import Markdown from "react-markdown";
 import { AnimatePresence, motion } from "framer-motion";
-import TextHighlighter from "./TextHighlighter";
-import { RiMailSendLine } from "react-icons/ri";
 import { useWindowWidth, useWindowHeight } from "@react-hook/window-size";
 import Confetti from "react-confetti";
 
@@ -18,25 +15,17 @@ export default function PopupItem({
   updateDialogue,
   actions,
   ordersObj,
-  help = false,
   setGameOver,
 }) {
   const [orders, setOrders] = ordersObj;
   const [isTutorial, setIsTutorial] = useContext(LevelContext).isTutorial;
   const [startUpdate, setStartUpdate] = useContext(LevelContext).startUpdate;
   const [position, setPosition] = useState({});
-  const [helpVisible, setHelpVisible] = useState(false);
-  const [helpData, setHelpData] = useState("");
-  const [helpDisabled, setHelpDisabled] = useState(false);
   const [showTutorialArrow, setShowTutorialArrow] = useState(false);
   const [arrowLocation, setArrowLocation] = useState({});
   const [useButton, setUseButton] = useState(true);
   const [tutorialState, setTutorialState] =
     useContext(LevelContext).tutorialState;
-  const [isHighlighting, setIsHighlighting] = useState(false);
-  const [highlightedText, setHighlightedText] = useState("");
-  const [showSendHelp, setShowSendHelp] = useState(false);
-  const [helpButtonHover, setHelpButtonHover] = useState(false);
   const [arrowRotation, setArrowRotation] = useState(0);
   const [arrowMoveDirection, setArrowMoveDirection] = useState("vertical");
   const [key, setKey] = useState(1);
@@ -233,33 +222,6 @@ export default function PopupItem({
     }
   }
 
-  // Requesting AI Help functions
-  function changeHighlighting() {
-    setKey((prev) => prev + 1);
-    setIsHighlighting((prev) => !prev);
-    setShowSendHelp((prev) => !prev);
-  }
-
-  async function requestHelp() {
-    setHelpVisible(true);
-    setIsHighlighting(false);
-    setShowSendHelp(false);
-    setHelpDisabled(true);
-    const response = await axios.post(
-      `/api/requesthelp`,
-      { context: text, highlight: highlightedText },
-      { withCredentials: false },
-    );
-    setHelpData(response.data.text);
-  }
-
-  function closeHelp() {
-    setHelpData("");
-    setHelpData(false);
-    setHelpDisabled(false);
-    setHelpVisible(false);
-  }
-
   const fadeVariants = {
     hidden: { opacity: 0, scale: 0.2 }, // Start smaller and invisible
     visible: { opacity: 1, scale: 1, transition: { duration: 0.2 } }, // Fade in, normal size
@@ -270,25 +232,12 @@ export default function PopupItem({
     return (
       <button
         key={btn.id}
-        disabled={helpDisabled}
-        className={helpDisabled ? "btn-disabled" : ""}
         onClick={() => updateDialogue(btn.goto)}
       >
         {btn.text}
       </button>
     );
   });
-
-  // Handle hover and state for help button
-  let helpImage;
-  if (
-    (isHighlighting && helpButtonHover) ||
-    (!isHighlighting && !helpButtonHover)
-  ) {
-    helpImage = "/question.png";
-  } else {
-    helpImage = "/questionHighlight.png";
-  }
 
   // End of game celebration and reset functions
   const confetti = (
@@ -313,15 +262,9 @@ export default function PopupItem({
       <div className="popup" key={"dialogue-box"} style={popupStyle}>
         <section className="popup-data" style={dataStyle}>
           <div className="popup-text">
-            <TextHighlighter
-              isHighlighting={isHighlighting}
-              setIsHighlighting={setIsHighlighting}
-              setHighlightedText={setHighlightedText}
-            >
-              <div className="markdown-text-wrapper">
-                <Markdown>{text.replace(/\n/g, "  \n")}</Markdown>
-              </div>
-            </TextHighlighter>
+            <div className="markdown-text-wrapper">
+              <Markdown>{text.replace(/\n/g, "  \n")}</Markdown>
+            </div>
           </div>
 
           {/* Button for final celebration and end of game */}
@@ -338,28 +281,10 @@ export default function PopupItem({
             </motion.div>
           )}
 
-          {/* Help button in top right corner */}
-          {help && !celebration && (
-            <motion.button
-              key={key}
-              className="popup-help"
-              onClick={changeHighlighting}
-              disabled={helpDisabled}
-              onMouseEnter={() => setHelpButtonHover(true)}
-              onMouseLeave={() => setHelpButtonHover(false)}
-              variants={fadeVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              <img src={helpImage} alt="question button" />
-            </motion.button>
-          )}
-
           <AnimatePresence mode="wait">
             {" "}
             {/* 'mode="wait"' ensures one animation finishes before the next starts if both change */}
-            {useButton && !showSendHelp && (
+            {useButton && (
               <motion.div
                 key={"help-btn"}
                 className={`popup-btns ${btnClass}`}
@@ -371,36 +296,8 @@ export default function PopupItem({
                 {buttonElements}
               </motion.div>
             )}
-            {showSendHelp && (
-              <motion.button
-                key="sendHelpButton"
-                className="popup-help-send"
-                onClick={requestHelp}
-                variants={fadeVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                <RiMailSendLine size="1.5em" />
-              </motion.button>
-            )}
           </AnimatePresence>
         </section>
-        {helpVisible && (
-          <div className="help-box">
-            {helpData ? (
-              <>
-                <h2>AI Help:</h2>
-                <Markdown>{helpData.replace(/\n/g, "  \n")}</Markdown>
-                <div className="popup-btns">
-                  <button onClick={closeHelp}>Close</button>
-                </div>
-              </>
-            ) : (
-              <p>Loading...</p>
-            )}
-          </div>
-        )}
       </div>
     </>
   );

@@ -50,7 +50,6 @@ export default function Popups({orders, setGameOver}) {
                 updateDialogue={updateDialogue}
                 actions={currentPopup[popupIndex]?.actions}
                 ordersObj={orders}
-                help={currentPopup[popupIndex]?.help}
                 setGameOver={setGameOver}
             />
         </div>
