@@ -92,7 +92,7 @@ export default function SplitPaper({
         <span className="zone-label">Order:</span>
         <div className="question-tiles-container">
           <AnimatePresence>
-            {orderAnimationPhase === "ready" && questionTileElements}
+            {(orderAnimationPhase === "ready" || orderAnimationPhase === "submitting") && questionTileElements}
           </AnimatePresence>
         </div>
       </div>
