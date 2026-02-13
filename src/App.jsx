@@ -16,7 +16,10 @@ function App() {
   const [level, setLevel] = useState({
     level: 0, // can change to skip to later levels
     xp: 0,
-    xpRequired: 90
+    xpRequired: 90,
+    ordersCompleted: 0,
+    orderResults: [],
+    ordersTotal: 3,
   })
 
   // Global context values needed across components
@@ -32,6 +35,10 @@ function App() {
 
   const [xpStartLocation, setXpStartLocation] = useState({x: 0, y: 0})
 
+  const [isTutorial, setIsTutorial] = useState(false)
+
+  const [totalPoints, setTotalPoints] = useState(0)
+
   // Preloading work
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -45,7 +52,6 @@ function App() {
   useEffect(() => {
     const imagesToPreload = [
       '/arrow.png',
-      '/question.png',
       '/dictionaryOpen.png',
       '/rulesOpen.png',
       '/staplerCursor.png',
@@ -62,7 +68,7 @@ function App() {
   return (
     <>
       {/* Warning to use landscape mode */}
-      <div className="popups rotate-device-overlay" style={{backgroundImage: 'url("/desk.jpg")', zIndex: 9999}}>
+      <div className="popups rotate-device-overlay" style={{zIndex: 9999, backgroundColor: '#5C3A1E', backgroundImage: 'linear-gradient(180deg, transparent 25%, rgba(139,90,43,0.30) 30%, rgba(139,90,43,0.10) 35%, transparent 40%), linear-gradient(180deg, rgba(120,70,30,0.15) 0%, transparent 20%, rgba(100,60,25,0.12) 50%, transparent 70%, rgba(80,45,15,0.18) 100%), repeating-linear-gradient(180deg, transparent 0px, rgba(0,0,0,0.06) 2px, transparent 4px), repeating-linear-gradient(180deg, transparent 0px, rgba(255,220,180,0.04) 6px, transparent 12px), linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 30%, rgba(0,0,0,0.03) 70%, transparent 100%)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat'}}>
           <div className="popup">
           <section className="popup-data" style={{fontSize: "30px"}}>
               <div className="popup-text" style={{textAlign: "center"}}>
@@ -128,11 +134,11 @@ function App() {
       </AnimatePresence>
 
       {/* Game context and components */}
-      <LevelContext value={{level: [level, setLevel], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState], xpStartLocation: [xpStartLocation, setXpStartLocation]
+      <LevelContext value={{level: [level, setLevel], currentlyPlaying: [currentlyPlaying, setCurrentlyPlaying], startUpdate: [startUpdate, setStartUpdate], tutorialState: [tutorialState, setTutorialState], xpStartLocation: [xpStartLocation, setXpStartLocation], isTutorial: [isTutorial, setIsTutorial], totalPoints: [totalPoints, setTotalPoints]
       }}>
         <Popups orders={[orders, setOrders]} setGameOver={setGameOver}/>
         <ChineseRoom gameOver={gameOver}/>
-        <Desk ordersObj={[orders, setOrders]}/>
+        <Desk />
       </LevelContext>
 
     </>

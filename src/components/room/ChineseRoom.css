@@ -1,71 +1,102 @@
 #chinese-room {
-    height: 50%;
-    margin: 0;
-    padding: 0;
-    background: 
-        url("/house.png") center 180% / 45vh auto no-repeat,
-        url("/outside.png") center/contain repeat-x;
+  height: 40%;
+  margin: 0;
+  padding: 0;
+  background:
+    url("/house.png") center 100% / 40vh auto no-repeat,
+    url("/outside.png") center/auto 100% repeat-x;
 
-
-    position: relative;
-    border-bottom: 4px solid black;
+  position: relative;
+  border-bottom: 4px solid black;
 }
 
 .house > img {
-    position: absolute;
+  position: absolute;
+}
+
+.level-container {
+  height: 40%;
+  width: 30%;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
 }
 
 .level-data {
-    height: 40%;
-    width: 30%;
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  background: url("/slip.png") center/100% 100% no-repeat;
+  padding: 20px;
+  min-width: fit-content;
 }
 
 .level-bar {
-    border-radius: 10px;
-    width: 80%;
-    height: 30%;
-
-    background-color: rgba(133, 149, 173, 0.75);
-    border: 1px solid blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: nowrap;
 }
 
-.level-progress {
-    background-color: rgb(47, 190, 47);
-    transition: width 0.5s;
-    border-radius: 10px;
+.progress-dot {
+  width: clamp(10px, 1.8vh, 14px);
+  height: clamp(10px, 1.8vh, 14px);
+  min-width: clamp(10px, 1.8vh, 14px);
+  min-height: clamp(10px, 1.8vh, 14px);
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid black;
+  background: transparent;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+.dot-correct {
+  background-color: rgb(47, 190, 47);
+  border-color: rgb(37, 160, 37);
+}
+
+.dot-skipped {
+  background-color: rgb(220, 60, 60);
+  border-color: rgb(180, 40, 40);
 }
 
 .level-number > span {
-    font-family: "Jersey 10", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 32px;
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(22px, 2.5vw, 32px);
+}
+
+.level-points > span {
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(16px, 1.8vw, 24px);
+  color: #27ae60;
 }
 
 .overlay-btn-container {
-    all: unset;
-    z-index: 9999;
-    position: absolute;
-    right: 0;
-    margin: 12px;
-    cursor: pointer;
+  all: unset;
+  z-index: 9999;
+  position: absolute;
+  right: 0;
+  margin: 12px;
+  cursor: pointer;
 }
 
 .overlay-btn {
-    all: unset;
-    margin: 8px;
-    cursor: pointer;
+  all: unset;
+  margin: 8px;
+  cursor: pointer;
 }
 
 .overlay-btn:hover svg {
-    /* !important is needed to override the inline 'color' prop */
-    fill: #e9e642ff!important; /* Some icons use fill instead of color */
+  /* !important is needed to override the inline 'color' prop */
+  fill: #e9e642ff !important; /* Some icons use fill instead of color */
 }

@@ -1,6 +1,6 @@
 import PopupItem from "./PopupItem"
 import "./Popup.css"
-import { LevelContext, TutorialContext } from "../Context"
+import { LevelContext } from "../Context"
 import popupsJSON from "../../assets/popups.json"
 
 import React, {useEffect, useState, useContext, useRef} from 'react'
@@ -13,7 +13,7 @@ export default function Popups({orders, setGameOver}) {
     const [currentlyPlaying, setCurrentlyPlaying] = useContext(LevelContext).currentlyPlaying
     const dialogueClosed = useRef(false)
     const [level, setLevel] = useContext(LevelContext).level
-    const [isTutorial, setIsTutorial] = useState(false)
+    const [isTutorial, setIsTutorial] = useContext(LevelContext).isTutorial
 
     let currentPopup
     if (dialogueClosed.current) {
@@ -43,18 +43,15 @@ export default function Popups({orders, setGameOver}) {
 
     if (currentPopup === null) return;
     return (
-        <TutorialContext value={[isTutorial, setIsTutorial]}>
-            <div className={!isTutorial ? "popups" : ""}>
-                <PopupItem
-                    text={currentPopup[popupIndex].text}
-                    buttons={currentPopup[popupIndex].buttons}
-                    updateDialogue={updateDialogue}
-                    actions={currentPopup[popupIndex]?.actions}
-                    ordersObj={orders}
-                    help={currentPopup[popupIndex]?.help}
-                    setGameOver={setGameOver}
-                />
-            </div>
-        </TutorialContext>
+        <div className={!isTutorial ? "popups" : ""}>
+            <PopupItem
+                text={currentPopup[popupIndex].text}
+                buttons={currentPopup[popupIndex].buttons}
+                updateDialogue={updateDialogue}
+                actions={currentPopup[popupIndex]?.actions}
+                ordersObj={orders}
+                setGameOver={setGameOver}
+            />
+        </div>
     )
 }
