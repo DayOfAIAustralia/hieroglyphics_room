@@ -57,12 +57,12 @@
 .paper {
   background-image: url("/slip.png");
   background-size: 100% 100%;
-  width: 29vh;
+  width: clamp(160px, 29vh, 260px);
   padding: 20px;
 
   cursor: grab;
 
-  font-size: 20px;
+  font-size: clamp(14px, 2.6vh, 20px);
   transition: transform 0.5s ease;
 }
 
@@ -77,13 +77,13 @@
 .response {
   background-image: url("/response.png");
   background-size: cover;
-  width: 18vh;
-  height: 23vh;
+  width: clamp(100px, 18vh, 160px);
+  height: clamp(130px, 23vh, 200px);
   padding: 20px;
 
   cursor: grab;
 
-  font-size: 20px;
+  font-size: clamp(14px, 2.6vh, 20px);
 }
 
 .order {
@@ -169,7 +169,7 @@
 .paper-furl-btn {
   all: unset;
   position: absolute;
-  width: 50px;
+  width: clamp(30px, 5vw, 50px);
   height: 100%;
   top: 0;
   right: 0;
@@ -185,13 +185,12 @@
 .rulebook-ui {
   position: absolute;
   z-index: 10;
-  visibility: hidden;
 
   left: 50%;
   transform: translateX(-50%);
 
-  width: 400px;
-  min-height: 345px;
+  width: min(400px, 85%);
+  min-height: min(345px, 50vh);
 
   display: flex;
   flex-direction: column;
@@ -224,7 +223,7 @@
   border-radius: 4px;
   padding: 3px 7px;
   font-family: "Jersey 10", sans-serif;
-  font-size: 16px;
+  font-size: clamp(13px, 2vh, 16px);
   color: #5d4037;
   cursor: pointer;
   display: block;
@@ -275,19 +274,16 @@
 }
 
 .dictionary {
-  all: unset;
   grid-area: dictionary;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   position: relative;
 }
 
 .dictionary > img {
   margin: 0;
-  width: 550px;
-  transition: transform 0.2s ease-in-out;
+  width: min(550px, 90%);
 }
 
 .default-off {
@@ -297,13 +293,12 @@
 .dictionary-ui {
   position: absolute;
   z-index: 10;
-  visibility: hidden;
 
   left: 50%;
   transform: translateX(-50%);
 
-  width: 375px;
-  min-height: 275px;
+  width: min(375px, 85%);
+  min-height: min(275px, 40vh);
   cursor: grab;
 }
 
@@ -364,8 +359,6 @@ body.stapler-cursor * {
 }
 
 .rules {
-  all: unset;
-  cursor: pointer;
   grid-area: rules;
   display: flex;
   justify-content: center;
@@ -375,8 +368,7 @@ body.stapler-cursor * {
 
 .rules > img {
   margin: 0;
-  width: 550px;
-  transition: transform 0.2s ease-in-out;
+  width: min(550px, 90%);
 }
 
 .spinner-wheel {
@@ -397,27 +389,6 @@ body.stapler-cursor * {
 
 .rulebook-ui .book-tab {
   margin-top: 32px;
-}
-
-.book-close-btn {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #5d4037;
-  padding: 2px;
-  line-height: 1;
-  z-index: 1;
-}
-
-.rulebook-ui .book-close-btn {
-  top: 40px;
-}
-
-.book-close-btn:hover {
-  color: #000;
 }
 
 /* Split Paper Styles */
@@ -447,7 +418,7 @@ body.stapler-cursor * {
 
 .zone-label {
   font-family: "Jersey 10", sans-serif;
-  font-size: 14px;
+  font-size: clamp(11px, 1.8vh, 14px);
   color: #5d4037;
   margin-bottom: 4px;
   letter-spacing: 0.5px;
@@ -489,7 +460,7 @@ body.stapler-cursor * {
   border: 2px solid #2d5a3a;
   border-radius: 6px;
   font-family: "Jersey 10", sans-serif;
-  font-size: 16px;
+  font-size: clamp(13px, 2vh, 16px);
   cursor: pointer;
   transition: all 0.2s ease;
   z-index: 5;
@@ -517,8 +488,8 @@ body.stapler-cursor * {
   background-image: url("/slip.png");
   background-size: 100% 100%;
   padding: 15px;
-  width: 25vh;
-  min-height: 80px;
+  width: clamp(140px, 25vh, 220px);
+  min-height: clamp(50px, 10vh, 80px);
 }
 
 .slip-content {
@@ -529,7 +500,7 @@ body.stapler-cursor * {
 
 .slip-label {
   font-family: "Jersey 10", sans-serif;
-  font-size: 14px;
+  font-size: clamp(11px, 1.8vh, 14px);
   color: #333;
 }
 
@@ -596,7 +567,7 @@ body.stapler-cursor * {
 
 /* Score Summary */
 .score-summary {
-  max-width: 400px;
+  max-width: min(400px, 80vw);
 }
 
 .score-title {

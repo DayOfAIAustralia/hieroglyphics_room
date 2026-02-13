@@ -1,12 +1,10 @@
 import { useState, useContext, useEffect } from "react";
 import { LevelContext } from "../Context";
 import { FaArrowRight } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
-
 import useSound from "use-sound";
 import ruleMoveSound from "../../assets/sounds/ruleMove.wav";
 
-export default function RuleBook({ ref, rules, updateRule = null, zIndex, onClose }) {
+export default function RuleBook({ ref, rules, updateRule = null, zIndex }) {
   const [playRuleMove] = useSound(ruleMoveSound);
   const [level, setLevel] = useContext(LevelContext).level;
   const [currentlyPlaying, setCurrentlyPlaying] =
@@ -110,9 +108,6 @@ export default function RuleBook({ ref, rules, updateRule = null, zIndex, onClos
       style={{ zIndex: zIndex }}
     >
       <div className="book-tab">Rulebook</div>
-      <button className="book-close-btn" onClick={(e) => { e.stopPropagation(); onClose(); }}>
-        <IoClose size="1.2em" />
-      </button>
       <div className="rules-content">{rulesElements}</div>
       <div className="rulebook-btns">{pageButtons}</div>
     </div>

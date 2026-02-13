@@ -16,7 +16,7 @@ html, body {
   padding: 0;
   height: 100vh;
   min-width: 600px;
-  font-size: 1em;
+  font-size: clamp(12px, 1.1vw, 16px);
   background-color: #5C3A1E;
   background-image:
     /* prominent lighter band ~30% from top */

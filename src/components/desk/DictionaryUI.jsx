@@ -4,15 +4,12 @@ import {
 } from "@dnd-kit/sortable";
 import SortableDraggable from "../base_dnd/SortableDraggable";
 import Droppable from "../base_dnd/Droppable";
-import { IoClose } from "react-icons/io5";
-
 export default function DictionaryUI({
   dictionary,
   ref,
   rules,
   zIndex,
   handleTileClick,
-  onClose,
 }) {
   // Creates all the tiles for use in the dictionary, ensures they are all unique and
   // only includes tiles that are being used in currently valid rules
@@ -53,9 +50,6 @@ export default function DictionaryUI({
       <div className="book-tab" style={{ marginBottom: "8px" }}>
         <h4>Dictionary</h4>
       </div>
-      <button className="book-close-btn" onClick={(e) => { e.stopPropagation(); onClose(); }}>
-        <IoClose size="1.2em" />
-      </button>
       <Droppable id={dictionary.id} className="dictionary-items">
         <SortableContext
           items={dictionary.items.map((item) => item.id)}

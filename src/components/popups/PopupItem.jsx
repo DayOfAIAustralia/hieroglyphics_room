@@ -36,11 +36,7 @@ export default function PopupItem({
 
   // Non button progression for tutorial
   useEffect(() => {
-    if (actions === 1 && tutorialState === "rulebook-open") {
-      updateDialogue(buttons[0].goto);
-    } else if (actions === 2 && tutorialState === "dictionary-open") {
-      updateDialogue(buttons[0].goto);
-    } else if (actions === 3 && tutorialState === "filled-paper") {
+    if (actions === 3 && tutorialState === "filled-paper") {
       updateDialogue(buttons[0].goto);
     } else if (actions === 5 && tutorialState === "stapled-response") {
       // User submitted their answer - advance to Tutorial Complete
@@ -68,30 +64,35 @@ export default function PopupItem({
       setArrowRotation(0);
       setArrowMoveDirection("horizontal");
     } else if (actions === 1) {
-      setTutorialState("order-received");
-      setUseButton(false);
-      setPosition({ top: "35%", left: "0", right: "auto", bottom: "auto" });
-      setArrowLocation({
-        top: "50%",
-        left: "5%",
-        right: "auto",
-        bottom: "auto",
-      });
-      setArrowRotation(0);
-      setArrowMoveDirection("horizontal");
-    } else if (actions === 2) {
-      setPosition({ top: "30%", left: "auto", right: "0", bottom: "auto" });
+      setUseButton(true);
+      setShowTutorialArrow(true);
+      playSwoosh();
       setArrowLocation({
         top: "auto",
-        left: "50%",
+        left: "0%",
         right: "auto",
         bottom: "35%",
       });
       setArrowRotation(0);
+      setArrowMoveDirection("vertical");
+      setPosition({ top: "20%", left: "0%", right: "auto", bottom: "40%" });
+    } else if (actions === 2) {
+      setUseButton(true);
+      setShowTutorialArrow(true);
+      playSwoosh();
+      setArrowLocation({
+        top: "auto",
+        left: "auto",
+        right: "35%",
+        bottom: "35%",
+      });
+      setArrowRotation(0);
+      setArrowMoveDirection("vertical");
+      setPosition({ top: "25%", left: "auto", right: "10%", bottom: "auto" });
     } else if (actions === 3) {
       setShowTutorialArrow(false);
-
-      setPosition({ top: "30%", left: "auto", right: "-10%", bottom: "auto" });
+      setUseButton(false);
+      setPosition({ top: "35%", left: "auto", right: "10%", bottom: "auto" });
     } else if (actions === 4) {
       setShowTutorialArrow(true);
       setArrowLocation({
@@ -104,6 +105,7 @@ export default function PopupItem({
 
       setPosition({ top: "30%", left: "auto", right: "25%", bottom: "auto" });
     } else if (actions === 5) {
+      setUseButton(false);
       setArrowLocation({
         top: "auto",
         left: "12%",
@@ -213,13 +215,6 @@ export default function PopupItem({
       right: position.right,
       bottom: position.bottom,
     };
-    if (actions > 0) {
-      btnClass = "popup-btns-side";
-      dataStyle = {
-        display: "flex",
-        flexDirection: "row",
-      };
-    }
   }
 
   const fadeVariants = {
@@ -230,10 +225,7 @@ export default function PopupItem({
 
   const buttonElements = buttons.map((btn) => {
     return (
-      <button
-        key={btn.id}
-        onClick={() => updateDialogue(btn.goto)}
-      >
+      <button key={btn.id} onClick={() => updateDialogue(btn.goto)}>
         {btn.text}
       </button>
     );

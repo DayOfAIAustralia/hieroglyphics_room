@@ -28,7 +28,6 @@ import OrderStack from "./OrderStack.jsx";
 import { LevelContext } from "../Context.jsx";
 
 import useSoundEffects from "./hooks/useSoundEffects.jsx";
-import usePixelHover from "./hooks/usePixelHover.jsx";
 import useScoring from "./hooks/useScoring.jsx";
 import useCharacterDragDrop, {
   characterContainer,
@@ -48,14 +47,6 @@ export default function Desk() {
     useContext(LevelContext).xpStartLocation;
   const [isTutorial] = useContext(LevelContext).isTutorial;
   const [, setTotalPoints] = useContext(LevelContext).totalPoints;
-
-  const TUTORIAL_STATE_ORDER = [
-    null, "order-appearing", "order-received",
-    "rulebook-open", "dictionary-open", "filled-paper", "stapled-response",
-  ];
-  function tutorialStateAtLeast(required) {
-    return TUTORIAL_STATE_ORDER.indexOf(tutorialState) >= TUTORIAL_STATE_ORDER.indexOf(required);
-  }
 
   // New state for split paper order system
   const [activeOrder, setActiveOrder] = useState(null);
@@ -94,16 +85,9 @@ export default function Desk() {
   const [rulebookZIndex, setRulebookZIndex] = useState(10);
 
   const dictionaryUIRef = useRef(null);
-  const dictionaryImg = useRef(null);
   const ruleBookUIRef = useRef(null);
-  const ruleBookImg = useRef(null);
 
   // --- Hook wiring ---
-
-  const { isDictionaryHovered, isRuleBookHovered } = usePixelHover(
-    dictionaryImg,
-    ruleBookImg,
-  );
 
   const dragDrop = useCharacterDragDrop({
     sounds,
@@ -398,53 +382,6 @@ export default function Desk() {
 
   // END RULE FUNCTIONS -----------------------------------------------------
 
-  // DESK OBJECT INTERACTIONS ---------------------------------------------------
-
-  function closeDictionary() {
-    sounds.playBookClose();
-    dictionaryUIRef.current.style.visibility = "hidden";
-    dictionaryImg.current.src = "dictionary.png";
-  }
-
-  function closeRuleBook() {
-    sounds.playBookClose();
-    ruleBookUIRef.current.style.visibility = "hidden";
-    ruleBookImg.current.src = "rules.png";
-  }
-
-  function openDictionary() {
-    if (!startUpdate && !tutorialStateAtLeast("rulebook-open")) return;
-    const dictionaryEl = dictionaryUIRef.current;
-    if (
-      !dictionaryEl.style.visibility ||
-      dictionaryEl.style.visibility === "hidden"
-    ) {
-      if (tutorialState === "rulebook-open") setTutorialState("dictionary-open");
-
-      sounds.playBookOpen();
-      dictionaryEl.style.visibility = "visible";
-      dictionaryImg.current.src = "dictionaryOpen.png";
-    }
-  }
-
-  function openRuleBook() {
-    if (!startUpdate && !tutorialStateAtLeast("order-received")) return;
-
-    const ruleBookEl = ruleBookUIRef.current;
-    if (
-      !ruleBookEl.style.visibility ||
-      ruleBookEl.style.visibility === "hidden"
-    ) {
-      if (tutorialState === "order-received") setTutorialState("rulebook-open");
-
-      sounds.playBookOpen();
-      ruleBookEl.style.visibility = "visible";
-      ruleBookImg.current.src = "rulesOpen.png";
-    }
-  }
-
-  // END DESK OBJECT INTERACTIONS ---------------------------------------------------
-
   // Sensor used with DnD Kit to allow picking up tiles, dictionary, and rulebook
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -504,21 +441,15 @@ export default function Desk() {
           </div>
 
           {/* Rulebook Space */}
-          <button className="rules" onClick={openRuleBook}>
-            <img
-              src="rules.png"
-              alt="rule book"
-              ref={ruleBookImg}
-              className={isRuleBookHovered ? "hovered" : ""}
-            ></img>
+          <div className="rules">
+            <img src="rulesOpen.png" alt="rule book" />
             <RuleBook
               ref={ruleBookUIRef}
               rules={rules}
               updateRule={spinWheel.updateRule}
               zIndex={rulebookZIndex}
-              onClose={closeRuleBook}
             />
-          </button>
+          </div>
 
           {/* Paper Space - Split into question and answer zones */}
           <div className="workspace">
@@ -543,13 +474,8 @@ export default function Desk() {
           </div>
 
           {/* Dictionary Space */}
-          <button className="dictionary" onClick={openDictionary}>
-            <img
-              src="dictionary.png"
-              alt="character dictionary"
-              ref={dictionaryImg}
-              className={isDictionaryHovered ? "hovered" : ""}
-            ></img>
+          <div className="dictionary">
+            <img src="dictionaryOpen.png" alt="character dictionary" />
             <DictionaryUI
               dictionary={dragDrop.characters.find(
                 (container) => container.id === "dictionary",
@@ -558,9 +484,8 @@ export default function Desk() {
               rules={rules}
               zIndex={dictionaryZIndex}
               handleTileClick={dragDrop.handleTileClick}
-              onClose={closeDictionary}
             />
-          </button>
+          </div>
 
           {/* Handles what is seen in users hand and on tile droppable locations */}
           <DragOverlay
