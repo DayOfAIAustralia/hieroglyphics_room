@@ -57,23 +57,23 @@ export default function PopupItem({
       setPosition({ top: "25%", left: "10%", right: "auto", bottom: "auto" });
       setArrowLocation({
         top: "auto",
-        left: "28%",
-        right: "auto",
+        left: "auto",
+        right: "30%",
         bottom: "45%",
       });
-      setArrowRotation(0);
+      setArrowRotation(180);
       setArrowMoveDirection("horizontal");
     } else if (actions === 1) {
       setUseButton(true);
       setShowTutorialArrow(true);
       playSwoosh();
       setArrowLocation({
-        top: "auto",
-        left: "0%",
+        top: "40%",
+        left: "5%",
         right: "auto",
-        bottom: "35%",
+        bottom: "auto",
       });
-      setArrowRotation(0);
+      setArrowRotation(90);
       setArrowMoveDirection("vertical");
       setPosition({ top: "20%", left: "0%", right: "auto", bottom: "40%" });
     } else if (actions === 2) {
@@ -87,7 +87,7 @@ export default function PopupItem({
         bottom: "35%",
       });
       setArrowRotation(0);
-      setArrowMoveDirection("vertical");
+      setArrowMoveDirection("horizontal");
       setPosition({ top: "25%", left: "auto", right: "10%", bottom: "auto" });
     } else if (actions === 3) {
       setShowTutorialArrow(false);
